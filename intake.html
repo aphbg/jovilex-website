@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jovilex · Client Intake Engine</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23111111'/><circle cx='23' cy='7' r='5' fill='%2310B981'/><text x='13' y='25' font-family='Arial' font-weight='900' font-size='22' fill='white' text-anchor='middle'>J</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+/* NOTE TO DEVELOPER: This file calls /api/intake (the Vercel serverless function)
+   which proxies requests to the Anthropic API using ANTHROPIC_API_KEY.
+   Set ANTHROPIC_API_KEY in Vercel Project Settings → Environment Variables. */
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// API endpoint — calls the Vercel serverless proxy, not Anthropic directly
+const API_ENDPOINT = '/api/intake';
+</script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>
+// Full intake engine — same as the Claude chat version but calling /api/intake
+// This version is safe to host — no API key in the frontend code
+
+const {useState}=React, h=React.createElement;
+const SVCS=[
+  {id:'ai',name:'AI-Augmented Operations',sub:'AI Map · Automation · Custom Agents · AI OS'},
+  {id:'digital',name:'Digital Products & Systems',sub:'Websites · MVPs · Web Apps · Marketplaces · SaaS'},
+  {id:'strategy',name:'Business Architecture & Strategy',sub:'Business Model · GTM · Investor Package · Ecosystem'},
+  {id:'human',name:'Human Performance & Potential',sub:'Personal OS · Executive Performance · Clarity Session'},
+];
+const DOCLIST=[{id:'brief',label:'Brief'},{id:'contract',label:'Contract'},{id:'invoice',label:'Invoice'},{id:'onboarding',label:'Onboarding'},{id:'activation',label:'⚡ Activation'}];
+const DOC_LABELS={brief:'Client Brief',contract:'Contract',invoice:'Invoice',onboarding:'Onboarding',activation:'Project Activation Document'};
+const PROG_KEYS=['brief','contract','invoice','onboarding','activation'];
+const PROG_LABELS={brief:'Generating client brief',contract:'Drafting contract',invoice:'Building invoice',onboarding:'Writing onboarding letter',activation:'Building project activation document'};
+const EMPTY={name:'',company:'',email:'',phone:'',problem:'',success:'',notes:'',svcs:[],deliverables:'',start:'',delivery:'',price:''};
+
+async function apiCall(sys,usr){
+  const r=await fetch(API_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:usr}]})});
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message||'API error');
+  return d.content?.map(b=>b.text||'').join('')||'';
+}
+
+// [Full component code identical to the chat version — paste from the Claude artifact if needed]
+// For deployment: the full React component from the Claude intake engine v4 goes here
+// replacing this placeholder. The only difference is apiCall() uses API_ENDPOINT above.
+
+document.getElementById('app').innerHTML = '<div style="padding:60px 32px;text-align:center;font-family:Sora,sans-serif"><div style="font-size:32px;font-weight:800;margin-bottom:12px">Jovi<span style="color:#10B981">lex</span></div><div style="color:#6B7280;font-size:16px;margin-bottom:24px">Client Intake Engine</div><div style="background:#141414;border:1px solid #222;border-radius:14px;padding:24px;max-width:480px;margin:0 auto;text-align:left"><p style="color:#9CA3AF;font-size:14px;line-height:1.8">This file is the hosted shell. To complete deployment:<br><br>1. Add your <strong style="color:#10B981">ANTHROPIC_API_KEY</strong> in Vercel → Project Settings → Environment Variables<br><br>2. The full React component from the Claude intake engine artifact goes in this file (replacing this message)<br><br>3. Push to GitHub — Vercel redeploys automatically</p></div></div>';
+</script>
+</body>
+</html>
