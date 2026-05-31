@@ -102,7 +102,7 @@ var EMPTY={name:'',company:'',email:'',phone:'',problem:'',success:'',notes:'',s
 
 function apiCall(sys,usr){
   return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:usr}]})})
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:sys,messages:[{role:'user',content:usr}]})})
     .then(function(r){return r.json();})
     .then(function(d){if(d.error)throw new Error(d.error.message||'API error');return(d.content||[]).map(function(b){return b.text||'';}).join('');});
 }
