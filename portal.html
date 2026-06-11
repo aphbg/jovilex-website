@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jovilex · Client Portal</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23111111'/><circle cx='23' cy='7' r='5' fill='%2310B981'/><text x='13' y='25' font-family='Arial' font-weight='900' font-size='22' fill='white' text-anchor='middle'>J</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+.wrap{max-width:720px;margin:0 auto;padding:32px 20px 80px}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em}
+.logo em{color:#10B981;font-style:normal}
+.badge{font-size:11px;color:#6B7280;letter-spacing:.08em;text-transform:uppercase;background:#141414;border:1px solid #222;border-radius:6px;padding:5px 10px}
+
+/* Access screen */
+.access{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center}
+.access .logo{font-size:36px;margin-bottom:8px}
+.access .sub{color:#6B7280;font-size:14px;margin-bottom:40px}
+.access-box{background:#141414;border:1px solid #1e1e1e;border-radius:14px;padding:32px;width:100%;max-width:380px}
+.access-box h2{font-family:'Sora',sans-serif;font-size:18px;margin-bottom:6px}
+.access-box p{color:#6B7280;font-size:13px;margin-bottom:20px}
+.inp{width:100%;padding:14px 16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;outline:none;transition:border-color .2s;margin-bottom:10px}
+.inp:focus{border-color:#10B981}
+.inp-label{display:block;font-size:12px;color:#6B7280;margin-bottom:4px}
+.btn{padding:14px 20px;border-radius:10px;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;width:100%}
+.btn-p{background:#10B981;color:#0a0a0a}.btn-p:hover{background:#0EA472}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-g{background:transparent;color:#6B7280;border:1px solid #2a2a2a;font-weight:500}.btn-g:hover{color:#fff}
+.btn-sm{width:auto;padding:8px 16px;font-size:13px;font-weight:600}
+.err{color:#DC2626;font-size:13px;margin-top:8px;display:none}
+
+/* Stepper */
+.stepper{display:flex;align-items:center;gap:0;margin-bottom:28px;padding:16px 20px;background:#141414;border:1px solid #1e1e1e;border-radius:12px}
+.step-item{display:flex;align-items:center;gap:8px;cursor:pointer;flex:1;min-width:0}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;flex-shrink:0;transition:all .2s}
+.step-dot.done{background:#10B981;color:#0a0a0a}
+.step-dot.active{background:#fff;color:#0a0a0a;box-shadow:0 0 0 3px rgba(16,185,129,.3)}
+.step-dot.locked{background:#1e1e1e;color:#4B5563}
+.step-label{font-size:12px;color:#6B7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step-item.active .step-label{color:#fff}
+.step-item.done .step-label{color:#6B7280}
+.step-line{flex:0 0 auto;width:20px;height:1px;background:#2a2a2a;margin:0 4px}
+.step-line.done{background:#10B981}
+.step-current{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#10B981;margin-bottom:20px}
+
+/* Panels */
+.panel{display:none}.panel.on{display:block}
+.card{background:#141414;border:1px solid #1e1e1e;border-radius:12px;padding:20px;margin-bottom:16px}
+.card-title{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px}
+.card-sub{color:#6B7280;font-size:13px;margin-bottom:16px;line-height:1.6}
+.detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1e1e1e}
+.detail-row:last-child{border-bottom:none}
+.detail-k{color:#6B7280;font-size:14px}.detail-v{color:#fff;font-size:14px;font-weight:500;text-align:right;max-width:60%}
+.nav-btns{display:flex;gap:10px;margin-top:20px}
+.nav-btns .btn{flex:1}
+
+/* NDA/Contract sections */
+.legal-section{margin-bottom:16px}
+.legal-section h3{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#10B981;margin-bottom:6px}
+.legal-section p{color:#B0B5BF;font-size:13px;line-height:1.8}
+.sig-area{background:#111;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px;margin-top:16px}
+.sig-area .note{color:#6B7280;font-size:12px;margin:8px 0 12px;line-height:1.5}
+.check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.check-row input[type=checkbox]{margin-top:3px;accent-color:#10B981;width:16px;height:16px;flex-shrink:0}
+.check-row label{color:#9CA3AF;font-size:13px;line-height:1.5;cursor:pointer}
+.signed-badge{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:16px;text-align:center;margin-top:16px}
+.signed-badge .icon{font-size:24px;margin-bottom:6px}
+.signed-badge .text{color:#10B981;font-family:'Sora',sans-serif;font-size:14px;font-weight:600}
+.signed-badge .detail{color:#6B7280;font-size:12px;margin-top:4px}
+
+/* Payment */
+.pay-amount{font-family:'Sora',sans-serif;font-size:36px;font-weight:700;color:#10B981;text-align:center;padding:20px 0}
+.pay-note{color:#6B7280;font-size:13px;text-align:center;margin-bottom:16px}
+.pay-alt{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:16px;margin-top:12px}
+.pay-alt h4{font-size:13px;font-weight:600;color:#D1D5DB;margin-bottom:8px}
+.pay-alt p{font-size:12px;color:#6B7280;line-height:1.7}
+
+/* Dashboard */
+.welcome h1{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px}
+.welcome .sub{color:#6B7280;font-size:14px;margin-bottom:24px}
+.status-bar{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:130px;background:#141414;border:1px solid #1e1e1e;border-radius:12px;padding:14px}
+.stat-label{font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.stat-val{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:#10B981}
+.tl-item{display:flex;gap:14px;padding-bottom:16px}
+.tl-item:last-child{padding-bottom:0}
+.tl-track{display:flex;flex-direction:column;align-items:center;width:24px;flex-shrink:0}
+.tl-dot{width:12px;height:12px;border-radius:50%;border:2px solid #333;background:#0a0a0a;flex-shrink:0;z-index:1}
+.tl-dot.done{background:#10B981;border-color:#10B981}
+.tl-dot.active{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.tl-line{flex:1;width:2px;background:#1e1e1e;margin:3px 0}.tl-line.done{background:#10B981}
+.tl-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:600}
+.tl-title.done{color:#6B7280}.tl-title.active{color:#10B981}.tl-title.pending{color:#4B5563}
+.tl-desc{font-size:12px;color:#6B7280}
+.doc-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1e1e1e}
+.doc-item:last-child{border-bottom:none}
+.doc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-right:10px}
+.doc-icon.signed{background:rgba(16,185,129,.1);color:#10B981}
+.doc-icon.file{background:rgba(255,255,255,.05);color:#6B7280}
+.doc-name{font-size:13px;font-weight:500}.doc-status{font-size:11px;color:#6B7280}
+.contact-bar{background:#141414;border:1px solid #1e1e1e;border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:10px}
+.contact-bar .text{font-size:13px;color:#9CA3AF}.contact-bar b{color:#fff}
+.contact-bar a{font-size:12px;color:#10B981;text-decoration:none;font-weight:600;padding:6px 14px;border:1px solid rgba(16,185,129,.3);border-radius:6px}
+.footer{text-align:center;color:#333;font-size:11px;margin-top:40px}
+.spin{width:32px;height:32px;border:2.5px solid #222;border-top-color:#10B981;border-radius:50%;animation:sp .8s linear infinite;margin:20px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:560px){.status-bar{flex-direction:column}.stepper{flex-wrap:wrap;gap:6px}.step-line{display:none}.step-label{display:none}.contact-bar{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="accessScreen" class="access">
+  <div class="logo">Jovi<em>lex</em></div>
+  <div class="sub">Client Portal</div>
+  <div class="access-box">
+    <h2>Enter your access code</h2>
+    <p>You received this code in your onboarding email.</p>
+    <input type="text" class="inp" id="codeInput" placeholder="ABC123" maxlength="20" autofocus style="text-align:center;letter-spacing:.15em"/>
+    <button class="btn btn-p" id="codeBtn" onclick="loadProject()">Enter</button>
+    <div class="err" id="codeErr">No project found. Check your onboarding email.</div>
+  </div>
+</div>
+
+<div id="mainView" style="display:none">
+  <div class="hdr">
+    <div class="logo">Jovi<em>lex</em></div>
+    <div class="badge">Client Portal</div>
+  </div>
+  
+  <!-- Stepper - shown during onboarding -->
+  <div id="stepperWrap" style="display:none">
+    <div class="stepper" id="stepper"></div>
+    <div class="step-current" id="stepLabel"></div>
+  </div>
+
+  <!-- Step 1: Confirm -->
+  <div class="panel" id="panelConfirm">
+    <div class="card">
+      <div class="card-title">Review your project details</div>
+      <div class="card-sub">Please confirm that the following details match what we discussed. If anything is incorrect, contact us before confirming.</div>
+      <div id="confirmDetails"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-p btn-sm" onclick="confirmProject()">Confirm details</button>
+    </div>
+  </div>
+
+  <!-- Step 2: NDA -->
+  <div class="panel" id="panelNDA">
+    <div class="card">
+      <div class="card-title">Non-Disclosure Agreement</div>
+      <div class="card-sub">This agreement protects the confidential information shared by both parties.</div>
+      <div class="legal-section"><h3>1. Confidential information</h3><p>Includes all business, technical, financial, and operational information disclosed by either party — written, verbal, or digital.</p></div>
+      <div class="legal-section"><h3>2. Obligations</h3><p>Both parties agree to keep all confidential information private, not disclose to third parties, and use it only for the purposes of the engagement.</p></div>
+      <div class="legal-section"><h3>3. Exclusions</h3><p>Does not apply to publicly available information, independently developed work, or legally required disclosures.</p></div>
+      <div class="legal-section"><h3>4. Duration</h3><p>Effective for the engagement duration and two years after. Trade secret obligations continue indefinitely.</p></div>
+      <div class="legal-section"><h3>5. Return of materials</h3><p>Each party will return or destroy confidential materials upon request after engagement ends.</p></div>
+      <div class="legal-section"><h3>6. Portfolio reference</h3><p>Jovilex may reference the client's name and a general description of the work in its portfolio and marketing. No proprietary details disclosed. Removal available on request.</p></div>
+      <div class="legal-section"><h3>7. Governing law</h3><p>Governed by the laws of the Federal Republic of Nigeria.</p></div>
+      <div id="ndaSigned"></div>
+      <div id="ndaForm">
+        <div class="sig-area">
+          <div class="inp-label">Your full legal name</div>
+          <input class="inp" id="ndaName" placeholder="Type your full name as digital signature"/>
+          <div class="note">By typing your name and clicking sign, you confirm this as your legally binding digital signature.</div>
+          <div class="check-row">
+            <input type="checkbox" id="ndaCheck"/>
+            <label for="ndaCheck">I have read this NDA and agree to its terms.</label>
+          </div>
+          <button class="btn btn-p btn-sm" onclick="signNDA()" style="width:auto">Sign NDA</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-g btn-sm" onclick="goStep(0)">← Back</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Contract -->
+  <div class="panel" id="panelContract">
+    <div class="card">
+      <div class="card-title">Service Agreement</div>
+      <div class="card-sub">This confirms the scope, deliverables, timeline, and terms of the engagement.</div>
+      <div id="contractScope"></div>
+      <div class="legal-section"><h3>1. Scope</h3><p>Jovilex delivers the services described above within the stated timeline. Work outside this scope requires written agreement and may incur additional fees.</p></div>
+      <div class="legal-section"><h3>2. Client responsibilities</h3><p>Provide all materials, access, and approvals in a timely manner. Delays may extend the timeline.</p></div>
+      <div class="legal-section"><h3>3. Revisions</h3><p>One round included. Additional rounds quoted separately. A revision is changes to deliverables, not changes to scope.</p></div>
+      <div class="legal-section"><h3>4. Payment</h3><p id="contractPayTerms">50% before work begins. 50% on delivery. No work begins until deposit is confirmed.</p></div>
+      <div class="legal-section"><h3>5. Intellectual property</h3><p>Upon full payment, all deliverables transfer to the client. Jovilex retains portfolio rights per NDA terms.</p></div>
+      <div class="legal-section"><h3>6. Termination</h3><p>Either party may terminate with 7 days notice. Completed work is non-refundable. Undelivered work is returned.</p></div>
+      <div id="contractSigned"></div>
+      <div id="contractForm">
+        <div class="sig-area">
+          <div class="inp-label">Your full legal name</div>
+          <input class="inp" id="contractName" placeholder="Type your full name as digital signature"/>
+          <div class="note">By signing, you agree to all terms above and confirm the engagement summary is correct.</div>
+          <div class="check-row">
+            <input type="checkbox" id="contractCheck"/>
+            <label for="contractCheck">I have read this Service Agreement and agree to its terms.</label>
+          </div>
+          <button class="btn btn-p btn-sm" onclick="signContract()" style="width:auto">Sign Agreement</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-g btn-sm" onclick="goStep(1)">← Back</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Pay -->
+  <div class="panel" id="panelPay">
+    <div class="card">
+      <div class="card-title">Payment</div>
+      <div class="pay-amount" id="payAmount"></div>
+      <div class="pay-note" id="payNote">Deposit due before work begins</div>
+      <div id="payDone"></div>
+      <div id="payActions">
+        <button class="btn btn-p" id="payBtn" onclick="window.open('mailto:hello@jovilex.com?subject=Payment','_blank')">Contact to Pay</button>
+        <div class="pay-alt">
+          <h4>Bank transfer</h4>
+          <p>Details will be provided on request. Email hello@jovilex.com or contact your project lead. Reference: <span style="color:#10B981" id="payRef"></span></p>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-g btn-sm" onclick="goStep(2)">← Back</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Dashboard -->
+  <div class="panel" id="panelDash">
+    <div class="welcome">
+      <h1 id="dashWelcome"></h1>
+      <div class="sub" id="dashSub"></div>
+    </div>
+    <div class="status-bar">
+      <div class="stat-card"><div class="stat-label">Status</div><div class="stat-val" id="dashStatus"></div></div>
+      <div class="stat-card"><div class="stat-label">Phase</div><div class="stat-val" id="dashPhase" style="color:#fff"></div></div>
+      <div class="stat-card"><div class="stat-label">Delivery</div><div class="stat-val" id="dashDelivery" style="color:#fff"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Project timeline</div>
+      <div id="dashTimeline"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Documents</div>
+      <div id="dashDocs"></div>
+    </div>
+    <div class="contact-bar">
+      <div class="text">Questions? Your project lead is available <b>24 hours</b>.</div>
+      <a href="mailto:hello@jovilex.com">Contact Jovilex</a>
+    </div>
+  </div>
+
+  <div class="footer">Jovilex · jovilex.com · Confidential</div>
+</div>
+</div>
+
+<script>
+const SB_URL='https://xvrykbkancvasfbsjaoy.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cnlrYmthbmN2YXNmYnNqYW95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExODk5NjYsImV4cCI6MjA5Njc2NTk2Nn0.cXLguSsF_p0dnS25HhNq4AjfLkj6rNA2MZye8pAfXsA';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+
+let P=null; // current project
+const STEPS=['Confirm','NDA','Contract','Pay'];
+const PANELS=['panelConfirm','panelNDA','panelContract','panelPay','panelDash'];
+
+// URL code check
+const urlCode=new URLSearchParams(window.location.search).get('code');
+if(urlCode){document.getElementById('codeInput').value=urlCode;loadProject();}
+document.getElementById('codeInput').addEventListener('keydown',e=>{if(e.key==='Enter')loadProject();});
+
+async function loadProject(){
+  const code=document.getElementById('codeInput').value.trim().toUpperCase();
+  if(!code)return;
+  const btn=document.getElementById('codeBtn');
+  btn.disabled=true;btn.textContent='Loading...';
+  const{data,error}=await sb.from('projects').select('*').ilike('access_code',code).single();
+  if(error||!data){
+    document.getElementById('codeErr').style.display='block';
+    btn.disabled=false;btn.textContent='Enter';return;
+  }
+  P=data;
+  document.getElementById('accessScreen').style.display='none';
+  document.getElementById('mainView').style.display='block';
+  if(P.onboarding_complete){showDashboard();}
+  else{showOnboarding();}
+}
+
+function currentStep(){
+  if(!P.step_confirmed)return 0;
+  if(!P.step_nda_signed)return 1;
+  if(!P.step_contract_signed)return 2;
+  if(!P.step_paid)return 3;
+  return 4;
+}
+
+function renderStepper(active){
+  const s=document.getElementById('stepper');
+  s.innerHTML='';
+  STEPS.forEach((label,i)=>{
+    if(i>0){const line=document.createElement('div');line.className='step-line'+(i<=active?' done':'');s.appendChild(line);}
+    const item=document.createElement('div');
+    item.className='step-item'+(i<active?' done':i===active?' active':' locked');
+    item.onclick=()=>{if(i<=active)goStep(i);};
+    const dot=document.createElement('div');
+    dot.className='step-dot'+(i<active?' done':i===active?' active':' locked');
+    dot.textContent=i<active?'✓':String(i+1);
+    const lbl=document.createElement('div');
+    lbl.className='step-label';lbl.textContent=label;
+    item.appendChild(dot);item.appendChild(lbl);s.appendChild(item);
+  });
+  document.getElementById('stepLabel').textContent='Step '+(active+1)+' of 4 — '+STEPS[active];
+}
+
+function showOnboarding(){
+  document.getElementById('stepperWrap').style.display='block';
+  const step=currentStep();
+  if(step>=4){showDashboard();return;}
+  goStep(step);
+}
+
+function goStep(n){
+  const maxStep=currentStep();
+  if(n>maxStep)return;
+  PANELS.forEach(id=>document.getElementById(id).classList.remove('on'));
+  renderStepper(Math.max(n,maxStep===4?3:maxStep));
+  
+  if(n===0){
+    document.getElementById('panelConfirm').classList.add('on');
+    const d=document.getElementById('confirmDetails');
+    d.innerHTML='';
+    const rows=[['Service',P.service],['Deliverables',P.deliverables||'As discussed'],['Timeline',P.timeline||'As discussed'],['Investment',P.price||'As discussed'],['Payment terms',P.payment_terms||'50% upfront, 50% on delivery']];
+    rows.forEach(r=>{d.innerHTML+='<div class="detail-row"><div class="detail-k">'+r[0]+'</div><div class="detail-v">'+r[1]+'</div></div>';});
+    if(P.step_confirmed){document.querySelector('#panelConfirm .btn-p').textContent='✓ Confirmed';document.querySelector('#panelConfirm .btn-p').disabled=true;}
+  }
+  if(n===1){
+    document.getElementById('panelNDA').classList.add('on');
+    if(P.step_nda_signed){
+      document.getElementById('ndaForm').style.display='none';
+      document.getElementById('ndaSigned').innerHTML='<div class="signed-badge"><div class="icon">✓</div><div class="text">NDA Signed</div><div class="detail">Signed by '+P.step_nda_name+' on '+P.step_nda_date+'</div></div>';
+    }else{document.getElementById('ndaForm').style.display='block';document.getElementById('ndaSigned').innerHTML='';}
+  }
+  if(n===2){
+    document.getElementById('panelContract').classList.add('on');
+    const cs=document.getElementById('contractScope');
+    cs.innerHTML='<div style="background:#111;border:1px solid rgba(16,185,129,.15);border-radius:10px;padding:16px;margin-bottom:16px">';
+    cs.innerHTML+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e1e"><span style="color:#6B7280;font-size:13px">Service</span><span style="color:#fff;font-size:13px;font-weight:600">'+P.service+'</span></div>';
+    cs.innerHTML+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e1e"><span style="color:#6B7280;font-size:13px">Deliverables</span><span style="color:#fff;font-size:13px;font-weight:600;max-width:60%;text-align:right">'+(P.deliverables||'As discussed')+'</span></div>';
+    cs.innerHTML+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e1e"><span style="color:#6B7280;font-size:13px">Timeline</span><span style="color:#fff;font-size:13px;font-weight:600">'+(P.timeline||'As discussed')+'</span></div>';
+    cs.innerHTML+='<div style="display:flex;justify-content:space-between;padding:6px 0"><span style="color:#6B7280;font-size:13px">Total fee</span><span style="color:#10B981;font-size:15px;font-weight:700">'+(P.price||'As discussed')+'</span></div>';
+    cs.innerHTML+='</div>';
+    if(P.step_contract_signed){
+      document.getElementById('contractForm').style.display='none';
+      document.getElementById('contractSigned').innerHTML='<div class="signed-badge"><div class="icon">✓</div><div class="text">Contract Signed</div><div class="detail">Signed by '+P.step_contract_name+' on '+P.step_contract_date+'</div></div>';
+    }else{document.getElementById('contractForm').style.display='block';document.getElementById('contractSigned').innerHTML='';}
+  }
+  if(n===3){
+    document.getElementById('panelPay').classList.add('on');
+    const price=P.price||'0';
+    const numPrice=parseFloat(price.replace(/[^0-9.]/g,''))||0;
+    const deposit=Math.round(numPrice*0.5);
+    document.getElementById('payAmount').textContent=price.includes('USD')?'USD '+deposit.toLocaleString():'$'+deposit.toLocaleString();
+    document.getElementById('payRef').textContent=P.access_code;
+    if(P.step_paid){
+      document.getElementById('payActions').style.display='none';
+      document.getElementById('payDone').innerHTML='<div class="signed-badge"><div class="icon">✓</div><div class="text">Payment Received</div><div class="detail">'+P.step_paid_date+'</div></div>';
+    }else{document.getElementById('payActions').style.display='block';document.getElementById('payDone').innerHTML='';}
+  }
+}
+
+async function confirmProject(){
+  await sb.from('projects').update({step_confirmed:true}).eq('id',P.id);
+  P.step_confirmed=true;
+  goStep(1);
+}
+
+async function signNDA(){
+  const name=document.getElementById('ndaName').value.trim();
+  const check=document.getElementById('ndaCheck').checked;
+  if(!name||!check){alert('Please type your name and agree to the terms.');return;}
+  const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  await sb.from('projects').update({step_nda_signed:true,step_nda_name:name,step_nda_date:date}).eq('id',P.id);
+  P.step_nda_signed=true;P.step_nda_name=name;P.step_nda_date=date;
+  goStep(2);
+}
+
+async function signContract(){
+  const name=document.getElementById('contractName').value.trim();
+  const check=document.getElementById('contractCheck').checked;
+  if(!name||!check){alert('Please type your name and agree to the terms.');return;}
+  const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  await sb.from('projects').update({step_contract_signed:true,step_contract_name:name,step_contract_date:date}).eq('id',P.id);
+  P.step_contract_signed=true;P.step_contract_name=name;P.step_contract_date=date;
+  goStep(3);
+}
+
+async function showDashboard(){
+  document.getElementById('stepperWrap').style.display='none';
+  PANELS.forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('panelDash').classList.add('on');
+  
+  const firstName=P.client_name.split(' ')[0];
+  document.getElementById('dashWelcome').textContent='Welcome, '+firstName;
+  document.getElementById('dashSub').textContent=P.service+(P.company?' · '+P.company:'');
+  document.getElementById('dashStatus').textContent=P.status||'In Progress';
+  document.getElementById('dashPhase').textContent=P.phase||'—';
+  document.getElementById('dashDelivery').textContent=P.delivery_date||'TBC';
+
+  // Load milestones
+  const{data:ms}=await sb.from('milestones').select('*').eq('project_id',P.id).order('sort_order');
+  const tl=document.getElementById('dashTimeline');
+  tl.innerHTML='';
+  (ms||[]).forEach((m,i)=>{
+    const isLast=i===(ms||[]).length-1;
+    tl.innerHTML+='<div class="tl-item"><div class="tl-track"><div class="tl-dot '+m.status+'"></div>'+(!isLast?'<div class="tl-line '+(m.status==='done'?'done':'')+'"></div>':'')+'</div><div><div class="tl-title '+m.status+'">'+m.title+'</div>'+(m.description?'<div class="tl-desc">'+m.description+'</div>':'')+'</div></div>';
+  });
+  if(!ms||ms.length===0)tl.innerHTML='<div style="color:#4B5563;font-size:13px">Timeline updates coming soon.</div>';
+
+  // Load documents
+  const{data:docs}=await sb.from('documents').select('*').eq('project_id',P.id).order('sort_order');
+  const dl=document.getElementById('dashDocs');
+  dl.innerHTML='';
+  (docs||[]).forEach(d=>{
+    const icon=d.doc_type==='signed'?'✓':'📄';
+    const cls=d.doc_type==='signed'?'signed':'file';
+    dl.innerHTML+='<div class="doc-item"><div style="display:flex;align-items:center"><div class="doc-icon '+cls+'">'+icon+'</div><div><div class="doc-name">'+d.name+'</div>'+(d.status_text?'<div class="doc-status">'+d.status_text+'</div>':'')+'</div></div></div>';
+  });
+  // Add NDA and Contract as signed docs
+  if(P.step_nda_signed)dl.innerHTML+='<div class="doc-item"><div style="display:flex;align-items:center"><div class="doc-icon signed">✓</div><div><div class="doc-name">Non-Disclosure Agreement</div><div class="doc-status">Signed '+P.step_nda_date+'</div></div></div></div>';
+  if(P.step_contract_signed)dl.innerHTML+='<div class="doc-item"><div style="display:flex;align-items:center"><div class="doc-icon signed">✓</div><div><div class="doc-name">Service Agreement</div><div class="doc-status">Signed '+P.step_contract_date+'</div></div></div></div>';
+  if((!docs||docs.length===0)&&!P.step_nda_signed)dl.innerHTML='<div style="color:#4B5563;font-size:13px">Documents will appear here.</div>';
+}
+</script>
+</body>
+</html>

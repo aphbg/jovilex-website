@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jovilex · Admin</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23111111'/><circle cx='23' cy='7' r='5' fill='%2310B981'/><text x='13' y='25' font-family='Arial' font-weight='900' font-size='22' fill='white' text-anchor='middle'>J</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 80px}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.02em}
+.logo em{color:#10B981;font-style:normal}
+.hdr-l{display:flex;align-items:center;gap:10px}
+.badge{font-size:11px;color:#6B7280;letter-spacing:.08em;text-transform:uppercase;background:#141414;border:1px solid #222;border-radius:6px;padding:5px 10px}
+.btn{padding:10px 16px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-p{background:#10B981;color:#0a0a0a}.btn-p:hover{background:#0EA472}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-g{background:transparent;color:#6B7280;border:1px solid #2a2a2a}.btn-g:hover{color:#fff;border-color:#444}
+.btn-d{background:transparent;color:#DC2626;border:1px solid rgba(220,38,38,.3)}.btn-d:hover{background:rgba(220,38,38,.08)}
+.btn-amber{background:rgba(217,119,6,.1);color:#D97706;border:1px solid rgba(217,119,6,.3)}.btn-amber:hover{background:rgba(217,119,6,.15)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:6px}
+.login{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center}
+.login .logo{font-size:32px;margin-bottom:32px}
+.login-box{background:#141414;border:1px solid #1e1e1e;border-radius:14px;padding:32px;width:100%;max-width:360px}
+.login-box h2{font-family:'Sora',sans-serif;font-size:18px;margin-bottom:16px}
+.inp{width:100%;padding:11px 13px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border-color .15s;margin-bottom:8px}
+.inp:focus{border-color:#10B981}
+.inp-l{display:block;font-size:11px;color:#6B7280;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+textarea.inp{min-height:100px;resize:vertical}
+select.inp{cursor:pointer}
+.card{background:#141414;border:1px solid #1e1e1e;border-radius:12px;padding:18px;margin-bottom:14px}
+.card-h{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card-h .lbl{color:#10B981}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
+.proj{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border:1px solid #1e1e1e;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.proj:hover{border-color:rgba(16,185,129,.3)}
+.proj h3{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;margin-bottom:2px}
+.proj .sub{font-size:12px;color:#6B7280}
+.proj .st{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#10B981;text-align:right}
+.proj .cd{font-size:11px;color:#4B5563;margin-top:2px}
+.proj .onb{font-size:10px;color:#D97706}
+.back{font-size:13px;color:#6B7280;cursor:pointer;margin-bottom:14px;display:inline-block}
+.back:hover{color:#10B981}
+.ms-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1e1e1e}
+.ms-row:last-child{border-bottom:none}
+.ms-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;cursor:pointer;transition:all .15s}
+.ms-dot.done{background:#10B981}.ms-dot.active{border:2px solid #10B981;background:transparent}.ms-dot.pending{border:2px solid #333;background:transparent}
+.ms-t{flex:1;font-size:13px}.ms-t.done{color:#6B7280}.ms-t.active{color:#10B981}.ms-t.pending{color:#4B5563}
+.ms-d{font-size:11px;color:#4B5563}
+.doc-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1e1e1e}
+.doc-row:last-child{border-bottom:none}
+.doc-row .nm{font-size:13px}.doc-row .st{font-size:11px;color:#6B7280}
+.link-box{background:#111;border:1px solid rgba(16,185,129,.15);border-radius:8px;padding:12px;margin-bottom:8px}
+.link-label{font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:#10B981;margin-bottom:4px}
+.link-url{font-size:12px;color:#D1D5DB;word-break:break-all;margin-bottom:4px}
+.link-desc{font-size:11px;color:#4B5563}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:#0a0a0a;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;display:none;z-index:100}
+.spin-sm{display:inline-block;width:14px;height:14px;border:2px solid #222;border-top-color:#10B981;border-radius:50%;animation:sp .8s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+.gen-progress{margin-top:12px}
+.gen-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;color:#6B7280}
+.gen-item.working{color:#10B981}.gen-item.done{color:#4B5563}
+.gen-item .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.gen-item.working .dot{background:#10B981;animation:pulse 1.2s ease infinite}
+.gen-item.done .dot{background:#10B981}
+.gen-item.pending .dot{background:#333}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.mode-card{background:#1a1a1a;border:2px solid #2a2a2a;border-radius:10px;padding:16px;cursor:pointer;text-align:center;transition:all .15s}
+.mode-card:hover{border-color:#3a3a3a}
+.mode-card.sel{border-color:#10B981;background:rgba(16,185,129,.04)}
+.mode-card .icon{font-size:20px;margin-bottom:6px}
+.mode-card .title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
+.mode-card.sel .title{color:#10B981}
+.mode-card .desc{font-size:11px;color:#6B7280;line-height:1.4}
+.onb-status{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.onb-step{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #2a2a2a;color:#6B7280}
+.onb-step.done{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#10B981}
+.onb-step.pending{background:transparent;border-color:#2a2a2a;color:#4B5563}
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- LOGIN -->
+<div id="loginView" class="login">
+<div class="logo">Jovi<em>lex</em></div>
+<div class="login-box">
+<h2>Admin</h2>
+<input type="password" class="inp" id="adminPass" placeholder="Password" autofocus style="text-align:center"/>
+<button class="btn btn-p" style="width:100%;margin-top:4px" onclick="login()">Enter</button>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashView" style="display:none">
+<div class="hdr">
+<div class="hdr-l"><div class="logo">Jovi<em>lex</em></div><div class="badge">Admin</div></div>
+<button class="btn btn-p" onclick="showNew()">+ New Project</button>
+</div>
+<div id="projList"></div>
+</div>
+
+<!-- NEW PROJECT -->
+<div id="newView" style="display:none">
+<div class="hdr"><div class="hdr-l"><div class="logo">Jovi<em>lex</em></div><div class="badge">New Project</div></div></div>
+<span class="back" onclick="showDash()">← Back</span>
+
+<div class="card">
+<div class="card-h"><span class="lbl">Input method</span></div>
+<div class="mode-grid">
+<div class="mode-card" id="modeManual" onclick="setMode('manual')"><div class="icon">✍️</div><div class="title">Fill manually</div><div class="desc">Enter client details step by step</div></div>
+<div class="mode-card" id="modePaste" onclick="setMode('paste')"><div class="icon">🎙️</div><div class="title">Paste call summary</div><div class="desc">AI extracts details from transcript</div></div>
+</div>
+<div id="pasteArea" style="display:none">
+<textarea class="inp" id="callSummary" placeholder="Paste Fireflies, Otter, or any call summary here..." style="min-height:120px"></textarea>
+<button class="btn btn-p btn-sm" id="extractBtn" onclick="extractFromCall()">Extract details</button>
+</div>
+</div>
+
+<div id="newForm" style="display:none">
+<div class="card">
+<div class="card-h"><span class="lbl">Client details</span><span id="autoTag" style="display:none;font-size:10px;color:#10B981;background:rgba(16,185,129,.1);padding:2px 8px;border-radius:4px">AUTO-FILLED</span></div>
+<div class="g2">
+<div><div class="inp-l">Client name *</div><input class="inp" id="nName"/></div>
+<div><div class="inp-l">Company</div><input class="inp" id="nCompany"/></div>
+</div>
+<div class="g2">
+<div><div class="inp-l">Email</div><input class="inp" id="nEmail"/></div>
+<div><div class="inp-l">Access code *</div><input class="inp" id="nCode" style="text-transform:uppercase"/></div>
+</div>
+</div>
+<div class="card">
+<div class="card-h"><span class="lbl">Engagement</span></div>
+<div><div class="inp-l">Service *</div><input class="inp" id="nService"/></div>
+<div><div class="inp-l">Deliverables</div><textarea class="inp" id="nDeliverables" style="min-height:60px"></textarea></div>
+<div class="g3">
+<div><div class="inp-l">Timeline</div><input class="inp" id="nTimeline" placeholder="2 weeks"/></div>
+<div><div class="inp-l">Price</div><input class="inp" id="nPrice" placeholder="USD 15,000"/></div>
+<div><div class="inp-l">Delivery date</div><input class="inp" id="nDelivery" placeholder="July 15, 2026"/></div>
+</div>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn btn-g" onclick="showDash()">Cancel</button>
+<button class="btn btn-p" onclick="createProject()">Create Project</button>
+</div>
+<div id="newResult" style="display:none;margin-top:14px">
+<div class="card" style="border-color:rgba(16,185,129,.3)">
+<div class="card-h"><span class="lbl">Project created</span></div>
+<div class="link-box"><div class="link-label">Portal link</div><div class="link-url" id="newPortalLink"></div></div>
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn btn-p btn-sm" onclick="copyNewLink()">Copy portal link</button>
+<button class="btn btn-g btn-sm" onclick="openNewProject()">Open project →</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- PROJECT DETAIL -->
+<div id="detailView" style="display:none">
+<div class="hdr"><div class="hdr-l"><div class="logo">Jovi<em>lex</em></div><div class="badge" id="detailBadge">Project</div></div>
+<div style="display:flex;gap:6px"><button class="btn btn-g btn-sm" onclick="copyLink()">Copy portal link</button></div>
+</div>
+<span class="back" onclick="showDash()">← Back</span>
+<div id="detailTitle" style="font-family:'Sora',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px"></div>
+<div id="detailSub" style="color:#6B7280;font-size:13px;margin-bottom:16px"></div>
+
+<!-- Onboarding status -->
+<div class="card" id="onbCard">
+<div class="card-h"><span class="lbl">Client onboarding</span></div>
+<div class="onb-status" id="onbStatus"></div>
+<div id="markPaidWrap"></div>
+</div>
+
+<!-- Project info -->
+<div class="card">
+<div class="card-h"><span class="lbl">Project info</span><button class="btn btn-g btn-sm" onclick="saveInfo()">Save</button></div>
+<div class="g3">
+<div><div class="inp-l">Status</div><select class="inp" id="dStatus"><option>Onboarding</option><option>In Progress</option><option>On Hold</option><option>Completed</option><option>Cancelled</option></select></div>
+<div><div class="inp-l">Phase</div><input class="inp" id="dPhase"/></div>
+<div><div class="inp-l">Delivery</div><input class="inp" id="dDelivery"/></div>
+</div>
+</div>
+
+<!-- Generate documents -->
+<div class="card">
+<div class="card-h"><span class="lbl">Generate documents</span></div>
+<div id="genReady"><button class="btn btn-amber" onclick="generateDocs()">Generate 5 DOCX documents</button>
+<div style="font-size:11px;color:#6B7280;margin-top:6px">Uses AI to generate: Brief, Contract, Invoice, Onboarding, Activation</div></div>
+<div id="genProgress" style="display:none" class="gen-progress"></div>
+<div id="genDone" style="display:none"></div>
+</div>
+
+<!-- Client links -->
+<div class="card">
+<div class="card-h"><span class="lbl">Client links</span></div>
+<div id="clientLinks"></div>
+</div>
+
+<!-- Milestones -->
+<div class="card">
+<div class="card-h"><span class="lbl">Milestones</span><button class="btn btn-p btn-sm" onclick="showAddMs()">+ Add</button></div>
+<div id="msList"></div>
+<div id="addMsForm" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #1e1e1e">
+<div class="g2"><div><div class="inp-l">Title *</div><input class="inp" id="msTitle"/></div><div><div class="inp-l">Description</div><input class="inp" id="msDesc"/></div></div>
+<div class="g2"><div><div class="inp-l">Status</div><select class="inp" id="msStatus"><option value="pending">Pending</option><option value="active">Active</option><option value="done">Done</option></select></div><div><div class="inp-l">Date</div><input class="inp" id="msDate"/></div></div>
+<div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-g btn-sm" onclick="hideAddMs()">Cancel</button><button class="btn btn-p btn-sm" onclick="addMs()">Add</button></div>
+</div>
+</div>
+
+<!-- Documents -->
+<div class="card">
+<div class="card-h"><span class="lbl">Documents</span><button class="btn btn-p btn-sm" onclick="showAddDoc()">+ Add</button></div>
+<div id="docList"></div>
+<div id="addDocForm" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #1e1e1e">
+<div class="g2"><div><div class="inp-l">Name *</div><input class="inp" id="docName"/></div><div><div class="inp-l">Status text</div><input class="inp" id="docSt"/></div></div>
+<div class="g2"><div><div class="inp-l">Type</div><select class="inp" id="docType"><option value="file">File</option><option value="signed">Signed</option><option value="pending">Pending</option></select></div><div><div class="inp-l">URL</div><input class="inp" id="docUrl"/></div></div>
+<div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-g btn-sm" onclick="hideAddDoc()">Cancel</button><button class="btn btn-p btn-sm" onclick="addDoc()">Add</button></div>
+</div>
+</div>
+
+<!-- Danger -->
+<div class="card" style="border-color:rgba(220,38,38,.2)">
+<div class="card-h"><span style="color:#DC2626">Danger zone</span></div>
+<button class="btn btn-d btn-sm" onclick="deleteProj()">Delete project</button>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL='https://xvrykbkancvasfbsjaoy.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cnlrYmthbmN2YXNmYnNqYW95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExODk5NjYsImV4cCI6MjA5Njc2NTk2Nn0.cXLguSsF_p0dnS25HhNq4AjfLkj6rNA2MZye8pAfXsA';
+const ADMIN_PASS='jovilex2026';
+const API='/api/intake';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let CP=null,allProj=[],genDocs={},newProjId=null;
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2500);}
+function enc(s){return encodeURIComponent(s||'');}
+
+// LOGIN
+document.getElementById('adminPass').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+function login(){if(document.getElementById('adminPass').value===ADMIN_PASS){document.getElementById('loginView').style.display='none';document.getElementById('dashView').style.display='block';loadProjects();}else toast('Wrong password');}
+
+// VIEWS
+function showView(id){['dashView','newView','detailView'].forEach(v=>document.getElementById(v).style.display='none');document.getElementById(id).style.display='block';}
+function showDash(){showView('dashView');loadProjects();}
+
+// DASHBOARD
+async function loadProjects(){
+  const{data}=await sb.from('projects').select('*').order('created_at',{ascending:false});
+  allProj=data||[];
+  const el=document.getElementById('projList');
+  if(!allProj.length){el.innerHTML='<div style="color:#4B5563;text-align:center;padding:40px">No projects yet.</div>';return;}
+  el.innerHTML=allProj.map(p=>{
+    const onbDone=p.onboarding_complete;
+    const steps=[p.step_confirmed,p.step_nda_signed,p.step_contract_signed,p.step_paid].filter(Boolean).length;
+    return `<div class="proj" onclick="openProj('${p.id}')"><div><h3>${p.client_name}${p.company?' — '+p.company:''}</h3><div class="sub">${p.service}</div></div><div><div class="st">${p.status}</div><div class="cd">${p.access_code}</div>${!onbDone?'<div class="onb">Onboarding '+steps+'/4</div>':''}</div></div>`;
+  }).join('');
+}
+
+// NEW PROJECT
+let newMode=null;
+function showNew(){
+  showView('newView');newMode=null;
+  document.getElementById('newForm').style.display='none';
+  document.getElementById('pasteArea').style.display='none';
+  document.getElementById('newResult').style.display='none';
+  document.getElementById('autoTag').style.display='none';
+  ['nName','nCompany','nEmail','nCode','nService','nDeliverables','nTimeline','nPrice','nDelivery'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('sel'));
+}
+function setMode(m){
+  newMode=m;
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById(m==='paste'?'modePaste':'modeManual').classList.add('sel');
+  document.getElementById('pasteArea').style.display=m==='paste'?'block':'none';
+  if(m==='manual'){document.getElementById('newForm').style.display='block';document.getElementById('autoTag').style.display='none';}
+}
+async function extractFromCall(){
+  const txt=document.getElementById('callSummary').value.trim();
+  if(!txt)return;
+  const btn=document.getElementById('extractBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin-sm"></span>Extracting...';
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:'Extract client info from call transcript. Return ONLY valid JSON: {name,company,email,phone,service,deliverables,timeline,price}. Empty string if not found.',messages:[{role:'user',content:'Extract:\n'+txt}]})});
+    const d=await r.json();
+    const raw=(d.content||[]).map(b=>b.text||'').join('');
+    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    if(parsed.name)document.getElementById('nName').value=parsed.name;
+    if(parsed.company)document.getElementById('nCompany').value=parsed.company;
+    if(parsed.email)document.getElementById('nEmail').value=parsed.email;
+    if(parsed.service)document.getElementById('nService').value=parsed.service;
+    if(parsed.deliverables)document.getElementById('nDeliverables').value=parsed.deliverables;
+    if(parsed.timeline)document.getElementById('nTimeline').value=parsed.timeline;
+    if(parsed.price)document.getElementById('nPrice').value=parsed.price;
+    document.getElementById('newForm').style.display='block';
+    document.getElementById('autoTag').style.display='inline';
+    toast('Details extracted');
+  }catch(e){toast('Extraction failed — fill manually');}
+  btn.disabled=false;btn.textContent='Extract details';
+}
+async function createProject(){
+  const name=document.getElementById('nName').value.trim();
+  const code=document.getElementById('nCode').value.trim().toUpperCase();
+  const service=document.getElementById('nService').value.trim();
+  if(!name||!code||!service){toast('Fill required fields');return;}
+  const{data,error}=await sb.from('projects').insert({
+    client_name:name,company:document.getElementById('nCompany').value.trim(),
+    email:document.getElementById('nEmail').value.trim(),access_code:code,service,
+    deliverables:document.getElementById('nDeliverables').value.trim(),
+    timeline:document.getElementById('nTimeline').value.trim(),
+    price:document.getElementById('nPrice').value.trim(),
+    delivery_date:document.getElementById('nDelivery').value.trim(),
+    status:'Onboarding',phase:'Onboarding'
+  }).select().single();
+  if(error){toast('Error: '+error.message);return;}
+  newProjId=data.id;
+  document.getElementById('newPortalLink').textContent='https://jovilex.com/portal?code='+code;
+  document.getElementById('newResult').style.display='block';
+  toast('Project created');
+}
+function copyNewLink(){navigator.clipboard.writeText(document.getElementById('newPortalLink').textContent);toast('Copied');}
+function openNewProject(){if(newProjId){allProj=[{id:newProjId}];openProj(newProjId);}}
+
+// PROJECT DETAIL
+async function openProj(id){
+  const{data:p}=await sb.from('projects').select('*').eq('id',id).single();
+  if(!p)return;
+  CP=p;showView('detailView');
+  document.getElementById('detailTitle').textContent=p.client_name+(p.company?' — '+p.company:'');
+  document.getElementById('detailSub').textContent=p.service;
+  document.getElementById('detailBadge').textContent=p.access_code;
+  document.getElementById('dStatus').value=p.status||'Onboarding';
+  document.getElementById('dPhase').value=p.phase||'';
+  document.getElementById('dDelivery').value=p.delivery_date||'';
+  renderOnboarding();renderLinks();loadMs();loadDocs();
+  document.getElementById('genReady').style.display='block';
+  document.getElementById('genProgress').style.display='none';
+  document.getElementById('genDone').style.display='none';
+  genDocs={};
+}
+
+// ONBOARDING STATUS
+function renderOnboarding(){
+  const steps=[{k:'step_confirmed',l:'Confirmed'},{k:'step_nda_signed',l:'NDA'},{k:'step_contract_signed',l:'Contract'},{k:'step_paid',l:'Paid'}];
+  const el=document.getElementById('onbStatus');
+  el.innerHTML=steps.map(s=>'<div class="onb-step '+(CP[s.k]?'done':'pending')+'">'+(CP[s.k]?'✓ ':'')+s.l+'</div>').join('');
+  const wrap=document.getElementById('markPaidWrap');
+  if(!CP.step_paid&&CP.step_contract_signed){
+    wrap.innerHTML='<button class="btn btn-amber btn-sm" onclick="markPaid()">Mark payment received</button><div style="font-size:11px;color:#6B7280;margin-top:4px">This unlocks the client\'s dashboard</div>';
+  }else if(CP.onboarding_complete){
+    wrap.innerHTML='<div style="font-size:12px;color:#10B981;margin-top:4px">✓ Onboarding complete — dashboard unlocked</div>';
+  }else{wrap.innerHTML='';}
+}
+async function markPaid(){
+  const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  await sb.from('projects').update({step_paid:true,step_paid_date:date,onboarding_complete:true,status:'In Progress',phase:'Phase 1'}).eq('id',CP.id);
+  CP.step_paid=true;CP.step_paid_date=date;CP.onboarding_complete=true;CP.status='In Progress';CP.phase='Phase 1';
+  document.getElementById('dStatus').value='In Progress';
+  document.getElementById('dPhase').value='Phase 1';
+  renderOnboarding();toast('Payment marked — dashboard unlocked');
+}
+
+// LINKS
+function renderLinks(){
+  const el=document.getElementById('clientLinks');
+  const c=CP;
+  const links=[
+    {l:'Portal',u:'https://jovilex.com/portal?code='+c.access_code,d:'Client dashboard — send this in the onboarding message'},
+    {l:'Asset Collection',u:'https://jovilex.com/collect',d:'Send before the audit — collects business assets'},
+  ];
+  el.innerHTML=links.map(lk=>'<div class="link-box"><div class="link-label">'+lk.l+'</div><div class="link-url">'+lk.u+'</div><div class="link-desc">'+lk.d+'</div><button class="btn btn-g btn-sm" style="margin-top:4px" onclick="navigator.clipboard.writeText(\''+lk.u+'\');toast(\'Copied\')">Copy</button></div>').join('');
+}
+
+// PROJECT INFO
+async function saveInfo(){
+  await sb.from('projects').update({status:document.getElementById('dStatus').value,phase:document.getElementById('dPhase').value,delivery_date:document.getElementById('dDelivery').value}).eq('id',CP.id);
+  CP.status=document.getElementById('dStatus').value;toast('Saved');
+}
+
+// GENERATE DOCUMENTS
+const DOC_NAMES=['Brief','Contract','Invoice','Onboarding','Activation'];
+const DOC_PROMPTS=[
+  ['Generate a professional internal client brief for Jovilex. Plain text. Use === SECTION === dividers.','Brief:\n{ctx}\n\nSections: CLIENT DETAILS|THE PROBLEM|SUCCESS LOOKS LIKE|SCOPE AGREED|DELIVERABLES|TIMELINE|COMMERCIALS|NEXT STEP'],
+  ['Generate a professional Scope of Work & Services Agreement for Jovilex. Plain text.','Contract:\n{ctx}\n\nSections: PARTIES|SCOPE|DELIVERABLES|TIMELINE|PRICE & PAYMENT|REVISIONS|IP OWNERSHIP|CANCELLATION|SIGNATURES'],
+  ['Generate a professional invoice. Plain text. From: Jovilex|hello@jovilex.com|jovilex.com.','Invoice:\n{ctx}\n\nINV-'+CP?.access_code+', line items, total, 50/50 payment terms.'],
+  ['Generate a warm client onboarding welcome for Jovilex. Confident, warm, direct. Sign off as Jovilex.','Onboarding:\n{ctx}\n\nWarm opening, what we understood, engagement details, next 24hrs, what we need, hello@jovilex.com open 24hrs.'],
+  ['Generate a Jovilex Project Activation Document — internal build reference. Plain text. Use === SECTION === dividers.','Activation:\n{ctx}\n\n01 CLIENT & ENGAGEMENT\n02 THE PROBLEM\n03 BUILD PHASES\n04 ASSETS REQUIRED\n05 HANDOFF CHECKLIST\n06 CLAUDE BUILD CONTEXT']
+];
+async function generateDocs(){
+  const c=CP;
+  const ctx='Client:'+c.client_name+'|Co:'+(c.company||'N/A')+'|Email:'+(c.email||'N/A')+'|Service:'+c.service+'|Deliverables:'+(c.deliverables||'TBC')+'|Timeline:'+(c.timeline||'TBC')+'|Price:'+(c.price||'TBC')+'|Delivery:'+(c.delivery_date||'TBC');
+  document.getElementById('genReady').style.display='none';
+  const prog=document.getElementById('genProgress');
+  prog.style.display='block';
+  prog.innerHTML=DOC_NAMES.map(n=>'<div class="gen-item pending" id="gen-'+n+'"><div class="dot"></div>'+n+'</div>').join('');
+  genDocs={};
+  for(let i=0;i<DOC_NAMES.length;i++){
+    const name=DOC_NAMES[i];
+    document.getElementById('gen-'+name).className='gen-item working';
+    try{
+      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:DOC_PROMPTS[i][0],messages:[{role:'user',content:DOC_PROMPTS[i][1].replace('{ctx}',ctx)}]})});
+      const d=await r.json();
+      genDocs[name]=(d.content||[]).map(b=>b.text||'').join('');
+      document.getElementById('gen-'+name).className='gen-item done';
+      document.getElementById('gen-'+name).innerHTML='<div class="dot"></div>✓ '+name;
+    }catch(e){
+      document.getElementById('gen-'+name).className='gen-item done';
+      document.getElementById('gen-'+name).innerHTML='<div class="dot"></div>✗ '+name+' failed';
+    }
+  }
+  const done=document.getElementById('genDone');
+  done.style.display='block';
+  done.innerHTML='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">'+DOC_NAMES.map(n=>genDocs[n]?'<button class="btn btn-g btn-sm" onclick="downloadDoc(\''+n+'\')">↓ '+n+'.docx</button>':'').join('')+'<button class="btn btn-p btn-sm" onclick="downloadAllDocs()">↓ All .docx</button></div>';
+  toast('5 documents generated');
+}
+let docxLoaded=false;
+function loadDocxLib(){return new Promise((res,rej)=>{if(docxLoaded&&window.docx){res();return;}const s=document.createElement('script');s.src='https://unpkg.com/docx@8.5.0/build/index.umd.js';s.onload=()=>{docxLoaded=true;res();};s.onerror=()=>rej();document.head.appendChild(s);});}
+
+function buildDocx(title,text){
+  const D=window.docx;const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const ch=[];
+  ch.push(new D.Paragraph({spacing:{after:40},children:[new D.TextRun({text:'Jovi',font:'Arial',size:40,bold:true,color:'111111'}),new D.TextRun({text:'lex',font:'Arial',size:40,bold:true,color:'10B981'})]}));
+  ch.push(new D.Paragraph({spacing:{after:20},children:[new D.TextRun({text:'Global Digital Services & Business Architecture',font:'Arial',size:16,color:'6B7280'})]}));
+  ch.push(new D.Paragraph({border:{bottom:{style:D.BorderStyle.SINGLE,size:6,color:'10B981',space:1}},spacing:{after:200},children:[new D.TextRun({text:'',size:2})]}));
+  ch.push(new D.Paragraph({spacing:{after:60},children:[new D.TextRun({text:title,font:'Arial',size:32,bold:true,color:'111111'})]}));
+  ch.push(new D.Paragraph({spacing:{after:20},children:[new D.TextRun({text:'Client: ',font:'Arial',size:20,color:'6B7280'}),new D.TextRun({text:CP.client_name+(CP.company?' — '+CP.company:''),font:'Arial',size:20,bold:true,color:'111111'})]}));
+  ch.push(new D.Paragraph({spacing:{after:200},children:[new D.TextRun({text:'Date: '+date,font:'Arial',size:20,color:'6B7280'})]}));
+  (text||'').split('\n').forEach(line=>{
+    const tr=line.trim();
+    if(!tr){ch.push(new D.Paragraph({spacing:{after:80},children:[new D.TextRun({text:'',size:20})]}));return;}
+    let isH=false;
+    let cleaned=tr;
+    if(tr.match(/^===+\s*(.+?)\s*===+$/)){cleaned=tr.replace(/^===+\s*|\s*===+$/g,'').trim();isH=true;}
+    else if(tr.match(/^[A-Z\s&\-:]{4,}$/)&&tr.length<80)isH=true;
+    else if(tr.match(/^\d+[\.\)]\s+[A-Z]/)&&tr.length<80)isH=true;
+    if(isH)ch.push(new D.Paragraph({spacing:{before:200,after:80},border:{bottom:{style:D.BorderStyle.SINGLE,size:2,color:'E5E7EB',space:2}},children:[new D.TextRun({text:cleaned,font:'Arial',size:22,bold:true,color:'111111'})]}));
+    else ch.push(new D.Paragraph({spacing:{after:60},children:[new D.TextRun({text:tr,font:'Arial',size:20,color:'1F2937'})]}));
+  });
+  ch.push(new D.Paragraph({border:{top:{style:D.BorderStyle.SINGLE,size:2,color:'E5E7EB'}},spacing:{before:300,after:60},children:[new D.TextRun({text:'',size:2})]}));
+  ch.push(new D.Paragraph({alignment:D.AlignmentType.CENTER,children:[new D.TextRun({text:'Jovilex · jovilex.com · hello@jovilex.com · Confidential',font:'Arial',size:16,color:'6B7280'})]}));
+  return new D.Document({sections:[{properties:{page:{size:{width:12240,height:15840},margin:{top:1200,right:1200,bottom:1200,left:1200}}},children:ch}]});
+}
+async function downloadDoc(name){
+  await loadDocxLib();
+  const doc=buildDocx(name,genDocs[name]);
+  const blob=await window.docx.Packer.toBlob(doc);
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='Jovilex_'+name+'_'+CP.client_name.replace(/\s+/g,'_')+'.docx';a.click();URL.revokeObjectURL(url);
+}
+async function downloadAllDocs(){
+  await loadDocxLib();
+  for(const name of DOC_NAMES){
+    if(!genDocs[name])continue;
+    const doc=buildDocx(name,genDocs[name]);
+    const blob=await window.docx.Packer.toBlob(doc);
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='Jovilex_'+name+'_'+CP.client_name.replace(/\s+/g,'_')+'.docx';a.click();URL.revokeObjectURL(url);
+    await new Promise(r=>setTimeout(r,600));
+  }
+  toast('All documents downloaded');
+}
+
+// MILESTONES
+async function loadMs(){
+  const{data}=await sb.from('milestones').select('*').eq('project_id',CP.id).order('sort_order');
+  const el=document.getElementById('msList');
+  if(!data||!data.length){el.innerHTML='<div style="color:#4B5563;font-size:12px">No milestones.</div>';return;}
+  el.innerHTML=data.map(m=>'<div class="ms-row"><div class="ms-dot '+m.status+'" onclick="cycleMs(\''+m.id+'\',\''+m.status+'\')" title="Click to cycle"></div><div class="ms-t '+m.status+'">'+m.title+(m.description?' <span style="color:#4B5563;font-weight:400">— '+m.description+'</span>':'')+'</div><div class="ms-d">'+(m.date_label||'')+'</div></div>').join('');
+}
+async function cycleMs(id,cur){
+  const next=cur==='pending'?'active':cur==='active'?'done':'pending';
+  await sb.from('milestones').update({status:next}).eq('id',id);loadMs();toast(next);
+}
+function showAddMs(){document.getElementById('addMsForm').style.display='block';['msTitle','msDesc','msDate'].forEach(i=>document.getElementById(i).value='');}
+function hideAddMs(){document.getElementById('addMsForm').style.display='none';}
+async function addMs(){
+  const t=document.getElementById('msTitle').value.trim();if(!t){toast('Title required');return;}
+  const{data:ex}=await sb.from('milestones').select('sort_order').eq('project_id',CP.id).order('sort_order',{ascending:false}).limit(1);
+  await sb.from('milestones').insert({project_id:CP.id,title:t,status:document.getElementById('msStatus').value,description:document.getElementById('msDesc').value.trim(),date_label:document.getElementById('msDate').value.trim(),sort_order:(ex&&ex[0])?ex[0].sort_order+1:1});
+  hideAddMs();loadMs();toast('Added');
+}
+
+// DOCUMENTS
+async function loadDocs(){
+  const{data}=await sb.from('documents').select('*').eq('project_id',CP.id).order('sort_order');
+  const el=document.getElementById('docList');
+  if(!data||!data.length){el.innerHTML='<div style="color:#4B5563;font-size:12px">No documents.</div>';return;}
+  el.innerHTML=data.map(d=>'<div class="doc-row"><div><div class="nm">'+d.name+'</div><div class="st">'+(d.status_text||d.doc_type)+'</div></div><button class="btn btn-g btn-sm" onclick="cycleDoc(\''+d.id+'\',\''+d.doc_type+'\')">'+d.doc_type+'</button></div>').join('');
+}
+async function cycleDoc(id,cur){
+  const next=cur==='file'?'pending':cur==='pending'?'signed':'file';
+  await sb.from('documents').update({doc_type:next}).eq('id',id);loadDocs();toast(next);
+}
+function showAddDoc(){document.getElementById('addDocForm').style.display='block';['docName','docSt','docUrl'].forEach(i=>document.getElementById(i).value='');}
+function hideAddDoc(){document.getElementById('addDocForm').style.display='none';}
+async function addDoc(){
+  const n=document.getElementById('docName').value.trim();if(!n){toast('Name required');return;}
+  const{data:ex}=await sb.from('documents').select('sort_order').eq('project_id',CP.id).order('sort_order',{ascending:false}).limit(1);
+  await sb.from('documents').insert({project_id:CP.id,name:n,doc_type:document.getElementById('docType').value,url:document.getElementById('docUrl').value.trim()||null,status_text:document.getElementById('docSt').value.trim(),sort_order:(ex&&ex[0])?ex[0].sort_order+1:1});
+  hideAddDoc();loadDocs();toast('Added');
+}
+
+// DELETE
+async function deleteProj(){
+  if(!confirm('Delete this project permanently?'))return;
+  await sb.from('milestones').delete().eq('project_id',CP.id);
+  await sb.from('documents').delete().eq('project_id',CP.id);
+  await sb.from('projects').delete().eq('id',CP.id);
+  toast('Deleted');showDash();
+}
+
+// COPY PORTAL LINK
+function copyLink(){navigator.clipboard.writeText('https://jovilex.com/portal?code='+CP.access_code);toast('Portal link copied');}
+</script>
+</body>
+</html>
