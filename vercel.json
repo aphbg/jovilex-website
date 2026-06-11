@@ -1,5 +1,10 @@
 {
   "rewrites": [
-    { "source": "/intake", "destination": "/intake.html" }
+    { "source": "/intake", "destination": "/intake.html" },
+    { "source": "/links", "destination": "/links.html" },
+    { "source": "/collect", "destination": "/collect.html" },
+    { "source": "/nda", "destination": "/nda.html" },
+    { "source": "/sign", "destination": "/sign.html" },
+    { "source": "/pay", "destination": "/pay.html" }
   ]
 }
