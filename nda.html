@@ -40,6 +40,15 @@ h1{font-family:'Sora',sans-serif;font-weight:700;font-size:28px;margin-bottom:8p
 .success .check{width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px}
 .footer{text-align:center;color:#4B5563;font-size:12px;margin-top:48px;letter-spacing:.04em}
 .date{color:#6B7280;font-size:13px;margin-bottom:20px}
+.tier-card{background:#1A1A1A;border:2px solid rgba(255,255,255,.06);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .25s}
+.tier-card:hover{border-color:rgba(255,255,255,.15)}
+.tier-card.selected{border-color:#10B981;background:rgba(16,185,129,.04)}
+.tier-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.tier-dot{width:16px;height:16px;border-radius:50%;border:2px solid #333;background:#0d0d0d;flex-shrink:0;transition:all .2s}
+.tier-card.selected .tier-dot{border-color:#10B981;background:#10B981}
+.tier-name{font-family:'Sora',sans-serif;font-weight:600;font-size:15px;color:#D1D5DB}
+.tier-card.selected .tier-name{color:#10B981}
+.tier-desc{font-size:13px;color:#6B7280;line-height:1.6;padding-left:26px}
 </style>
 </head>
 <body>
@@ -80,7 +89,11 @@ h1{font-family:'Sora',sans-serif;font-weight:700;font-size:28px;margin-bottom:8p
       <p>Upon termination of the engagement, each party will return or destroy all confidential materials belonging to the other party upon request.</p>
     </div>
     <div class="section">
-      <h3>6. Governing Law</h3>
+      <h3>6. Portfolio Reference</h3>
+      <p>Both parties agree that Jovilex may reference the client's name and a general description of the work delivered in its portfolio, website, case studies, and marketing materials. No proprietary details, source code, financial information, or internal processes will be disclosed. The client may request removal of any specific reference at any time by contacting hello@jovilex.com.</p>
+    </div>
+    <div class="section">
+      <h3>7. Governing Law</h3>
       <p>This agreement is governed by the laws of the Federal Republic of Nigeria.</p>
     </div>
 
@@ -137,7 +150,7 @@ document.getElementById('ndaForm').addEventListener('submit',async(e)=>{
     fd.append('Title',title);
     fd.append('Email',email);
     fd.append('Signed_At',ts);
-    fd.append('Agreement','Mutual NDA — Full terms accepted');
+    fd.append('Agreement','Mutual NDA with standard portfolio reference — Full terms accepted');
     fd.append('replyto',email);
     fd.append('ccemail',email);
     fd.append('autoresponse','Your signed Non-Disclosure Agreement with Jovilex has been recorded. Signed by: '+name+' on '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})+'. Both parties are now bound by the terms agreed. If you have any questions, contact hello@jovilex.com. — Jovilex');
