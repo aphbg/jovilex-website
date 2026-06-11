@@ -5,6 +5,8 @@
     { "source": "/collect", "destination": "/collect.html" },
     { "source": "/nda", "destination": "/nda.html" },
     { "source": "/sign", "destination": "/sign.html" },
-    { "source": "/pay", "destination": "/pay.html" }
+    { "source": "/pay", "destination": "/pay.html" },
+    { "source": "/portal", "destination": "/portal.html" },
+    { "source": "/admin", "destination": "/admin.html" }
   ]
 }
