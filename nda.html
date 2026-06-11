@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jovilex · Non-Disclosure Agreement</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:40px 24px 80px}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em;margin-bottom:4px}
+.logo em{color:#10B981;font-style:normal}
+.sub{color:#6B7280;font-size:13px;letter-spacing:.05em;margin-bottom:40px}
+h1{font-family:'Sora',sans-serif;font-weight:700;font-size:28px;margin-bottom:8px}
+.intro{color:#9CA3AF;font-size:15px;line-height:1.7;margin-bottom:32px}
+.bar{width:48px;height:3px;background:#10B981;border-radius:2px;margin-bottom:32px}
+.parties{background:#1A1A1A;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:20px;margin-bottom:28px}
+.parties .row{display:flex;justify-content:space-between;margin-bottom:8px}
+.parties .label{color:#6B7280;font-size:13px}
+.parties .val{color:#D1D5DB;font-size:14px;font-weight:500}
+.section{margin-bottom:24px}
+.section h3{font-family:'Sora',sans-serif;font-weight:600;font-size:15px;color:#10B981;margin-bottom:8px}
+.section p{color:#B0B5BF;font-size:14px;line-height:1.8}
+.sig-area{background:#111;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;margin-top:32px}
+.sig-area label{display:block;font-size:14px;color:#D1D5DB;margin-bottom:6px;font-weight:500}
+.sig-area input{width:100%;padding:14px 16px;background:#1A1A1A;border:1px solid rgba(255,255,255,.08);border-radius:10px;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;outline:none;transition:border-color .2s;margin-bottom:16px}
+.sig-area input:focus{border-color:#10B981}
+.sig-area .note{color:#6B7280;font-size:12px;margin-bottom:16px;line-height:1.6}
+.check-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px}
+.check-row input[type=checkbox]{margin-top:4px;accent-color:#10B981;width:18px;height:18px;flex-shrink:0}
+.check-row label{color:#9CA3AF;font-size:13px;line-height:1.6;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:16px;background:#10B981;color:#111;font-family:'Sora',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#0EA472;transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.success{display:none;text-align:center;padding:60px 20px}
+.success h2{font-family:'Sora',sans-serif;font-size:24px;margin-bottom:12px}
+.success p{color:#9CA3AF;font-size:15px;line-height:1.7}
+.success .check{width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px}
+.footer{text-align:center;color:#4B5563;font-size:12px;margin-top:48px;letter-spacing:.04em}
+.date{color:#6B7280;font-size:13px;margin-bottom:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Jovi<em>lex</em></div>
+  <div class="sub">Non-Disclosure Agreement</div>
+
+  <div id="formView">
+    <h1>Mutual Non-Disclosure Agreement</h1>
+    <p class="date" id="ndaDate"></p>
+    <div class="bar"></div>
+
+    <div class="parties">
+      <div class="row"><span class="label">Between</span><span class="val">Jovilex Premium Services Limited ("Jovilex")</span></div>
+      <div class="row"><span class="label">And</span><span class="val" id="clientParty">—</span></div>
+    </div>
+
+    <p class="intro">This agreement protects the confidential information shared by both parties during and after the engagement. Both parties agree to the following terms:</p>
+
+    <div class="section">
+      <h3>1. Definition of Confidential Information</h3>
+      <p>Confidential information includes all business, technical, financial, and operational information disclosed by either party during the engagement — whether written, verbal, or digital. This includes but is not limited to: business plans, strategies, pricing, customer data, source code, designs, trade secrets, internal documents, and any information marked or reasonably understood to be confidential.</p>
+    </div>
+    <div class="section">
+      <h3>2. Obligations</h3>
+      <p>Both parties agree to: keep all confidential information strictly private; not disclose it to any third party without prior written consent; use it only for the purposes of the agreed engagement; and protect it with the same care used for their own confidential information.</p>
+    </div>
+    <div class="section">
+      <h3>3. Exclusions</h3>
+      <p>This agreement does not apply to information that: was publicly available before disclosure; becomes publicly available through no fault of the receiving party; was independently developed without reference to confidential information; or is required to be disclosed by law.</p>
+    </div>
+    <div class="section">
+      <h3>4. Duration</h3>
+      <p>This agreement remains in effect for the duration of the engagement and for two (2) years after its conclusion. Obligations regarding trade secrets continue indefinitely.</p>
+    </div>
+    <div class="section">
+      <h3>5. Return of Materials</h3>
+      <p>Upon termination of the engagement, each party will return or destroy all confidential materials belonging to the other party upon request.</p>
+    </div>
+    <div class="section">
+      <h3>6. Governing Law</h3>
+      <p>This agreement is governed by the laws of the Federal Republic of Nigeria.</p>
+    </div>
+
+    <form id="ndaForm">
+      <div class="sig-area">
+        <label>Your full legal name</label>
+        <input type="text" id="sigName" placeholder="Type your full name as your digital signature" required/>
+        <label>Your title / role</label>
+        <input type="text" id="sigTitle" placeholder="e.g. Founder, CEO, Managing Director"/>
+        <label>Email address</label>
+        <input type="email" id="sigEmail" placeholder="you@company.com" required/>
+        <div class="note">By typing your name and submitting, you confirm that this constitutes your legally binding digital signature and that you have read and agree to all terms above.</div>
+        <div class="check-row">
+          <input type="checkbox" id="agreeCheck" required/>
+          <label for="agreeCheck">I have read this Non-Disclosure Agreement and agree to its terms on behalf of myself and my organisation.</label>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Sign Agreement</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="success" id="successView">
+    <div class="check">✓</div>
+    <h2>Agreement signed.</h2>
+    <p>Your signed NDA has been recorded and sent to both parties. You will receive a confirmation copy at your email address.</p>
+    <p style="margin-top:16px;color:#6B7280;font-size:13px" id="sigRecord"></p>
+  </div>
+
+  <div class="footer">Jovilex · jovilex.com · Confidential</div>
+</div>
+<script>
+const params=new URLSearchParams(window.location.search);
+const client=params.get('client')||'[Client Name]';
+const company=params.get('company')||'';
+const display=company?`${client} — ${company}`:client;
+document.getElementById('clientParty').textContent=display;
+document.getElementById('ndaDate').textContent=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+document.getElementById('ndaForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Signing...';
+  const name=document.getElementById('sigName').value;
+  const title=document.getElementById('sigTitle').value;
+  const email=document.getElementById('sigEmail').value;
+  const ts=new Date().toISOString();
+  try{
+    const fd=new FormData();
+    fd.append('access_key','e699c895-f30a-4e8f-91b3-66bf4cd37b59');
+    fd.append('subject','Jovilex NDA Signed — '+display);
+    fd.append('from_name','Jovilex NDA');
+    fd.append('Client',display);
+    fd.append('Signed_By',name);
+    fd.append('Title',title);
+    fd.append('Email',email);
+    fd.append('Signed_At',ts);
+    fd.append('Agreement','Mutual NDA — Full terms accepted');
+    fd.append('replyto',email);
+    fd.append('ccemail',email);
+    fd.append('autoresponse','Your signed Non-Disclosure Agreement with Jovilex has been recorded. Signed by: '+name+' on '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})+'. Both parties are now bound by the terms agreed. If you have any questions, contact hello@jovilex.com. — Jovilex');
+    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+    const d=await r.json();
+    if(d.success){
+      document.getElementById('formView').style.display='none';
+      document.getElementById('successView').style.display='block';
+      document.getElementById('sigRecord').textContent=`Signed by ${name} on ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} at ${new Date().toLocaleTimeString('en-GB')}`;
+      window.scrollTo(0,0);
+    }else{btn.disabled=false;btn.textContent='Sign Agreement';alert('Error. Please try again.');}
+  }catch(err){btn.disabled=false;btn.textContent='Sign Agreement';alert('Connection error. Please try again.');}
+});
+</script>
+</body>
+</html>

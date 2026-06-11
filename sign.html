@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jovilex · Service Agreement</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:40px 24px 80px}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em;margin-bottom:4px}
+.logo em{color:#10B981;font-style:normal}
+.sub{color:#6B7280;font-size:13px;letter-spacing:.05em;margin-bottom:40px}
+h1{font-family:'Sora',sans-serif;font-weight:700;font-size:28px;margin-bottom:8px}
+.date{color:#6B7280;font-size:13px;margin-bottom:20px}
+.bar{width:48px;height:3px;background:#10B981;border-radius:2px;margin-bottom:32px}
+.parties{background:#1A1A1A;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:20px;margin-bottom:28px}
+.parties .row{display:flex;justify-content:space-between;margin-bottom:8px}
+.parties .label{color:#6B7280;font-size:13px}
+.parties .val{color:#D1D5DB;font-size:14px;font-weight:500}
+.scope-box{background:#111;border:1px solid rgba(16,185,129,.15);border-radius:10px;padding:24px;margin-bottom:28px}
+.scope-box h3{font-family:'Sora',sans-serif;font-weight:600;font-size:15px;color:#10B981;margin-bottom:12px}
+.scope-box .item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.scope-box .item:last-child{border-bottom:none}
+.scope-box .item .k{color:#D1D5DB;font-size:14px}
+.scope-box .item .v{color:#fff;font-size:14px;font-weight:600}
+.section{margin-bottom:20px}
+.section h3{font-family:'Sora',sans-serif;font-weight:600;font-size:15px;color:#10B981;margin-bottom:8px}
+.section p{color:#B0B5BF;font-size:14px;line-height:1.8}
+.sig-area{background:#111;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;margin-top:32px}
+.sig-area label{display:block;font-size:14px;color:#D1D5DB;margin-bottom:6px;font-weight:500}
+.sig-area input{width:100%;padding:14px 16px;background:#1A1A1A;border:1px solid rgba(255,255,255,.08);border-radius:10px;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;outline:none;transition:border-color .2s;margin-bottom:16px}
+.sig-area input:focus{border-color:#10B981}
+.sig-area .note{color:#6B7280;font-size:12px;margin-bottom:16px;line-height:1.6}
+.check-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px}
+.check-row input[type=checkbox]{margin-top:4px;accent-color:#10B981;width:18px;height:18px;flex-shrink:0}
+.check-row label{color:#9CA3AF;font-size:13px;line-height:1.6;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:16px;background:#10B981;color:#111;font-family:'Sora',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s}
+.btn:hover{background:#0EA472;transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.success{display:none;text-align:center;padding:60px 20px}
+.success h2{font-family:'Sora',sans-serif;font-size:24px;margin-bottom:12px}
+.success p{color:#9CA3AF;font-size:15px;line-height:1.7}
+.success .check{width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:28px}
+.footer{text-align:center;color:#4B5563;font-size:12px;margin-top:48px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Jovi<em>lex</em></div>
+  <div class="sub">Service Agreement</div>
+
+  <div id="formView">
+    <h1>Scope & Service Agreement</h1>
+    <p class="date" id="contractDate"></p>
+    <div class="bar"></div>
+
+    <div class="parties">
+      <div class="row"><span class="label">Provider</span><span class="val">Jovilex Premium Services Limited</span></div>
+      <div class="row"><span class="label">Client</span><span class="val" id="clientName">—</span></div>
+    </div>
+
+    <div class="scope-box">
+      <h3>Engagement Summary</h3>
+      <div class="item"><span class="k">Service</span><span class="v" id="sService">—</span></div>
+      <div class="item"><span class="k">Deliverables</span><span class="v" id="sDeliverables">—</span></div>
+      <div class="item"><span class="k">Timeline</span><span class="v" id="sTimeline">—</span></div>
+      <div class="item"><span class="k">Total Fee</span><span class="v" id="sFee">—</span></div>
+      <div class="item"><span class="k">Payment</span><span class="v" id="sPayment">50% upfront, 50% on delivery</span></div>
+    </div>
+
+    <div class="section">
+      <h3>1. Scope of Work</h3>
+      <p>Jovilex agrees to deliver the services and deliverables described above within the stated timeline. Any work outside this scope will be discussed and agreed in writing before being undertaken, and may require an additional fee.</p>
+    </div>
+    <div class="section">
+      <h3>2. Client Responsibilities</h3>
+      <p>The client agrees to provide all materials, access, and approvals required for delivery in a timely manner. Delays in providing required assets may extend the delivery timeline proportionally.</p>
+    </div>
+    <div class="section">
+      <h3>3. Revisions</h3>
+      <p>One round of revisions is included in the fee. Additional revision rounds will be quoted separately. A revision is defined as changes to the agreed deliverables — not changes to the agreed scope.</p>
+    </div>
+    <div class="section">
+      <h3>4. Payment Terms</h3>
+      <p>50% of the total fee is due before work begins. The remaining 50% is due on delivery of the final deliverables. For retainer engagements, the full monthly fee is due at the start of each month. No work begins until payment is confirmed.</p>
+    </div>
+    <div class="section">
+      <h3>5. Intellectual Property</h3>
+      <p>Upon receipt of full payment, all deliverables created specifically for this engagement are transferred to the client. Jovilex retains the right to showcase the work in its portfolio unless a confidentiality agreement states otherwise.</p>
+    </div>
+    <div class="section">
+      <h3>6. Confidentiality</h3>
+      <p>Both parties agree to keep all project-related information confidential. If a separate NDA has been signed, its terms take precedence over this clause.</p>
+    </div>
+    <div class="section">
+      <h3>7. Termination</h3>
+      <p>Either party may terminate this agreement with seven (7) days written notice. If terminated by the client, fees for work already completed are non-refundable. If terminated by Jovilex, all completed work to date will be delivered to the client.</p>
+    </div>
+    <div class="section">
+      <h3>8. Governing Law</h3>
+      <p>This agreement is governed by the laws of the Federal Republic of Nigeria.</p>
+    </div>
+
+    <form id="contractForm">
+      <div class="sig-area">
+        <label>Your full legal name</label>
+        <input type="text" id="sigName" placeholder="Type your full name as your digital signature" required/>
+        <label>Your title / role</label>
+        <input type="text" id="sigTitle" placeholder="e.g. Founder, CEO"/>
+        <label>Email address</label>
+        <input type="email" id="sigEmail" placeholder="you@company.com" required/>
+        <div class="note">By typing your name and submitting, you confirm that this constitutes your legally binding digital signature and that you agree to all terms above.</div>
+        <div class="check-row">
+          <input type="checkbox" id="agreeCheck" required/>
+          <label for="agreeCheck">I have read this Service Agreement and agree to its terms. I confirm the engagement summary above is correct.</label>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Sign Agreement</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="success" id="successView">
+    <div class="check">✓</div>
+    <h2>Agreement signed.</h2>
+    <p>Your signed contract has been recorded. An invoice will follow shortly. Work begins once payment is confirmed.</p>
+    <p style="margin-top:16px;color:#6B7280;font-size:13px" id="sigRecord"></p>
+  </div>
+
+  <div class="footer">Jovilex · jovilex.com · Confidential</div>
+</div>
+<script>
+const p=new URLSearchParams(window.location.search);
+const client=p.get('client')||'[Client Name]';
+const company=p.get('company')||'';
+const display=company?`${client} — ${company}`:client;
+document.getElementById('clientName').textContent=display;
+document.getElementById('sService').textContent=p.get('service')||'—';
+document.getElementById('sDeliverables').textContent=p.get('deliverables')||'—';
+document.getElementById('sTimeline').textContent=p.get('timeline')||'—';
+document.getElementById('sFee').textContent=p.get('fee')||'—';
+if(p.get('payment'))document.getElementById('sPayment').textContent=p.get('payment');
+document.getElementById('contractDate').textContent=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+document.getElementById('contractForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Signing...';
+  const fd=new FormData();
+  fd.append('access_key','e699c895-f30a-4e8f-91b3-66bf4cd37b59');
+  fd.append('subject','Jovilex Contract Signed — '+display);
+  fd.append('from_name','Jovilex Contract');
+  fd.append('Client',display);
+  fd.append('Service',p.get('service')||'');
+  fd.append('Fee',p.get('fee')||'');
+  fd.append('Timeline',p.get('timeline')||'');
+  fd.append('Signed_By',document.getElementById('sigName').value);
+  fd.append('Title',document.getElementById('sigTitle').value);
+  fd.append('Email',document.getElementById('sigEmail').value);
+  fd.append('Signed_At',new Date().toISOString());
+  fd.append('replyto',document.getElementById('sigEmail').value);
+  fd.append('ccemail',document.getElementById('sigEmail').value);
+  fd.append('autoresponse','Your signed Service Agreement with Jovilex has been recorded. Service: '+(p.get('service')||'')+'. Fee: '+(p.get('fee')||'')+'. Timeline: '+(p.get('timeline')||'')+'. Signed by: '+document.getElementById('sigName').value+' on '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})+'. An invoice will follow shortly. If you have any questions, contact hello@jovilex.com. — Jovilex');
+  try{
+    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+    const d=await r.json();
+    if(d.success){
+      document.getElementById('formView').style.display='none';
+      document.getElementById('successView').style.display='block';
+      document.getElementById('sigRecord').textContent=`Signed by ${document.getElementById('sigName').value} on ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} at ${new Date().toLocaleTimeString('en-GB')}`;
+      window.scrollTo(0,0);
+    }else{btn.disabled=false;btn.textContent='Sign Agreement';alert('Error.');}
+  }catch(err){btn.disabled=false;btn.textContent='Sign Agreement';alert('Connection error.');}
+});
+</script>
+</body>
+</html>

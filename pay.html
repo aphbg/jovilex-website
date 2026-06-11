@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jovilex · Invoice</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:40px 24px 80px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em}
+.logo em{color:#10B981;font-style:normal}
+.inv-num{text-align:right}
+.inv-num .label{color:#6B7280;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.inv-num .val{font-family:'Sora',sans-serif;font-weight:700;font-size:20px;color:#10B981}
+.bar{width:100%;height:2px;background:rgba(255,255,255,.06);margin-bottom:32px}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+@media(max-width:500px){.meta{grid-template-columns:1fr}}
+.meta-card{background:#1A1A1A;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px}
+.meta-card .label{color:#6B7280;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.meta-card .val{color:#D1D5DB;font-size:14px;line-height:1.6}
+.meta-card .val strong{color:#fff}
+.table{margin-bottom:32px}
+.table-head{display:grid;grid-template-columns:3fr 1fr;padding:12px 16px;background:#1A1A1A;border-radius:10px 10px 0 0;border-bottom:1px solid rgba(16,185,129,.15)}
+.table-head span{color:#6B7280;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.table-head span:last-child{text-align:right}
+.table-row{display:grid;grid-template-columns:3fr 1fr;padding:16px;border-bottom:1px solid rgba(255,255,255,.04)}
+.table-row .desc{color:#D1D5DB;font-size:14px;line-height:1.6}
+.table-row .desc small{display:block;color:#6B7280;font-size:12px;margin-top:4px}
+.table-row .amt{color:#fff;font-family:'Sora',sans-serif;font-weight:600;font-size:15px;text-align:right;align-self:center}
+.total-row{display:grid;grid-template-columns:3fr 1fr;padding:16px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:0 0 10px 10px}
+.total-row .label{color:#10B981;font-family:'Sora',sans-serif;font-weight:600;font-size:15px;align-self:center}
+.total-row .amt{color:#10B981;font-family:'Sora',sans-serif;font-weight:700;font-size:22px;text-align:right}
+.due-box{background:#111;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:20px;margin-bottom:28px;text-align:center}
+.due-box .label{color:#6B7280;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.due-box .val{font-family:'Sora',sans-serif;font-weight:700;font-size:28px;color:#10B981}
+.due-box .note{color:#6B7280;font-size:13px;margin-top:8px}
+.pay-btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:18px;background:#10B981;color:#111;font-family:'Sora',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:10px;cursor:pointer;margin-bottom:16px;transition:all .2s;text-decoration:none}
+.pay-btn:hover{background:#0EA472;transform:translateY(-1px)}
+.alt-pay{background:#1A1A1A;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:20px;margin-bottom:28px}
+.alt-pay h4{font-family:'Sora',sans-serif;font-weight:600;font-size:14px;color:#D1D5DB;margin-bottom:12px}
+.alt-pay p{color:#9CA3AF;font-size:13px;line-height:1.8}
+.alt-pay .em{color:#10B981}
+.terms{color:#6B7280;font-size:12px;line-height:1.8;margin-bottom:20px}
+.footer{text-align:center;color:#4B5563;font-size:12px;margin-top:48px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="logo">Jovi<em>lex</em></div>
+    <div class="inv-num">
+      <div class="label">Invoice</div>
+      <div class="val" id="invNum">—</div>
+    </div>
+  </div>
+  <div class="bar"></div>
+
+  <div class="meta">
+    <div class="meta-card">
+      <div class="label">From</div>
+      <div class="val"><strong>Jovilex Premium Services Limited</strong><br/>hello@jovilex.com<br/>jovilex.com</div>
+    </div>
+    <div class="meta-card">
+      <div class="label">Bill To</div>
+      <div class="val"><strong id="billTo">—</strong><br/><span id="billEmail"></span></div>
+    </div>
+  </div>
+
+  <div class="meta" style="margin-bottom:20px">
+    <div class="meta-card">
+      <div class="label">Date Issued</div>
+      <div class="val" id="issueDate">—</div>
+    </div>
+    <div class="meta-card">
+      <div class="label">Due Date</div>
+      <div class="val" id="dueDate">—</div>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="table-head"><span>Description</span><span>Amount</span></div>
+    <div id="lineItems"></div>
+    <div class="total-row">
+      <span class="label">Total Due</span>
+      <span class="amt" id="totalAmt">—</span>
+    </div>
+  </div>
+
+  <div class="due-box">
+    <div class="label">Amount Due Now</div>
+    <div class="val" id="dueNow">—</div>
+    <div class="note" id="dueNote">50% deposit — remaining 50% on delivery</div>
+  </div>
+
+  <a href="#" class="pay-btn" id="payBtn">Pay Now →</a>
+  <a href="#" onclick="window.print();return false" style="display:block;text-align:center;color:#6B7280;font-size:13px;margin-bottom:24px;text-decoration:none">Save or print a copy of this invoice ↓</a>
+
+  <div class="alt-pay">
+    <h4>Alternative Payment Methods</h4>
+    <p>If you prefer to pay via bank transfer, please send to:<br/><br/>
+    <span class="em">Bank details will be provided on request.</span><br/><br/>
+    Reference: <span class="em" id="payRef">—</span><br/>
+    After payment, email confirmation to <span class="em">hello@jovilex.com</span></p>
+  </div>
+
+  <div class="terms">
+    Payment terms: 50% deposit before work begins, remaining 50% on delivery of final deliverables. Work does not begin until deposit is confirmed. For retainer engagements, full monthly fee is due at the start of each month. Late payments may incur a 5% monthly surcharge after 14 days overdue.
+  </div>
+
+  <div class="footer">Jovilex · jovilex.com · Confidential</div>
+</div>
+<script>
+const p=new URLSearchParams(window.location.search);
+const client=p.get('client')||'[Client Name]';
+const company=p.get('company')||'';
+const display=company?`${client} — ${company}`:client;
+const inv=p.get('inv')||'JVX-'+String(Date.now()).slice(-6);
+const service=p.get('service')||'Service engagement';
+const desc=p.get('desc')||'';
+const total=p.get('total')||'0';
+const currency=p.get('currency')||'USD';
+const email=p.get('email')||'';
+const due=p.get('due')||'';
+const deposit=p.get('deposit')||Math.round(parseFloat(total)*0.5);
+const paylink=p.get('paylink')||'';
+
+document.getElementById('invNum').textContent=inv;
+document.getElementById('billTo').textContent=display;
+document.getElementById('billEmail').textContent=email;
+document.getElementById('issueDate').textContent=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+document.getElementById('dueDate').textContent=due||'Upon receipt';
+document.getElementById('payRef').textContent=inv;
+
+const fmt=(v)=>{
+  const n=parseFloat(v);
+  return currency+' '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+};
+
+const items=document.getElementById('lineItems');
+const row=document.createElement('div');
+row.className='table-row';
+row.innerHTML=`<div class="desc">${service}${desc?'<small>'+desc+'</small>':''}</div><div class="amt">${fmt(total)}</div>`;
+items.appendChild(row);
+
+document.getElementById('totalAmt').textContent=fmt(total);
+document.getElementById('dueNow').textContent=fmt(deposit);
+
+if(parseFloat(deposit)>=parseFloat(total)){
+  document.getElementById('dueNote').textContent='Full payment due';
+}
+
+const payBtn=document.getElementById('payBtn');
+if(paylink){
+  payBtn.href=paylink;
+}else{
+  payBtn.href='mailto:hello@jovilex.com?subject=Payment%20for%20'+encodeURIComponent(inv)+'&body=I%20would%20like%20to%20make%20payment%20for%20invoice%20'+encodeURIComponent(inv);
+  payBtn.textContent='Contact to Pay →';
+}
+</script>
+</body>
+</html>
