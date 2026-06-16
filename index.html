@@ -1,316 +1,338 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Jovilex — Global Digital Services &amp; Business Architecture</title>
-<meta name="description" content="We design, build, and optimise digital products, business architecture, AI systems, and human performance infrastructure — at a speed conventional firms cannot match." />
-<meta property="og:title" content="Jovilex — Global Digital Services & Business Architecture" />
-<meta property="og:description" content="What agencies take months to deliver, we ship in days. One accountable firm." />
-<meta property="og:type" content="website" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23111111'/><text x='5' y='23' font-family='Arial' font-weight='900' font-size='18' fill='white'>J</text><text x='16' y='23' font-family='Arial' font-weight='900' font-size='18' fill='%2310B981'>x</text></svg>" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23111111'/><circle cx='23' cy='7' r='5' fill='%2310B981'/><text x='13' y='25' font-family='Arial' font-weight='900' font-size='22' fill='white' text-anchor='middle'>J</text></svg>" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jovilex — Global Digital Services & Business Architecture</title>
+<meta name="description" content="We design, build, and optimise digital products, business systems, and AI operations. What agencies take months to deliver, we ship in days.">
+<meta property="og:title" content="Jovilex — Find out where your business is leaking revenue">
+<meta property="og:description" content="Free AI-powered business audit. Ten questions. Personalised report in your inbox.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jovilex.com">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='8' y='24' font-family='sans-serif' font-weight='800' font-size='20' fill='white'%3EJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --charcoal:#111111; --deep-black:#1A1A1A; --slate:#1F2937; --ice:#F7F8F9;
-    --white:#FFFFFF; --grey:#6B7280; --emerald:#10B981; --amber:#FF7A2E;
-    --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.14);
-    --maxw:1180px; --ease:cubic-bezier(.16,.84,.44,1);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--charcoal);color:var(--white);font-family:"Outfit",sans-serif;font-weight:400;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  a{color:inherit;text-decoration:none}
-  ::selection{background:var(--emerald);color:var(--charcoal)}
-  h1,h2,h3,.wm{font-family:"Sora",sans-serif}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-  .eyebrow{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);margin-bottom:18px}
-  .muted{color:var(--grey)} .em{color:var(--emerald)}
-  .wm{font-weight:800;letter-spacing:-.02em;line-height:1;display:inline-block}
-  .wm .jovi{color:var(--white)} .wm .lex{color:var(--emerald)}
-  .wm-tag{display:block;color:var(--grey);font-family:"Outfit",sans-serif;font-weight:300;letter-spacing:.06em;margin-top:6px}
-  header{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:saturate(140%) blur(14px);background:rgba(17,17,17,0.72);border-bottom:1px solid transparent;transition:border-color .3s var(--ease),background .3s var(--ease)}
-  header.scrolled{border-bottom-color:var(--line);background:rgba(17,17,17,0.9)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .nav .wm{font-size:22px}
-  .nav-links{display:flex;align-items:center;gap:34px}
-  .nav-links a{font-size:15px;font-weight:500;color:var(--grey);position:relative;transition:color .25s var(--ease)}
-  .nav-links a.btn-amber{color:#1a0e06!important}
-  .nav-links a:hover{color:var(--white)}
-  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--emerald);transition:width .3s var(--ease)}
-  .nav-links a:hover::after{width:100%}
-  .btn{display:inline-flex;align-items:center;gap:10px;font-family:"Outfit",sans-serif;font-weight:500;font-size:15px;padding:12px 22px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:transform .2s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease),border-color .25s var(--ease)}
-  .btn-amber{background:var(--amber);color:#1a0e06;font-weight:600}
-  .btn-amber:hover{transform:translateY(-2px);box-shadow:0 12px 30px -10px rgba(255,122,46,.5)}
-  .btn-ghost{border-color:var(--line-strong);color:var(--white)}
-  .btn-ghost:hover{border-color:var(--emerald);color:var(--emerald);transform:translateY(-2px)}
-  .menu-toggle{display:none;background:none;border:0;color:var(--white);cursor:pointer;padding:8px}
-  .menu-toggle span{display:block;width:24px;height:2px;background:var(--white);margin:5px 0;transition:.3s var(--ease)}
-  .hero{position:relative;padding:170px 0 110px;overflow:hidden}
-  .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-  .hero-bg .glow{position:absolute;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.20) 0%,rgba(16,185,129,0) 65%);top:-280px;right:-180px;filter:blur(10px);animation:drift 18s ease-in-out infinite alternate}
-  .hero-bg .glow.two{width:520px;height:520px;left:-220px;bottom:-220px;top:auto;right:auto;background:radial-gradient(circle,rgba(16,185,129,.10) 0%,rgba(16,185,129,0) 65%);animation-duration:24s}
-  @keyframes drift{from{transform:translate(0,0)}to{transform:translate(-40px,40px)}}
-  .grid-lines{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 70% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 0%,#000 30%,transparent 75%);opacity:.55}
-  .hero-inner{position:relative;z-index:2;max-width:880px}
-  .badge{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line-strong);border-radius:100px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--grey);letter-spacing:.04em;margin-bottom:30px}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);position:relative}
-  .dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;background:var(--emerald);opacity:.45;animation:pulse 2s ease-out infinite}
-  @keyframes pulse{0%{transform:scale(.6);opacity:.5}100%{transform:scale(2.2);opacity:0}}
-  h1.hero-h{font-weight:800;font-size:clamp(40px,6.2vw,60px);line-height:1.04;letter-spacing:-.025em;margin-bottom:26px}
-  .hero-sub{font-size:clamp(17px,2vw,20px);color:var(--grey);max-width:680px;margin-bottom:18px;font-weight:300}
-  .hero-promise{font-size:16px;color:var(--white);max-width:640px;margin-bottom:36px;font-weight:400}
-  .hero-promise b{font-weight:600}
-  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
-  section{position:relative}
-  .band{padding:96px 0}
-  .band.alt{background:var(--deep-black)}
-  .sec-head{max-width:720px;margin-bottom:54px}
-  h2.sec-h{font-weight:700;font-size:clamp(28px,4vw,38px);line-height:1.1;letter-spacing:-.02em;margin-bottom:18px}
-  .sec-head p{color:var(--grey);font-size:17px}
-  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-  .card{display:flex;flex-direction:column;background:var(--charcoal);border:1px solid var(--line);border-radius:18px;padding:34px 32px;position:relative;overflow:hidden;transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
-  .band.alt .card{background:#161616}
-  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--emerald),transparent);opacity:0;transition:opacity .3s var(--ease)}
-  .card:hover{transform:translateY(-5px);border-color:rgba(16,185,129,.4);box-shadow:0 24px 50px -28px rgba(0,0,0,.8)}
-  .card:hover::before{opacity:1}
-  .card .num{font-family:"Sora";font-weight:700;font-size:14px;color:var(--emerald);letter-spacing:.1em}
-  .card h3{font-weight:600;font-size:21px;margin:14px 0 12px;letter-spacing:-.01em}
-  .card p{color:var(--grey);font-size:15.5px;margin-bottom:20px}
-  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-  .tag{font-size:12.5px;color:#cdd2cf;border:1px solid var(--line);border-radius:8px;padding:5px 11px;background:rgba(255,255,255,0.02)}
-  .tag.sig{border-color:rgba(16,185,129,.45);color:var(--emerald);font-weight:500}
-  .explore{margin-top:auto;font-family:"Sora";font-weight:600;font-size:14.5px;color:var(--emerald);display:inline-flex;align-items:center;gap:8px;transition:gap .25s var(--ease)}
-  .card:hover .explore{gap:14px}
-  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
-  .about-body p{color:var(--grey);font-size:17px;margin-bottom:20px}
-  .about-body p b{color:var(--white);font-weight:500}
-  .principles{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-  .principle{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;transition:background .25s var(--ease)}
-  .principle:last-child{border-bottom:0}
-  .principle:hover{background:rgba(16,185,129,.05)}
-  .principle .pdot{width:7px;height:7px;border-radius:50%;background:var(--emerald);flex:0 0 auto}
-  .principle span{font-family:"Sora";font-weight:600;font-size:16px}
-  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
-  .contact-copy p{color:var(--grey);font-size:17px;margin-bottom:24px;max-width:440px}
-  form{display:flex;flex-direction:column;gap:16px}
-  .field label{display:block;font-size:13.5px;color:var(--grey);margin-bottom:7px;font-weight:500}
-  .field input,.field textarea,.field select{width:100%;background:#161616;border:1px solid var(--line-strong);border-radius:11px;color:var(--white);font-family:"Outfit";font-size:15.5px;padding:14px 16px;transition:border-color .2s var(--ease)}
-  .field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;cursor:pointer}
-  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--emerald)}
-  .field textarea{resize:vertical;min-height:120px}
-  form .btn-amber{margin-top:4px;justify-content:center}
-  .form-note{font-size:13px;color:var(--grey);margin-top:4px}
-  .form-note a{color:var(--emerald);font-weight:500}
-  .form-ok{display:none;border:1px solid rgba(16,185,129,.4);background:rgba(16,185,129,.07);border-radius:12px;padding:20px;color:#bdeede;font-size:15px}
-  .form-ok.show{display:block}
-  footer{border-top:1px solid var(--line);padding:64px 0 40px;background:var(--charcoal)}
-  .foot-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:44px}
-  .foot-links{display:flex;gap:30px;flex-wrap:wrap}
-  .foot-links a{color:var(--grey);font-size:15px;transition:color .2s var(--ease)}
-  .foot-links a:hover{color:var(--white)}
-  .foot-open{display:inline-flex;align-items:center;gap:9px;color:var(--grey);font-size:14px;margin-bottom:14px}
-  .referral{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 0;margin-bottom:28px;color:var(--grey);font-size:15px}
-  .referral a{color:var(--emerald);font-weight:500}
-  .foot-legal{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--grey);font-size:13.5px}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-  .reveal.in{opacity:1;transform:none}
-  @media(max-width:860px){
-    .cards,.about-grid,.contact-grid{grid-template-columns:1fr}
-    .about-grid{gap:36px} .contact-grid{gap:38px}
-    .nav-links{position:fixed;top:72px;left:0;right:0;flex-direction:column;gap:0;background:rgba(17,17,17,0.98);border-bottom:1px solid var(--line);max-height:0;overflow:hidden;transition:max-height .35s var(--ease)}
-    .nav-links.open{max-height:360px}
-    .nav-links a{padding:16px 28px;width:100%;border-bottom:1px solid var(--line)}
-    .nav-links a::after{display:none}
-    .nav-links .btn{margin:14px 28px;width:calc(100% - 56px);justify-content:center}
-    .menu-toggle{display:block}
-    .nav-links a.hide-mobile{display:none}
-    .hero{padding:140px 0 80px} .band{padding:72px 0}
-  }
-  @media(min-width:861px){ .nav-links .btn{display:none} }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ch:#111111;--db:#1A1A1A;--em:#10B981;--ed:rgba(16,185,129,0.12);--am:#FF7A2E;--wh:#FFFFFF;--gr:#6B7280;--sl:#1F2937;--ic:#F7F8F9}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Outfit',sans-serif;background:var(--ch);color:var(--wh);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(17,17,17,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.04)}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.wm{font-family:'Sora',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px}
+.wm .j{color:var(--wh)}.wm .l{color:var(--em)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:14px;color:var(--gr);font-weight:400;transition:color 0.2s}
+.nav-links a:hover{color:var(--wh)}
+.nav-cta{background:var(--am);color:var(--ch);font-weight:500;font-size:13px;padding:8px 18px;border-radius:6px;transition:opacity 0.2s}
+.nav-cta:hover{opacity:0.9}
+
+/* ── Hero ── */
+.hero{padding:140px 0 80px;text-align:left}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ed);border:1px solid rgba(16,185,129,0.2);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--em);font-weight:400;margin-bottom:24px}
+.hero-badge .dot{width:6px;height:6px;background:var(--em);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+h1{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(32px,5vw,52px);line-height:1.12;letter-spacing:-1.5px;max-width:680px;margin-bottom:20px}
+h1 .em{color:var(--em)}
+.hero-sub{font-size:17px;color:var(--gr);line-height:1.65;max-width:520px;margin-bottom:32px}
+.hero-sub strong{color:var(--wh);font-weight:500}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--am);color:var(--ch);font-family:'Outfit',sans-serif;font-weight:500;font-size:15px;padding:14px 28px;border-radius:8px;transition:transform 0.15s,box-shadow 0.15s;border:none;cursor:pointer}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,122,46,0.3)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid var(--sl);color:var(--wh);font-family:'Outfit',sans-serif;font-weight:400;font-size:15px;padding:14px 28px;border-radius:8px;transition:border-color 0.2s}
+.btn-secondary:hover{border-color:var(--em)}
+.hero-note{margin-top:16px;font-size:12px;color:var(--gr);font-weight:300}
+
+/* ── Stats strip ── */
+.stats{border-top:1px solid var(--sl);border-bottom:1px solid var(--sl);padding:32px 0}
+.stats-inner{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:'Sora',sans-serif;font-weight:700;font-size:28px;color:var(--em)}
+.stat-label{font-size:13px;color:var(--gr);font-weight:300;margin-top:4px}
+
+/* ── Sections ── */
+section{padding:80px 0}
+.section-label{font-family:'Sora',sans-serif;font-weight:600;font-size:12px;color:var(--em);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:'Sora',sans-serif;font-weight:700;font-size:clamp(24px,3.5vw,36px);line-height:1.2;letter-spacing:-0.5px;margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--gr);line-height:1.6;max-width:600px;margin-bottom:48px}
+
+/* ── How it works ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{background:var(--db);border:1px solid var(--sl);border-radius:14px;padding:32px 24px}
+.step-num{font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--am);margin-bottom:12px}
+.step-title{font-family:'Sora',sans-serif;font-weight:600;font-size:18px;margin-bottom:8px}
+.step-desc{font-size:14px;color:var(--gr);line-height:1.6}
+
+/* ── Services ── */
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.service-card{background:var(--db);border:1px solid var(--sl);border-radius:14px;padding:32px 28px;transition:border-color 0.2s}
+.service-card:hover{border-color:var(--em)}
+.service-num{font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--em);margin-bottom:10px}
+.service-name{font-family:'Sora',sans-serif;font-weight:600;font-size:18px;margin-bottom:8px}
+.service-desc{font-size:14px;color:var(--gr);line-height:1.6;margin-bottom:16px}
+.service-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:var(--sl);border-radius:4px;padding:4px 10px;font-size:11px;color:var(--gr);font-weight:400}
+.service-link{display:inline-block;font-size:13px;color:var(--em);font-weight:500;margin-top:12px;transition:opacity 0.2s}
+.service-link:hover{opacity:0.8}
+
+/* ── Proof ── */
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.proof-card{background:var(--db);border:1px solid var(--sl);border-radius:14px;padding:24px;transition:border-color 0.2s}
+.proof-card:hover{border-color:var(--em)}
+.proof-area{font-size:11px;color:var(--am);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px}
+.proof-title{font-family:'Sora',sans-serif;font-weight:600;font-size:16px;margin-bottom:6px}
+.proof-desc{font-size:13px;color:var(--gr);line-height:1.5;margin-bottom:12px}
+.proof-metric{font-family:'Sora',sans-serif;font-weight:700;font-size:13px;color:var(--em)}
+
+/* ── About ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.about-text{font-size:16px;color:var(--gr);line-height:1.7}
+.about-text strong{color:var(--wh);font-weight:500}
+.values{display:flex;flex-direction:column;gap:16px}
+.value{display:flex;align-items:flex-start;gap:12px;font-size:15px}
+.value-dot{width:8px;height:8px;background:var(--em);border-radius:50%;margin-top:6px;flex-shrink:0}
+.value-name{font-weight:500;color:var(--wh)}
+
+/* ── CTA ── */
+.cta-section{text-align:center;padding:80px 0 100px}
+.cta-title{font-family:'Sora',sans-serif;font-weight:700;font-size:clamp(24px,3.5vw,36px);margin-bottom:16px}
+.cta-sub{font-size:16px;color:var(--gr);margin-bottom:32px}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--sl);padding:32px 0}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-left{display:flex;align-items:center;gap:16px}
+.footer-left .wm{font-size:18px}
+.footer-tagline{font-size:12px;color:var(--gr);font-weight:300}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:var(--gr);transition:color 0.2s}
+.footer-links a:hover{color:var(--wh)}
+.footer-bottom{text-align:center;padding-top:20px;font-size:11px;color:var(--gr);font-weight:300}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .steps,.services-grid{grid-template-columns:1fr}
+  .proof-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr;gap:32px}
+  .stats-inner{gap:32px}
+  .nav-links a:not(.nav-cta){display:none}
+  h1{font-size:32px}
+  section{padding:60px 0}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center}
+}
 </style>
 </head>
 <body>
-<header id="header">
-  <div class="wrap nav">
-    <a href="#top" class="wm">Jovi<span class="lex">lex</span></a>
-    <nav class="nav-links" id="navLinks">
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="wm"><span class="j">Jovi</span><span class="l">lex</span></a>
+    <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#about">About</a>
-      <a href="#contact" class="hide-mobile">Contact</a>
-      <a href="#contact" class="btn btn-amber">Start a conversation</a>
-    </nav>
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <a href="/contact">Contact</a>
+      <a href="/audit" class="nav-cta">Free Audit →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-badge"><span class="dot"></span> Open 24 hours · every day of the year</div>
+    <h1>We build the systems your business is missing — <span class="em">in days, not months</span></h1>
+    <p class="hero-sub">Digital products, business architecture, AI operations, and the human performance infrastructure behind them. What agencies take months to deliver, we ship in <strong>days</strong>. One accountable firm.</p>
+    <p class="hero-sub" style="margin-bottom:32px;margin-top:-8px;color:var(--em);font-weight:500;font-size:15px">Not sure where to start? Our free AI-powered audit scores your business across five areas and tells you exactly what to fix first.</p>
+    <div class="hero-btns">
+      <a href="/audit" class="btn-primary">Start My Free Audit <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#services" class="btn-secondary">See what we build</a>
+    </div>
+    <p class="hero-note">Audit is free. Sixty seconds. Personalised report in your inbox.</p>
   </div>
 </header>
 
-<section class="hero" id="top">
-  <div class="hero-bg"><div class="grid-lines"></div><div class="glow"></div><div class="glow two"></div></div>
-  <div class="wrap hero-inner">
-    <div class="badge reveal"><span class="dot"></span> Open 24 hours · every day of the year</div>
-    <h1 class="hero-h reveal">You get the system your business is missing — built and live in days.</h1>
-    <p class="hero-sub reveal">We design, build, and optimise digital products, business architecture, AI systems, and the human performance infrastructure behind them — at a speed conventional firms cannot match.</p>
-    <p class="hero-promise reveal">What agencies take months to deliver, we ship in <b class="em">days</b>. Same output. A fraction of the time. One accountable firm.</p>
-    <div class="hero-cta reveal">
-      <a href="#contact" class="btn btn-amber">Start a conversation</a>
-      <a href="#services" class="btn btn-ghost">See what we build</a>
-    </div>
+<!-- Stats -->
+<div class="stats">
+  <div class="stats-inner wrap">
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Areas diagnosed</div></div>
+    <div class="stat"><div class="stat-num">60s</div><div class="stat-label">To your report</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Diagnostic questions</div></div>
+    <div class="stat"><div class="stat-num">24hr</div><div class="stat-label">Response time</div></div>
   </div>
-</section>
+</div>
 
-<section class="band alt" id="services">
+<!-- How it works -->
+<section>
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow">What we do</div>
-      <h2 class="sec-h">Four arms. One accountable firm.</h2>
-      <p>Most companies hand you to a different vendor for each problem. We see the whole system — and we build every part of it. Each arm goes deeper than it looks.</p>
-    </div>
-    <div class="cards">
-      <a class="card reveal" href="ai-operations.html">
-        <div class="num">01</div>
-        <h3>AI-Augmented Operations</h3>
-        <p>We find where AI saves you time and money, then build it. A task that took hours starts taking seconds — and it keeps running whether anyone is watching or not.</p>
-        <div class="tags"><span class="tag">AI Opportunity Map</span><span class="tag">Workflow automation</span><span class="tag">Custom AI agents</span><span class="tag">AI operating layer</span></div>
-        <span class="explore">Explore AI-Augmented Operations →</span>
-      </a>
-      <a class="card reveal" href="digital-products.html">
-        <div class="num">02</div>
-        <h3>Digital Products &amp; Systems</h3>
-        <p>Websites, working products, full web apps, marketplaces, dashboards, and software you can sell. You own a system that runs part of your business — deployed and live, not stuck in a proposal.</p>
-        <div class="tags"><span class="tag">Websites</span><span class="tag">Rapid MVPs</span><span class="tag">Web apps</span><span class="tag">Marketplaces</span><span class="tag">Dashboards</span><span class="tag">SaaS</span></div>
-        <span class="explore">Explore Digital Products &amp; Systems →</span>
-      </a>
-      <a class="card reveal" href="business-architecture.html">
-        <div class="num">03</div>
-        <h3>Business Architecture &amp; Strategy</h3>
-        <p>How your business makes money, who to sell to, how to raise, and how your whole industry operation fits together. Strategy you can act on Monday morning — not a deck that sits in a drawer.</p>
-        <div class="tags"><span class="tag">Business model &amp; pricing</span><span class="tag">Go-to-market</span><span class="tag">Investor package</span><span class="tag sig">Industry ecosystem · Signature</span></div>
-        <span class="explore">Explore Business Architecture &amp; Strategy →</span>
-      </a>
-      <a class="card reveal" href="human-performance.html">
-        <div class="num">04</div>
-        <h3>Human Performance &amp; Potential</h3>
-        <p>An operating system for the person running it all. You operate at your actual capacity instead of below it — with structure built around how your mind works, not against it.</p>
-        <div class="tags"><span class="tag">Personal Operating System</span><span class="tag">Executive performance</span><span class="tag">Purpose &amp; alignment</span><span class="tag">Clarity sessions</span></div>
-        <span class="explore">Explore Human Performance &amp; Potential →</span>
-      </a>
+    <div class="section-label">How it works</div>
+    <div class="section-title">From diagnosis to fix in three steps.</div>
+    <div class="section-sub">Most businesses treat symptoms. We find the cause, then build the system that fixes it.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Take the audit</div>
+        <div class="step-desc">Ten questions about how your business finds customers, handles operations, manages revenue, and scales. Takes sixty seconds. No fluff.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Get your report</div>
+        <div class="step-desc">AI scores your business across five areas. You get a personalised report in your inbox with specific gaps, revenue impact estimates, and what to fix first.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">We close the gaps</div>
+        <div class="step-desc">Ready to fix what the audit found? We build the systems your business needs — brand, website, operations, revenue infrastructure, leadership — in days, not months.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="band" id="about">
-  <div class="wrap about-grid">
-    <div class="about-body reveal">
-      <div class="eyebrow">Who we are</div>
-      <h2 class="sec-h" style="margin-bottom:24px">We see the whole system before we touch a single part.</h2>
-      <p>Jovilex is a global AI-powered services firm. We design, build, and optimise the systems people and organisations need to operate at their actual potential. We work across industries because the capability is structural — not tied to one sector.</p>
-      <p><b>We deliver fast because we think clearly, not because we cut corners.</b> Every part connects to the whole. And if it isn't right, we don't patch it — we build it clean.</p>
-    </div>
-    <div class="principles reveal">
-      <div class="principle"><span class="pdot"></span><span>Speed without shortcuts</span></div>
-      <div class="principle"><span class="pdot"></span><span>Full-picture thinking</span></div>
-      <div class="principle"><span class="pdot"></span><span>Proof over promises</span></div>
-      <div class="principle"><span class="pdot"></span><span>Plain language</span></div>
-      <div class="principle"><span class="pdot"></span><span>Build to last</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="band alt" id="contact">
-  <div class="wrap contact-grid">
-    <div class="contact-copy reveal">
-      <div class="eyebrow">Start here</div>
-      <h2 class="sec-h">Tell us what you're building.</h2>
-      <p>One conversation is enough to know whether we're the right firm for it. We're open 24 hours, every day of the year — send a message and you'll hear back in hours, whatever timezone you're in.</p>
-    </div>
-    <div class="reveal">
-      <form id="contactForm">
-        <!-- SWAP: free access key from web3forms.com (emailed to you in seconds) -->
-        <input type="hidden" name="access_key" value="e699c895-f30a-4e8f-91b3-66bf4cd37b59" />
-        <input type="hidden" name="subject" value="New enquiry via jovilex.com" />
-        <input type="hidden" name="from_name" value="Jovilex Website" />
-        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
-        <div class="field">
-          <label for="name">Your name</label>
-          <input id="name" name="name" type="text" required placeholder="Jane Doe" />
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required placeholder="jane@company.com" />
-        </div>
-        <div class="field">
-          <label for="phone">Phone / WhatsApp <span style="color:var(--grey);font-weight:300">(optional)</span></label>
-          <input id="phone" name="phone" type="tel" placeholder="+1 555 000 0000" />
-        </div>
-        <div class="field">
-          <label for="service">What do you need?</label>
-          <select id="service" name="service" required>
-            <option value="" disabled selected>Select a service</option>
-            <option>AI-Augmented Operations</option>
-            <option>Digital Products &amp; Systems</option>
-            <option>Business Architecture &amp; Strategy</option>
-            <option>Human Performance &amp; Potential</option>
-            <option>Retainer / ongoing partnership</option>
-            <option>Not sure yet / multiple things</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="message">A line on the problem, the idea, or the system you need</label>
-          <textarea id="message" name="message" required placeholder="Tell us what you're working on."></textarea>
-        </div>
-        <button type="submit" class="btn btn-amber" id="submitBtn">Send</button>
-        <p class="form-note">We reply in hours — any day of the year.</p>
-      </form>
-      <div class="form-ok" id="formOk">Message received. We know what you're building — and you'll hear back from us within hours.</div>
+<!-- Services -->
+<section id="services" style="background:var(--db);border-top:1px solid var(--sl);border-bottom:1px solid var(--sl)">
+  <div class="wrap">
+    <div class="section-label">What we do</div>
+    <div class="section-title">Four arms. One accountable firm.</div>
+    <div class="section-sub">Most companies hand you to a different vendor for each problem. We see the whole system — and we build every part of it.</div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-name">AI-Augmented Operations</div>
+        <div class="service-desc">We find where AI saves you time and money, then build it. A task that took hours starts taking seconds — and keeps running whether anyone is watching or not.</div>
+        <div class="service-tags"><span class="tag">AI Opportunity Map</span><span class="tag">Workflow automation</span><span class="tag">Custom AI agents</span><span class="tag">AI operating layer</span></div>
+        <a href="/ai-operations" class="service-link">Explore AI-Augmented Operations →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-name">Digital Products & Systems</div>
+        <div class="service-desc">Websites, working products, full web apps, marketplaces, dashboards, and software you can sell. You own a system that runs part of your business — deployed and live, not stuck in a proposal.</div>
+        <div class="service-tags"><span class="tag">Websites</span><span class="tag">Rapid MVPs</span><span class="tag">Web apps</span><span class="tag">Marketplaces</span><span class="tag">Dashboards</span><span class="tag">SaaS</span></div>
+        <a href="/digital-products" class="service-link">Explore Digital Products & Systems →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-name">Business Architecture & Strategy</div>
+        <div class="service-desc">How your business makes money, who to sell to, how to raise, and how your whole industry operation fits together. Strategy you can act on Monday morning — not a deck that sits in a drawer.</div>
+        <div class="service-tags"><span class="tag">Business model & pricing</span><span class="tag">Go-to-market</span><span class="tag">Investor package</span><span class="tag">Industry ecosystem · Signature</span></div>
+        <a href="/business-architecture" class="service-link">Explore Business Architecture & Strategy →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-name">Human Performance & Potential</div>
+        <div class="service-desc">An operating system for the person running it all. You operate at your actual capacity instead of below it — with structure built around how your mind works, not against it.</div>
+        <div class="service-tags"><span class="tag">Personal Operating System</span><span class="tag">Executive performance</span><span class="tag">Purpose & alignment</span><span class="tag">Clarity sessions</span></div>
+        <a href="/human-performance" class="service-link">Explore Human Performance & Potential →</a>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- Proof -->
+<section>
+  <div class="wrap">
+    <div class="section-label">What we've built</div>
+    <div class="section-title">Real systems. Real results.</div>
+    <div class="section-sub">Every case study is a working system — not a concept, not a mockup, not a proposal that went nowhere.</div>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-area">Brand & Digital Presence</div>
+        <div class="proof-title">From zero to global agency presence</div>
+        <div class="proof-desc">Complete brand identity, multi-page website, client portal, intake engine, payment system, and AI-powered lead generation — all connected and operational.</div>
+        <div class="proof-metric">Zero to live in days</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-area">Customer Acquisition</div>
+        <div class="proof-title">Automated lead engine that sells before the call</div>
+        <div class="proof-desc">AI-powered business audit scoring five areas, personalised reports emailed instantly, leads stored and tracked — running 24/7 without human involvement.</div>
+        <div class="proof-metric">Under $0.01 per lead</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-area">Operations & Systems</div>
+        <div class="proof-title">Manual everything to connected backend</div>
+        <div class="proof-desc">Client portal, admin dashboard, automated intake, NDA signing, contract signing, payment processing — every client touchpoint tracked through one backend.</div>
+        <div class="proof-metric">End-to-end client lifecycle</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-area">Revenue Infrastructure</div>
+        <div class="proof-title">Trust infrastructure that makes money move</div>
+        <div class="proof-desc">Two-sided marketplace with Google Maps pricing, 150+ neighbourhood matching, full escrow, and admin oversight. From concept to beta in days.</div>
+        <div class="proof-metric">150+ neighbourhoods covered</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-area">Team & Leadership</div>
+        <div class="proof-title">Founder-dependent to founder-led</div>
+        <div class="proof-desc">Six ventures documented with product bibles, delivery playbooks, ecosystem blueprints, and brand systems. 32 systems mapped across 6 operational layers.</div>
+        <div class="proof-metric">20+ services with playbooks</div>
+      </div>
+      <div class="proof-card" style="background:var(--ed);border-color:rgba(16,185,129,0.2)">
+        <div class="proof-area" style="color:var(--em)">Your business</div>
+        <div class="proof-title">What would we build for you?</div>
+        <div class="proof-desc">The free audit diagnoses where your business is leaking revenue. The report tells you exactly what to fix. If you want us to fix it — we build in days.</div>
+        <a href="/audit" class="btn-primary" style="font-size:13px;padding:10px 20px;margin-top:8px;display:inline-flex">Take the audit →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" style="background:var(--db);border-top:1px solid var(--sl);border-bottom:1px solid var(--sl)">
+  <div class="wrap">
+    <div class="section-label">Who we are</div>
+    <div class="section-title">We see the whole system before we touch a single part.</div>
+    <div class="about-grid">
+      <div class="about-text">
+        Jovilex is a global AI-powered services firm. We design, build, and optimise the systems people and organisations need to operate at their actual potential. We work across industries because the capability is structural — not tied to one sector.<br><br>
+        <strong>We deliver fast because we think clearly, not because we cut corners.</strong> Every part connects to the whole. And if it isn't right, we don't patch it — we build it clean.
+      </div>
+      <div class="values">
+        <div class="value"><span class="value-dot"></span><span><span class="value-name">Speed without shortcuts.</span> We deliver fast because we think clearly.</span></div>
+        <div class="value"><span class="value-dot"></span><span><span class="value-name">Full-picture thinking.</span> We see the entire system before we touch a single part.</span></div>
+        <div class="value"><span class="value-dot"></span><span><span class="value-name">Proof over promises.</span> Every claim we make has a working product behind it.</span></div>
+        <div class="value"><span class="value-dot"></span><span><span class="value-name">Plain language.</span> If it sounds like jargon, we rewrite it until it doesn't.</span></div>
+        <div class="value"><span class="value-dot"></span><span><span class="value-name">Build to last.</span> We don't patch. We design it right or we start clean.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="wrap">
+    <div class="cta-title">Ready to find out what's holding your business back?</div>
+    <p class="cta-sub">Sixty seconds. Free. Personalised report in your inbox.</p>
+    <a href="/audit" class="btn-primary">Start My Free Audit <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</section>
+
+<!-- Footer -->
 <footer>
   <div class="wrap">
-    <div class="foot-top">
-      <div>
-        <a href="#top" class="wm" style="font-size:24px">Jovi<span class="lex">lex</span><span class="wm-tag" style="font-size:10px">Global Digital Services &amp; Business Architecture</span></a>
-        <div class="foot-open" style="margin-top:18px"><span class="dot"></span> Open 24 hours · every day of the year</div>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="wm"><span class="j">Jovi</span><span class="l">lex</span></span>
+        <span class="footer-tagline">Global Digital Services & Business Architecture</span>
+        <span class="hero-badge" style="margin:0;padding:4px 12px"><span class="dot"></span> Open 24 hours</span>
       </div>
-      <nav class="foot-links">
+      <div class="footer-links">
         <a href="#services">Services</a>
-        <a href="ai-operations.html">AI</a>
+        <a href="/audit">Audit</a>
         <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
+        <a href="/contact">Contact</a>
+        <a href="https://instagram.com/jovilex.ai" target="_blank">Instagram</a>
+        <a href="mailto:hello@jovilex.com">hello@jovilex.com</a>
+      </div>
     </div>
-    
-    <div class="foot-legal"><span>© 2026 Jovilex. </span><span>jovilex.com</span></div>
+    <div class="footer-bottom">© 2026 Jovilex · jovilex.com</div>
   </div>
 </footer>
 
-<script>
-  var header=document.getElementById('header');
-  window.addEventListener('scroll',function(){header.classList.toggle('scrolled',window.scrollY>10);});
-  var toggle=document.getElementById('menuToggle'),links=document.getElementById('navLinks');
-  toggle.addEventListener('click',function(){links.classList.toggle('open');});
-  links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');});});
-  var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.12});
-  document.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%4,3)*70)+'ms';io.observe(el);});
-
-  // Contact form. Posts to Web3Forms (works once your access key is in + the site is hosted).
-  var form=document.getElementById('contactForm'),ok=document.getElementById('formOk'),btn=document.getElementById('submitBtn');
-  form.addEventListener('submit',function(ev){
-    ev.preventDefault();
-    btn.textContent='Sending…';
-    var data=new FormData(form);
-    fetch('https://api.web3forms.com/submit',{method:'POST',body:data})
-      .then(function(r){return r.json();})
-      .then(function(j){
-        if(j.success){form.style.display='none';ok.classList.add('show');}
-        else{btn.textContent='Send';alert('Something went wrong. Please try WhatsApp or email.');}
-      })
-      .catch(function(){btn.textContent='Send';alert('Network issue. Please try WhatsApp or email.');});
-  });
-</script>
 </body>
 </html>

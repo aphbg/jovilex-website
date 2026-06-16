@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Leads | Jovilex Admin</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='8' y='24' font-family='sans-serif' font-weight='800' font-size='20' fill='white'%3EJ%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --charcoal:#111111;--deep-black:#1A1A1A;--emerald:#10B981;--emerald-dim:rgba(16,185,129,0.15);
+  --amber:#FF7A2E;--white:#FFFFFF;--grey:#6B7280;--slate:#1F2937;--red:#EF4444;
+}
+body{font-family:'Outfit',sans-serif;background:var(--charcoal);color:var(--white);min-height:100vh;padding:20px;-webkit-font-smoothing:antialiased}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.wordmark{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.5px}
+.wordmark .jovi{color:var(--white)}.wordmark .lex{color:var(--emerald)}
+.header-sub{font-size:11px;color:var(--grey);letter-spacing:1px;text-transform:uppercase}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.stat{background:var(--deep-black);border:1px solid var(--slate);border-radius:10px;padding:14px 18px;flex:1;min-width:120px}
+.stat-num{font-family:'Sora',sans-serif;font-weight:700;font-size:24px}
+.stat-label{font-size:12px;color:var(--grey);font-weight:300;margin-top:2px}
+.stat-num.emerald{color:var(--emerald)}.stat-num.amber{color:var(--amber)}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-btn{
+  background:var(--deep-black);border:1px solid var(--slate);border-radius:6px;
+  padding:8px 14px;color:var(--grey);font-family:'Outfit',sans-serif;font-size:13px;
+  cursor:pointer;transition:all 0.2s;
+}
+.filter-btn:hover,.filter-btn.active{border-color:var(--emerald);color:var(--emerald)}
+.leads-list{display:flex;flex-direction:column;gap:10px}
+.lead-card{
+  background:var(--deep-black);border:1px solid var(--slate);border-radius:12px;
+  padding:16px 18px;transition:border-color 0.2s;
+}
+.lead-card:hover{border-color:var(--emerald)}
+.lead-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.lead-name{font-family:'Sora',sans-serif;font-weight:600;font-size:15px}
+.lead-business{font-size:13px;color:var(--grey);margin-top:2px}
+.lead-score{
+  font-family:'Sora',sans-serif;font-weight:700;font-size:18px;
+  min-width:48px;text-align:center;flex-shrink:0;
+}
+.lead-score.low{color:var(--amber)}.lead-score.mid{color:#F59E0B}.lead-score.high{color:var(--emerald)}
+.lead-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--grey);margin-bottom:10px}
+.lead-meta span{display:flex;align-items:center;gap:4px}
+.lead-weak{
+  display:inline-block;background:rgba(255,122,46,0.1);border:1px solid rgba(255,122,46,0.2);
+  border-radius:4px;padding:3px 8px;font-size:11px;color:var(--amber);margin-bottom:10px;
+}
+.lead-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.status-select{
+  background:var(--charcoal);border:1px solid var(--slate);border-radius:6px;
+  padding:6px 10px;color:var(--white);font-family:'Outfit',sans-serif;font-size:13px;
+  cursor:pointer;outline:none;-webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;
+}
+.status-select option{background:var(--charcoal);color:var(--white)}
+.lead-date{font-size:11px;color:var(--grey)}
+.lead-email{font-size:12px;color:var(--emerald);text-decoration:none}
+.lead-email:hover{text-decoration:underline}
+.lead-expand{
+  margin-top:12px;padding-top:12px;border-top:1px solid var(--slate);display:none;
+  font-size:13px;color:var(--grey);line-height:1.6;
+}
+.lead-expand.open{display:block}
+.expand-btn{
+  background:none;border:none;color:var(--grey);font-size:12px;cursor:pointer;
+  padding:0;font-family:'Outfit',sans-serif;transition:color 0.2s;
+}
+.expand-btn:hover{color:var(--white)}
+.lead-answers span{display:block;margin-bottom:4px}
+.lead-answers strong{color:var(--white);font-weight:500}
+.empty{text-align:center;padding:60px 20px;color:var(--grey);font-size:15px}
+.loading{text-align:center;padding:60px 20px;color:var(--grey);font-size:14px}
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:var(--emerald);color:var(--charcoal);font-weight:500;font-size:13px;
+  padding:10px 20px;border-radius:8px;opacity:0;transition:opacity 0.3s;z-index:100;
+}
+.toast.show{opacity:1}
+@media(max-width:600px){
+  .stats{flex-direction:row;flex-wrap:wrap}
+  .stat{min-width:calc(50% - 6px)}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="wordmark"><span class="jovi">Jovi</span><span class="lex">lex</span></div>
+    <div class="header-sub">Audit Leads</div>
+  </div>
+  <button class="filter-btn" onclick="loadLeads()" style="border-color:var(--emerald);color:var(--emerald)">↻ Refresh</button>
+</div>
+
+<div class="stats" id="stats">
+  <div class="stat"><div class="stat-num emerald" id="statTotal">—</div><div class="stat-label">Total leads</div></div>
+  <div class="stat"><div class="stat-num amber" id="statNew">—</div><div class="stat-label">New</div></div>
+  <div class="stat"><div class="stat-num" id="statAvg" style="color:var(--white)">—</div><div class="stat-label">Avg score</div></div>
+  <div class="stat"><div class="stat-num emerald" id="statClosed">—</div><div class="stat-label">Closed</div></div>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" onclick="filterBy('all')">All</button>
+  <button class="filter-btn" onclick="filterBy('new')">New</button>
+  <button class="filter-btn" onclick="filterBy('contacted')">Contacted</button>
+  <button class="filter-btn" onclick="filterBy('proposal')">Proposal</button>
+  <button class="filter-btn" onclick="filterBy('closed')">Closed</button>
+  <button class="filter-btn" onclick="filterBy('nurture')">Nurture</button>
+  <button class="filter-btn" onclick="filterBy('lost')">Lost</button>
+</div>
+
+<div class="leads-list" id="leadsList">
+  <div class="loading">Loading leads…</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL = 'https://xvrykbkancvasfbsjaoy.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2cnlrYmthbmN2YXNmYnNqYW95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExODk5NjYsImV4cCI6MjA5Njc2NTk2Nn0.cXLguSsF_p0dnS25HhNq4AjfLkj6rNA2MZye8pAfXsA';
+
+let allLeads = [];
+let currentFilter = 'all';
+
+async function sbFetch(path, opts = {}) {
+  const res = await fetch(SB_URL + '/rest/v1/' + path, {
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', ...opts.headers },
+    ...opts
+  });
+  return res;
+}
+
+async function loadLeads() {
+  const res = await sbFetch('audit_leads?select=*&order=created_at.desc');
+  allLeads = await res.json();
+  updateStats();
+  renderLeads();
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = allLeads.length;
+  document.getElementById('statNew').textContent = allLeads.filter(l => l.status === 'new').length;
+  document.getElementById('statClosed').textContent = allLeads.filter(l => l.status === 'closed').length;
+  const avg = allLeads.length ? Math.round(allLeads.reduce((s, l) => s + (l.score || 0), 0) / allLeads.length) : 0;
+  document.getElementById('statAvg').textContent = avg + '/50';
+}
+
+function filterBy(status) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderLeads();
+}
+
+function renderLeads() {
+  const list = document.getElementById('leadsList');
+  const filtered = currentFilter === 'all' ? allLeads : allLeads.filter(l => l.status === currentFilter);
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">No leads' + (currentFilter !== 'all' ? ' with status "' + currentFilter + '"' : ' yet') + '</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map((lead, i) => {
+    const score = lead.score || 0;
+    const scoreClass = score <= 20 ? 'low' : score <= 35 ? 'mid' : 'high';
+    const date = new Date(lead.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const time = new Date(lead.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const answers = lead.answers ? Object.entries(lead.answers).map(([k, v]) =>
+      '<span><strong>' + k + ':</strong> ' + (v.label || v) + '</span>'
+    ).join('') : '';
+
+    return '<div class="lead-card">' +
+      '<div class="lead-top">' +
+        '<div>' +
+          '<div class="lead-name">' + (lead.name || 'Unknown') + '</div>' +
+          '<div class="lead-business">' + (lead.business_name || 'No business name') +
+            (lead.industry ? ' · ' + lead.industry : '') +
+            (lead.offering ? ' · ' + lead.offering : '') +
+            (lead.revenue_range ? ' · ' + lead.revenue_range : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="lead-score ' + scoreClass + '">' + score + '<span style="font-size:11px;color:var(--grey);font-weight:300">/50</span></div>' +
+      '</div>' +
+      (lead.weakest_area ? '<div class="lead-weak">Weakest: ' + lead.weakest_area + (lead.weakest_score ? ' (' + lead.weakest_score + '/10)' : '') + '</div>' : '') +
+      '<div class="lead-meta">' +
+        '<a href="mailto:' + (lead.email || '') + '" class="lead-email">' + (lead.email || '') + '</a>' +
+        '<span>' + date + ' · ' + time + '</span>' +
+      '</div>' +
+      '<div class="lead-bottom">' +
+        '<select class="status-select" onchange="updateStatus(\'' + lead.id + '\', this.value)">' +
+          ['new','contacted','proposal','closed','nurture','lost'].map(s =>
+            '<option value="' + s + '"' + (lead.status === s ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>'
+          ).join('') +
+        '</select>' +
+        '<button class="expand-btn" onclick="toggleExpand(this)">View answers ▾</button>' +
+      '</div>' +
+      '<div class="lead-expand">' +
+        (lead.headline ? '<p style="color:var(--white);margin-bottom:8px">' + lead.headline + '</p>' : '') +
+        (lead.recommendation ? '<p style="margin-bottom:8px">' + lead.recommendation + '</p>' : '') +
+        '<div class="lead-answers">' + answers + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function updateStatus(id, status) {
+  await sbFetch('audit_leads?id=eq.' + id, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+    headers: { 'Prefer': 'return=minimal' }
+  });
+  const lead = allLeads.find(l => l.id === id);
+  if (lead) lead.status = status;
+  updateStats();
+  toast('Status → ' + status.charAt(0).toUpperCase() + status.slice(1));
+}
+
+function toggleExpand(btn) {
+  const expand = btn.parentElement.nextElementSibling;
+  expand.classList.toggle('open');
+  btn.textContent = expand.classList.contains('open') ? 'Hide answers ▴' : 'View answers ▾';
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+loadLeads();
+</script>
+</body>
+</html>
