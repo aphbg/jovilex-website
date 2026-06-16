@@ -83,6 +83,63 @@ select.inp{cursor:pointer}
 .onb-step{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #2a2a2a;color:#6B7280}
 .onb-step.done{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#10B981}
 .onb-step.pending{background:transparent;border-color:#2a2a2a;color:#4B5563}
+/* Tabs */
+.tab-bar{display:flex;border-bottom:1px solid #1e1e1e;margin-bottom:20px;gap:0}
+.tab-btn{padding:12px 18px;font-size:13px;color:#6B7280;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;font-family:'Outfit',sans-serif}
+.tab-btn:hover{color:#fff}
+.tab-btn.active{color:#10B981;border-bottom-color:#10B981}
+.tab-btn .cnt{background:#FF7A2E;color:#0a0a0a;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:5px}
+.tab-pnl{display:none}.tab-pnl.active{display:block}
+/* Leads */
+.l-card{background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:border-color .15s}
+.l-card:hover{border-color:rgba(16,185,129,.3)}
+.l-weak{display:inline-block;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);border-radius:4px;padding:2px 7px;font-size:10px;color:#D97706;margin-bottom:6px}
+.l-exp{margin-top:10px;padding-top:10px;border-top:1px solid #1e1e1e;display:none;font-size:12px;color:#6B7280;line-height:1.6}
+.l-exp.open{display:block}
+.l-exp span{display:block;margin-bottom:3px}.l-exp strong{color:#fff;font-weight:500}
+.l-ss{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:5px 24px 5px 8px;color:#fff;font-size:12px;cursor:pointer;outline:none;-webkit-appearance:none;font-family:'Outfit',sans-serif;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%236B7280' stroke-width='1' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.l-ss option{background:#1a1a1a}
+/* Tools grid */
+.t-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.t-link{display:flex;align-items:center;gap:10px;background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:14px;transition:border-color .15s;text-decoration:none;color:#fff}
+.t-link:hover{border-color:rgba(16,185,129,.3)}
+.t-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.t-icon.g{background:rgba(16,185,129,.1)}.t-icon.a{background:rgba(255,122,46,.1)}.t-icon.x{background:rgba(107,114,128,.1)}
+.t-name{font-weight:500;font-size:13px}.t-desc{font-size:10px;color:#6B7280}
+.t-label{font-family:'Sora',sans-serif;font-weight:600;font-size:11px;color:#10B981;letter-spacing:1px;text-transform:uppercase;margin:20px 0 10px}
+.t-label:first-child{margin-top:0}
+/* Dashboard */
+.d-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:700px){.d-stats{grid-template-columns:1fr 1fr}}
+.d-stat{background:#141414;border:1px solid #1e1e1e;border-radius:12px;padding:18px}
+.d-stat-val{font-family:'Sora',sans-serif;font-weight:800;font-size:28px;margin-bottom:2px}
+.d-stat-lbl{font-size:12px;color:#6B7280}
+.d-stat-chg{font-size:11px;margin-top:4px}
+.d-section{margin-bottom:24px}
+.d-section-hdr{font-family:'Sora',sans-serif;font-weight:600;font-size:12px;color:#10B981;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.d-pipeline{display:flex;gap:2px;margin-bottom:20px;border-radius:10px;overflow:hidden}
+.d-pipe-seg{flex:1;padding:14px 12px;text-align:center;position:relative}
+.d-pipe-seg .num{font-family:'Sora',sans-serif;font-weight:700;font-size:20px;color:#fff}
+.d-pipe-seg .lbl{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.d-activity{max-height:320px;overflow-y:auto}
+.d-act-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #1e1e1e}
+.d-act-item:last-child{border-bottom:none}
+.d-act-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.d-act-dot.lead{background:#FF7A2E}.d-act-dot.proj{background:#10B981}.d-act-dot.pay{background:#8B5CF6}
+.d-act-text{font-size:13px;flex:1}
+.d-act-text strong{color:#fff;font-weight:500}
+.d-act-time{font-size:10px;color:#4B5563;white-space:nowrap}
+.d-quick{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.d-quick-btn{display:flex;align-items:center;gap:10px;background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;font-family:'Outfit',sans-serif;font-size:13px;color:#fff}
+.d-quick-btn:hover{border-color:#10B981}
+.d-quick-btn .ico{font-size:16px}
+.d-chart{height:120px;display:flex;align-items:flex-end;gap:4px;padding:0 4px}
+.d-bar{flex:1;background:rgba(16,185,129,.2);border-radius:4px 4px 0 0;min-height:4px;position:relative;transition:height .5s}
+.d-bar:hover{background:rgba(16,185,129,.4)}
+.d-bar-tip{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:#6B7280;white-space:nowrap;display:none}
+.d-bar:hover .d-bar-tip{display:block}
+.d-chart-labels{display:flex;gap:4px;padding:4px 4px 0;font-size:9px;color:#4B5563}
+.d-chart-labels span{flex:1;text-align:center}
 </style>
 </head>
 <body>
@@ -98,11 +155,60 @@ select.inp{cursor:pointer}
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashView" style="display:none">
+<div id="tabContainer" style="display:none">
 <div class="hdr">
 <div class="hdr-l"><div class="logo">Jovi<em>lex</em></div><div class="badge">Admin</div></div>
-<button class="btn btn-p" onclick="showNew()">+ New Project</button>
+<button class="btn btn-g btn-sm" onclick="refreshAll()">↻ Refresh</button>
 </div>
+<div class="tab-bar">
+<div class="tab-btn active" onclick="showTab('dashboard',this)">Dashboard</div>
+<div class="tab-btn" onclick="showTab('leads',this)">Leads <span class="cnt" id="leadCnt">0</span></div>
+<div class="tab-btn" onclick="showTab('projects',this)">Projects</div>
+<div class="tab-btn" onclick="showTab('tools',this)">Tools</div>
+</div>
+
+<!-- DASHBOARD TAB -->
+<div class="tab-pnl active" id="tabDashboard">
+<div class="d-stats" id="dStats"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div class="d-section">
+<div class="d-section-hdr">Pipeline</div>
+<div class="d-pipeline" id="dPipeline"></div>
+</div>
+<div class="d-section">
+<div class="d-section-hdr">Leads This Month</div>
+<div class="d-chart" id="dChart"></div>
+<div class="d-chart-labels" id="dChartLabels"></div>
+</div>
+</div>
+<div class="d-section">
+<div class="d-section-hdr">Recent Activity</div>
+<div class="d-activity" id="dActivity"></div>
+</div>
+<div class="d-section">
+<div class="d-section-hdr">Quick Actions</div>
+<div class="d-quick">
+<div class="d-quick-btn" onclick="navigator.clipboard.writeText('https://jovilex.com/audit');toast('Audit link copied')"><span class="ico">🔗</span> Copy audit link</div>
+<div class="d-quick-btn" onclick="showTab('projects');showNew()"><span class="ico">➕</span> New project</div>
+<div class="d-quick-btn" onclick="showTab('leads',document.querySelectorAll('.tab-btn')[1])"><span class="ico">📊</span> View all leads</div>
+<div class="d-quick-btn" onclick="window.open('/audit','_blank')"><span class="ico">⚡</span> Open audit page</div>
+<div class="d-quick-btn" onclick="window.open('/contact','_blank')"><span class="ico">✉</span> Open contact form</div>
+<div class="d-quick-btn" onclick="window.open('https://instagram.com/jovilex.ai','_blank')"><span class="ico">📸</span> Open Instagram</div>
+</div>
+</div>
+</div>
+
+<!-- LEADS TAB -->
+<div class="tab-pnl" id="tabLeads">
+<div class="g3" id="leadStats" style="margin-bottom:16px"></div>
+<div id="leadFilters" class="filters" style="margin-bottom:12px"></div>
+<div id="leadList"></div>
+</div>
+
+<!-- PROJECTS TAB -->
+<div class="tab-pnl" id="tabProjects">
+<div id="dashView">
+<div style="margin-bottom:16px"><button class="btn btn-p" onclick="showNew()">+ New Project</button></div>
 <div id="projList"></div>
 </div>
 
@@ -231,7 +337,38 @@ select.inp{cursor:pointer}
 <button class="btn btn-d btn-sm" onclick="deleteProj()">Delete project</button>
 </div>
 </div>
+</div><!-- end tabProjects -->
+
+<!-- TOOLS TAB -->
+<div class="tab-pnl" id="tabTools">
+<div class="t-label">Client-Facing</div>
+<div class="t-grid">
+<a href="/audit" target="_blank" class="t-link"><div class="t-icon a">⚡</div><div><div class="t-name">Audit</div><div class="t-desc">Lead generation</div></div></a>
+<a href="/contact" target="_blank" class="t-link"><div class="t-icon g">✉</div><div><div class="t-name">Contact</div><div class="t-desc">Contact form</div></div></a>
+<a href="/intake" target="_blank" class="t-link"><div class="t-icon g">📋</div><div><div class="t-name">Intake</div><div class="t-desc">Client intake</div></div></a>
+<a href="/collect" target="_blank" class="t-link"><div class="t-icon g">📁</div><div><div class="t-name">Collect</div><div class="t-desc">Asset collection</div></div></a>
+<a href="/nda" target="_blank" class="t-link"><div class="t-icon g">🔒</div><div><div class="t-name">NDA</div><div class="t-desc">NDA signing</div></div></a>
+<a href="/sign" target="_blank" class="t-link"><div class="t-icon g">✍</div><div><div class="t-name">Contract</div><div class="t-desc">Contract signing</div></div></a>
+<a href="/pay" target="_blank" class="t-link"><div class="t-icon a">💳</div><div><div class="t-name">Payment</div><div class="t-desc">Payment page</div></div></a>
+<a href="/portal" target="_blank" class="t-link"><div class="t-icon g">🖥</div><div><div class="t-name">Portal</div><div class="t-desc">Client portal</div></div></a>
 </div>
+<div class="t-label">Public</div>
+<div class="t-grid">
+<a href="/" target="_blank" class="t-link"><div class="t-icon x">🌐</div><div><div class="t-name">Website</div><div class="t-desc">jovilex.com</div></div></a>
+<a href="/links" target="_blank" class="t-link"><div class="t-icon x">🔗</div><div><div class="t-name">Links</div><div class="t-desc">Link in bio</div></div></a>
+<a href="https://instagram.com/jovilex.ai" target="_blank" class="t-link"><div class="t-icon x">📸</div><div><div class="t-name">Instagram</div><div class="t-desc">@jovilex.ai</div></div></a>
+<a href="mailto:hello@jovilex.com" class="t-link"><div class="t-icon x">📧</div><div><div class="t-name">Email</div><div class="t-desc">hello@jovilex.com</div></div></a>
+</div>
+<div class="t-label">Internal</div>
+<div class="t-grid">
+<a href="https://xvrykbkancvasfbsjaoy.supabase.co" target="_blank" class="t-link"><div class="t-icon x">🗄</div><div><div class="t-name">Supabase</div><div class="t-desc">Database</div></div></a>
+<a href="https://vercel.com" target="_blank" class="t-link"><div class="t-icon x">▲</div><div><div class="t-name">Vercel</div><div class="t-desc">Hosting</div></div></a>
+<a href="https://github.com/aphbg/jovilex-website" target="_blank" class="t-link"><div class="t-icon x">⌨</div><div><div class="t-name">GitHub</div><div class="t-desc">Repo</div></div></a>
+<a href="https://resend.com" target="_blank" class="t-link"><div class="t-icon x">📨</div><div><div class="t-name">Resend</div><div class="t-desc">Email service</div></div></a>
+</div>
+</div>
+
+</div><!-- end tabContainer -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -247,10 +384,129 @@ function enc(s){return encodeURIComponent(s||'');}
 
 // LOGIN
 document.getElementById('adminPass').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
-function login(){if(document.getElementById('adminPass').value===ADMIN_PASS){document.getElementById('loginView').style.display='none';document.getElementById('dashView').style.display='block';loadProjects();}else toast('Wrong password');}
+function login(){if(document.getElementById('adminPass').value===ADMIN_PASS){document.getElementById('loginView').style.display='none';document.getElementById('tabContainer').style.display='block';loadProjects().then(()=>{loadLeads().then(()=>renderDashboard());});}else toast('Wrong password');}
+
+// TABS
+function showTab(t,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.tab-pnl').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');
+  if(t==='projects'){showDash();}
+}
+function refreshAll(){loadLeads();loadProjects();renderDashboard();}
+
+// DASHBOARD
+function renderDashboard(){
+  // Stats
+  const totalLeads=allLeads.length;
+  const newLeads=allLeads.filter(l=>l.status==='new').length;
+  const closedLeads=allLeads.filter(l=>l.status==='closed').length;
+  const convRate=totalLeads?Math.round(closedLeads/totalLeads*100):0;
+  const totalRev=allProj.reduce((s,p)=>{const v=parseFloat((p.price||'0').replace(/[^0-9.]/g,''));return s+(p.status==='Completed'?v:0);},0);
+  const activeProj=allProj.filter(p=>p.status==='In Progress').length;
+  const thisWeek=allLeads.filter(l=>{const d=new Date(l.created_at);const now=new Date();return(now-d)<7*24*60*60*1000;}).length;
+
+  document.getElementById('dStats').innerHTML=
+    '<div class="d-stat"><div class="d-stat-val" style="color:#10B981">$'+totalRev.toLocaleString()+'</div><div class="d-stat-lbl">Revenue (completed)</div></div>'+
+    '<div class="d-stat"><div class="d-stat-val" style="color:#fff">'+activeProj+'</div><div class="d-stat-lbl">Active projects</div></div>'+
+    '<div class="d-stat"><div class="d-stat-val" style="color:#FF7A2E">'+thisWeek+'</div><div class="d-stat-lbl">Leads this week</div></div>'+
+    '<div class="d-stat"><div class="d-stat-val" style="color:'+(convRate>20?'#10B981':'#D97706')+'">'+convRate+'%</div><div class="d-stat-lbl">Conversion rate</div></div>';
+
+  // Pipeline
+  const pipe=[
+    {s:'new',l:'New',c:'#FF7A2E'},
+    {s:'contacted',l:'Contacted',c:'#D97706'},
+    {s:'proposal',l:'Proposal',c:'#8B5CF6'},
+    {s:'closed',l:'Closed',c:'#10B981'},
+    {s:'nurture',l:'Nurture',c:'#6B7280'},
+    {s:'lost',l:'Lost',c:'#4B5563'}
+  ];
+  document.getElementById('dPipeline').innerHTML=pipe.map(p=>{
+    const n=allLeads.filter(l=>l.status===p.s).length;
+    return '<div class="d-pipe-seg" style="background:'+p.c+'"><div class="num">'+n+'</div><div class="lbl">'+p.l+'</div></div>';
+  }).join('');
+
+  // Chart - leads per day over last 14 days
+  const days=14;const now=new Date();const chart=[];
+  for(let i=days-1;i>=0;i--){
+    const d=new Date(now);d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const count=allLeads.filter(l=>l.created_at&&l.created_at.startsWith(ds)).length;
+    chart.push({date:d,count,label:d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})});
+  }
+  const maxC=Math.max(...chart.map(c=>c.count),1);
+  document.getElementById('dChart').innerHTML=chart.map(c=>
+    '<div class="d-bar" style="height:'+Math.max(4,c.count/maxC*100)+'%"><div class="d-bar-tip">'+c.count+'</div></div>'
+  ).join('');
+  document.getElementById('dChartLabels').innerHTML=chart.map((c,i)=>
+    i%2===0?'<span>'+c.label+'</span>':'<span></span>'
+  ).join('');
+
+  // Activity feed - merge leads and projects, sort by date
+  const activities=[];
+  allLeads.slice(0,10).forEach(l=>{
+    activities.push({type:'lead',text:'<strong>'+(l.name||'Someone')+'</strong> took the audit'+(l.business_name?' for '+l.business_name:'')+(l.score?' — scored '+l.score+'/50':''),time:l.created_at});
+  });
+  allProj.slice(0,5).forEach(p=>{
+    activities.push({type:'proj',text:'Project created: <strong>'+(p.client_name||'')+(p.company?' — '+p.company:'')+'</strong>',time:p.created_at});
+  });
+  activities.sort((a,b)=>new Date(b.time)-new Date(a.time));
+
+  document.getElementById('dActivity').innerHTML=activities.slice(0,12).map(a=>{
+    const d=new Date(a.time);
+    const ago=Math.floor((now-d)/60000);
+    const timeStr=ago<60?ago+'m ago':ago<1440?Math.floor(ago/60)+'h ago':Math.floor(ago/1440)+'d ago';
+    return '<div class="d-act-item"><div class="d-act-dot '+a.type+'"></div><div class="d-act-text">'+a.text+'</div><div class="d-act-time">'+timeStr+'</div></div>';
+  }).join('')||'<div style="color:#4B5563;font-size:13px;padding:16px 0">No activity yet. Share the audit link to get started.</div>';
+}
+
+// LEADS
+let allLeads=[],leadFilter='all';
+async function loadLeads(){
+  const{data}=await sb.from('audit_leads').select('*').order('created_at',{ascending:false});
+  allLeads=data||[];
+  const n=allLeads.filter(l=>l.status==='new').length;
+  document.getElementById('leadCnt').textContent=n;
+  document.getElementById('leadStats').innerHTML=
+    '<div style="background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:12px 16px"><div style="font-family:Sora,sans-serif;font-weight:700;font-size:22px;color:#10B981">'+allLeads.length+'</div><div style="font-size:11px;color:#6B7280">Total</div></div>'+
+    '<div style="background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:12px 16px"><div style="font-family:Sora,sans-serif;font-weight:700;font-size:22px;color:#FF7A2E">'+n+'</div><div style="font-size:11px;color:#6B7280">New</div></div>'+
+    '<div style="background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:12px 16px"><div style="font-family:Sora,sans-serif;font-weight:700;font-size:22px">'+(allLeads.length?Math.round(allLeads.reduce((s,l)=>s+(l.score||0),0)/allLeads.length):0)+'/50</div><div style="font-size:11px;color:#6B7280">Avg</div></div>';
+  document.getElementById('leadFilters').innerHTML=['all','new','contacted','proposal','closed','nurture','lost'].map(s=>
+    '<button class="btn btn-g btn-sm'+(leadFilter===s?' btn-p':'')+'" onclick="leadFilter=\''+s+'\';loadLeads()">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>'
+  ).join('');
+  renderLeads();
+}
+function renderLeads(){
+  const el=document.getElementById('leadList');
+  const f=leadFilter==='all'?allLeads:allLeads.filter(l=>l.status===leadFilter);
+  if(!f.length){el.innerHTML='<div style="color:#4B5563;text-align:center;padding:40px">No leads'+(leadFilter!=='all'?' ('+leadFilter+')':'')+' yet</div>';return;}
+  el.innerHTML=f.map(l=>{
+    const sc=l.score||0;const d=new Date(l.created_at);
+    const ds=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    const ts=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    const ans=l.answers?Object.entries(l.answers).map(([k,v])=>'<span><strong>'+k+':</strong> '+(v.label||v)+'</span>').join(''):'';
+    return '<div class="l-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">'+
+      '<div><div style="font-family:Sora,sans-serif;font-weight:600;font-size:14px">'+(l.name||'?')+'</div>'+
+      '<div style="font-size:12px;color:#6B7280">'+(l.business_name||'')+(l.industry?' · '+l.industry:'')+(l.offering?' · '+l.offering:'')+(l.revenue_range?' · '+l.revenue_range:'')+'</div></div>'+
+      '<div style="font-family:Sora,sans-serif;font-weight:700;font-size:17px;color:'+(sc<=20?'#FF7A2E':sc<=35?'#D97706':'#10B981')+'">'+sc+'<span style="font-size:10px;color:#6B7280">/50</span></div></div>'+
+      (l.weakest_area?'<div class="l-weak">Weakest: '+l.weakest_area+(l.weakest_score?' ('+l.weakest_score+'/10)':'')+'</div>':'')+
+      '<div style="font-size:11px;color:#6B7280;margin-bottom:6px"><a href="mailto:'+(l.email||'')+'" style="color:#10B981;text-decoration:none">'+(l.email||'')+'</a> · '+ds+' · '+ts+'</div>'+
+      '<div style="display:flex;justify-content:space-between;align-items:center">'+
+      '<select class="l-ss" onchange="updLead(\''+l.id+'\',this.value)">'+['new','contacted','proposal','closed','nurture','lost'].map(s=>'<option value="'+s+'"'+(l.status===s?' selected':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</option>').join('')+'</select>'+
+      '<span style="font-size:12px;color:#6B7280;cursor:pointer" onclick="this.nextElementSibling.classList.toggle(\'open\');this.textContent=this.nextElementSibling.classList.contains(\'open\')?\'Hide ▴\':\'Details ▾\'">Details ▾</span></div>'+
+      '<div class="l-exp">'+(l.headline?'<p style="color:#fff;margin-bottom:6px">'+l.headline+'</p>':'')+(l.recommendation?'<p style="margin-bottom:6px">'+l.recommendation+'</p>':'')+ans+'</div></div>';
+  }).join('');
+}
+async function updLead(id,s){await sb.from('audit_leads').update({status:s}).eq('id',id);const l=allLeads.find(x=>x.id===id);if(l)l.status=s;loadLeads();toast('→ '+s);}
 
 // VIEWS
-function showView(id){['dashView','newView','detailView'].forEach(v=>document.getElementById(v).style.display='none');document.getElementById(id).style.display='block';}
+function showView(id){['dashView','newView','detailView'].forEach(v=>document.getElementById(v).style.display='none');document.getElementById(id).style.display='block';
+  // Ensure projects tab is active
+  document.querySelectorAll('.tab-pnl').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tabProjects').classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');if(b.textContent.includes('Projects'))b.classList.add('active');});
+}
 function showDash(){showView('dashView');loadProjects();}
 
 // DASHBOARD
