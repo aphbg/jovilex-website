@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in Touch | Jovilex</title>
+<meta name="description" content="Ready to close the gaps in your business? Start a conversation with Jovilex.">
+<meta property="og:title" content="Get in Touch | Jovilex">
+<meta property="og:description" content="Ready to close the gaps? Start a conversation with Jovilex.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='8' y='24' font-family='sans-serif' font-weight='800' font-size='20' fill='white'%3EJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --charcoal:#111111;
+  --deep-black:#1A1A1A;
+  --emerald:#10B981;
+  --emerald-dim:rgba(16,185,129,0.15);
+  --amber:#FF7A2E;
+  --white:#FFFFFF;
+  --grey:#6B7280;
+  --slate:#1F2937;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--charcoal);
+  color:var(--white);
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  -webkit-font-smoothing:antialiased;
+}
+.container{
+  width:100%;
+  max-width:480px;
+  min-height:100dvh;
+  padding:24px 20px;
+  display:flex;
+  flex-direction:column;
+}
+.wordmark{
+  font-family:'Sora',sans-serif;
+  font-weight:800;
+  font-size:20px;
+  letter-spacing:-0.5px;
+  margin-bottom:8px;
+  text-align:center;
+}
+.wordmark .jovi{color:var(--white)}
+.wordmark .lex{color:var(--emerald)}
+.tagline{
+  font-size:11px;
+  font-weight:300;
+  color:var(--grey);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-align:center;
+  margin-bottom:40px;
+}
+.content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.page-title{
+  font-family:'Sora',sans-serif;
+  font-weight:700;
+  font-size:24px;
+  line-height:1.2;
+  letter-spacing:-0.5px;
+  margin-bottom:4px;
+}
+.page-sub{
+  font-size:15px;
+  color:var(--grey);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:20px;
+}
+.input-field,.select-field,.textarea-field{
+  background:var(--deep-black);
+  border:1.5px solid var(--slate);
+  border-radius:8px;
+  padding:13px 16px;
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-size:15px;
+  font-weight:400;
+  outline:none;
+  transition:border-color 0.2s;
+  width:100%;
+}
+.input-field::placeholder,.textarea-field::placeholder{color:var(--grey)}
+.input-field:focus,.select-field:focus,.textarea-field:focus{border-color:var(--emerald)}
+.select-field{
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+}
+.select-field option{background:var(--deep-black);color:var(--white)}
+.textarea-field{
+  min-height:100px;
+  resize:vertical;
+  line-height:1.5;
+}
+.submit-btn{
+  width:100%;
+  background:var(--emerald);
+  color:var(--charcoal);
+  font-family:'Outfit',sans-serif;
+  font-weight:500;
+  font-size:15px;
+  padding:14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:opacity 0.2s, transform 0.15s;
+}
+.submit-btn:hover{opacity:0.9;transform:translateY(-1px)}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.form-note{
+  font-size:12px;
+  color:var(--grey);
+  font-weight:300;
+  text-align:center;
+  margin-top:8px;
+}
+/* Success state */
+.success-screen{
+  flex:1;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:16px;
+  animation:fadeUp 0.35s ease both;
+}
+.success-screen.active{display:flex}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.success-icon{
+  width:56px;height:56px;
+  border-radius:14px;
+  background:var(--emerald-dim);
+  display:flex;align-items:center;justify-content:center;
+}
+.success-title{
+  font-family:'Sora',sans-serif;
+  font-weight:700;
+  font-size:22px;
+}
+.success-sub{
+  font-size:15px;
+  color:var(--grey);
+  line-height:1.6;
+  max-width:340px;
+}
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--emerald);
+  font-size:14px;
+  text-decoration:none;
+  margin-top:8px;
+}
+.back-link:hover{text-decoration:underline}
+.footer{
+  text-align:center;
+  padding:20px 0 8px;
+  font-size:11px;
+  color:var(--grey);
+  font-weight:300;
+  letter-spacing:0.5px;
+  margin-top:auto;
+}
+.footer a{color:var(--emerald);text-decoration:none}
+@media(min-width:520px){
+  .page-title{font-size:28px}
+  .container{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="wordmark"><span class="jovi">Jovi</span><span class="lex">lex</span></div>
+  <div class="tagline">Get in Touch</div>
+
+  <!-- FORM -->
+  <div class="content" id="formView">
+    <div class="page-title">Ready to close the gaps?</div>
+    <p class="page-sub">Tell us what you need. We respond within 24 hours with a clear next step — not a sales pitch.</p>
+    <div class="form-group">
+      <input type="text" class="input-field" id="cName" placeholder="Your name" autocomplete="name">
+      <input type="email" class="input-field" id="cEmail" placeholder="Email address" autocomplete="email">
+      <input type="text" class="input-field" id="cBusiness" placeholder="Business name">
+      <select class="select-field" id="cNeed">
+        <option value="" disabled selected>What do you need help with?</option>
+        <option value="Brand & Digital Presence">Brand & digital presence</option>
+        <option value="Customer Acquisition">Customer acquisition</option>
+        <option value="Operations & Systems">Operations & systems</option>
+        <option value="Revenue Infrastructure">Revenue infrastructure</option>
+        <option value="Team & Leadership">Team & leadership</option>
+        <option value="Full Business Architecture">Full business architecture</option>
+        <option value="Something Else">Something else</option>
+      </select>
+      <textarea class="textarea-field" id="cMessage" placeholder="Anything else you want us to know (optional)"></textarea>
+    </div>
+    <button class="submit-btn" id="cSubmit" onclick="submitContact()">Send</button>
+    <p class="form-note">No spam. No sales calls. Just a clear response.</p>
+    <p style="color:#FF7A2E;font-size:13px;text-align:center;min-height:18px;margin-top:4px;" id="cError"></p>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successView">
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="success-title">Message sent.</div>
+    <p class="success-sub">We'll review your details and respond within 24 hours with a clear next step.</p>
+    <a class="back-link" href="https://jovilex.com">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to jovilex.com
+    </a>
+  </div>
+
+  <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
+</div>
+
+<script>
+async function submitContact() {
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const business = document.getElementById('cBusiness').value.trim();
+  const need = document.getElementById('cNeed').value;
+  const message = document.getElementById('cMessage').value.trim();
+  const errEl = document.getElementById('cError');
+  const btn = document.getElementById('cSubmit');
+
+  errEl.textContent = '';
+  if (!name) { errEl.textContent = 'Please enter your name.'; return; }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    errEl.textContent = 'Please enter a valid email address.'; return;
+  }
+  if (!business) { errEl.textContent = 'Please enter your business name.'; return; }
+  if (!need) { errEl.textContent = 'Please select what you need help with.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    // Web3Forms submission
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: window.__w3key,
+        subject: 'New Contact: ' + business + ' — ' + need,
+        from_name: 'Jovilex Contact',
+        name,
+        email,
+        business,
+        need,
+        message: message || 'No additional message'
+      })
+    });
+
+    if (res.ok) {
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').classList.add('active');
+    } else {
+      throw new Error('Submit failed');
+    }
+  } catch (err) {
+    // Fallback: also try Resend via API route
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, business, need, message })
+      });
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').classList.add('active');
+    } catch (e) {
+      errEl.textContent = 'Something went wrong. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Send';
+    }
+  }
+}
+
+// Web3Forms access key — paste your key between the quotes below
+window.__w3key = 'e699c895-f30a-4e8f-91b3-66bf4cd37b59';
+
+// Check URL params for pre-fill from audit
+const params = new URLSearchParams(window.location.search);
+if (params.get('from') === 'audit') {
+  const needMap = {
+    'Brand & Digital Presence': 'Brand & Digital Presence',
+    'Customer Acquisition': 'Customer Acquisition',
+    'Operations & Systems': 'Operations & Systems',
+    'Revenue Infrastructure': 'Revenue Infrastructure',
+    'Team & Leadership': 'Team & Leadership'
+  };
+  const area = params.get('area');
+  if (area && needMap[area]) {
+    document.getElementById('cNeed').value = needMap[area];
+  }
+}
+</script>
+</body>
+</html>

@@ -47,8 +47,6 @@ body{
   flex-direction:column;
   position:relative;
 }
-
-/* ── Wordmark ── */
 .wordmark{
   font-family:'Sora',sans-serif;
   font-weight:800;
@@ -68,14 +66,12 @@ body{
   text-align:center;
   margin-bottom:32px;
 }
-
-/* ── Progress bar ── */
 .progress-wrap{
   width:100%;
   height:3px;
   background:var(--slate);
   border-radius:2px;
-  margin-bottom:40px;
+  margin-bottom:24px;
   overflow:hidden;
   opacity:0;
   transition:opacity 0.3s;
@@ -88,8 +84,6 @@ body{
   width:0%;
   transition:width 0.4s ease;
 }
-
-/* ── Screens ── */
 .screen{
   flex:1;
   display:none;
@@ -101,8 +95,6 @@ body{
   from{opacity:0;transform:translateY(16px)}
   to{opacity:1;transform:translateY(0)}
 }
-
-/* ── Landing ── */
 .landing-content{
   flex:1;
   display:flex;
@@ -159,8 +151,24 @@ h1 .em{color:var(--emerald)}
   color:var(--grey);
   font-weight:300;
 }
-
-/* ── Questions ── */
+/* Back button */
+.back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:none;
+  border:none;
+  color:var(--grey);
+  font-family:'Outfit',sans-serif;
+  font-size:13px;
+  cursor:pointer;
+  padding:0;
+  margin-bottom:16px;
+  transition:color 0.2s;
+}
+.back-btn:hover{color:var(--white)}
+.back-btn svg{width:16px;height:16px}
+/* Questions */
 .q-number{
   font-family:'Sora',sans-serif;
   font-weight:600;
@@ -218,8 +226,7 @@ h1 .em{color:var(--emerald)}
   transition:background 0.2s, color 0.2s;
 }
 .option-btn:hover .key{background:var(--emerald);color:var(--charcoal)}
-
-/* ── Email capture ── */
+/* Email capture */
 .email-screen{gap:8px}
 .email-icon{
   width:48px;
@@ -250,7 +257,7 @@ h1 .em{color:var(--emerald)}
   gap:12px;
   margin-bottom:20px;
 }
-.input-field{
+.input-field,.select-field{
   background:var(--deep-black);
   border:1.5px solid var(--slate);
   border-radius:8px;
@@ -261,9 +268,14 @@ h1 .em{color:var(--emerald)}
   font-weight:400;
   outline:none;
   transition:border-color 0.2s;
+  width:100%;
 }
 .input-field::placeholder{color:var(--grey)}
-.input-field:focus{border-color:var(--emerald)}
+.input-field:focus,.select-field:focus{border-color:var(--emerald)}
+.select-field{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+.select-field option{background:var(--deep-black);color:var(--white)}
+.input-row{display:flex;gap:12px}
+.input-row>*{flex:1}
 .submit-btn{
   width:100%;
   background:var(--emerald);
@@ -286,8 +298,7 @@ h1 .em{color:var(--emerald)}
   text-align:center;
   margin-top:8px;
 }
-
-/* ── Loading ── */
+/* Loading */
 .loading-screen{
   align-items:center;
   justify-content:center;
@@ -302,11 +313,7 @@ h1 .em{color:var(--emerald)}
   animation:spin 0.8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{
-  font-size:15px;
-  color:var(--grey);
-  line-height:1.6;
-}
+.loading-text{font-size:15px;color:var(--grey);line-height:1.6}
 .loading-status{
   font-family:'Sora',sans-serif;
   font-weight:600;
@@ -314,8 +321,7 @@ h1 .em{color:var(--emerald)}
   color:var(--emerald);
   min-height:20px;
 }
-
-/* ── Teaser result ── */
+/* Result */
 .result-screen{gap:12px}
 .score-ring{
   width:120px;height:120px;
@@ -344,11 +350,7 @@ h1 .em{color:var(--emerald)}
   font-size:32px;
   line-height:1;
 }
-.score-of{
-  font-size:12px;
-  color:var(--grey);
-  font-weight:300;
-}
+.score-of{font-size:12px;color:var(--grey);font-weight:300}
 .result-headline{
   font-family:'Sora',sans-serif;
   font-weight:700;
@@ -377,33 +379,11 @@ h1 .em{color:var(--emerald)}
   font-size:16px;
   margin-bottom:4px;
 }
-.weak-score-bar{
-  display:flex;align-items:center;gap:8px;
-  margin-bottom:10px;
-}
-.bar-track{
-  flex:1;height:6px;
-  background:var(--slate);
-  border-radius:3px;overflow:hidden;
-}
-.bar-fill{
-  height:100%;border-radius:3px;
-  background:var(--amber);
-  transition:width 1s ease 0.3s;
-  width:0%;
-}
-.bar-val{
-  font-family:'Sora',sans-serif;
-  font-weight:600;
-  font-size:13px;
-  color:var(--amber);
-  min-width:32px;
-}
-.rec-text{
-  font-size:14px;
-  color:var(--grey);
-  line-height:1.5;
-}
+.weak-score-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.bar-track{flex:1;height:6px;background:var(--slate);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:var(--amber);transition:width 1s ease 0.3s;width:0%}
+.bar-val{font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:var(--amber);min-width:32px}
+.rec-text{font-size:14px;color:var(--grey);line-height:1.5}
 .rec-text strong{color:var(--white);font-weight:500}
 .email-sent-note{
   background:var(--emerald-dim);
@@ -436,6 +416,25 @@ h1 .em{color:var(--emerald)}
   margin-top:8px;
 }
 .book-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,122,46,0.3)}
+.share-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  background:var(--deep-black);
+  border:1.5px solid var(--slate);
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-weight:400;
+  font-size:14px;
+  padding:12px 24px;
+  border-radius:8px;
+  cursor:pointer;
+  text-decoration:none;
+  transition:border-color 0.2s;
+  align-self:center;
+}
+.share-btn:hover{border-color:var(--emerald)}
 .restart-link{
   font-size:13px;
   color:var(--grey);
@@ -444,8 +443,6 @@ h1 .em{color:var(--emerald)}
   margin-top:4px;
 }
 .restart-link:hover{color:var(--white)}
-
-/* ── Error ── */
 .error-msg{
   color:var(--amber);
   font-size:13px;
@@ -453,8 +450,6 @@ h1 .em{color:var(--emerald)}
   min-height:18px;
   margin-top:4px;
 }
-
-/* ── Footer ── */
 .footer{
   text-align:center;
   padding:20px 0 8px;
@@ -465,8 +460,6 @@ h1 .em{color:var(--emerald)}
   margin-top:auto;
 }
 .footer a{color:var(--emerald);text-decoration:none}
-
-/* ── Responsive ── */
 @media(min-width:520px){
   h1{font-size:32px}
   .q-text{font-size:24px}
@@ -475,21 +468,17 @@ h1 .em{color:var(--emerald)}
 </style>
 </head>
 <body>
-
 <div class="container">
-  <!-- Wordmark -->
   <div class="wordmark"><span class="jovi">Jovi</span><span class="lex">lex</span></div>
   <div class="tagline">Business Audit</div>
-
-  <!-- Progress -->
   <div class="progress-wrap" id="progressWrap">
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <!-- ═══ SCREEN: Landing ═══ -->
+  <!-- LANDING -->
   <div class="screen active" id="screenLanding">
     <div class="landing-content">
-      <div class="hero-label">Free &middot; 60 Seconds &middot; AI-Powered</div>
+      <div class="hero-label">Free · 60 Seconds · AI-Powered</div>
       <h1>Find out where your business is <span class="em">leaking revenue</span></h1>
       <p class="hero-sub">Answer ten quick questions. Our AI analyses your answers and delivers a <strong>personalised audit</strong> with scores across five areas and specific recommendations to fix what matters most.</p>
       <button class="cta-btn" onclick="startAudit()">
@@ -501,24 +490,50 @@ h1 .em{color:var(--emerald)}
     <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
   </div>
 
-  <!-- ═══ SCREEN: Questions (dynamic) ═══ -->
+  <!-- QUESTIONS -->
   <div class="screen" id="screenQuestion">
+    <button class="back-btn" id="backBtn" onclick="goBack()">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
     <div class="q-number" id="qNumber"></div>
     <div class="q-text" id="qText"></div>
     <div class="options" id="qOptions"></div>
     <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
   </div>
 
-  <!-- ═══ SCREEN: Email Capture ═══ -->
+  <!-- EMAIL CAPTURE -->
   <div class="screen email-screen" id="screenEmail">
+    <button class="back-btn" onclick="goBackFromEmail()">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
     <div class="email-icon">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <div class="email-title">Your audit is ready.</div>
-    <p class="email-sub">Enter your details below to receive the full personalised report — five area scores, your top three gaps, and specific recommendations.</p>
+    <p class="email-sub">Tell us a bit about your business so we can personalise your report.</p>
     <div class="input-group">
       <input type="text" class="input-field" id="inputName" placeholder="Your first name" autocomplete="given-name">
-      <input type="email" class="input-field" id="inputEmail" placeholder="Your email address" autocomplete="email">
+      <input type="text" class="input-field" id="inputBusiness" placeholder="Business name">
+      <div class="input-row">
+        <select class="select-field" id="inputOffering">
+          <option value="" disabled selected>What you sell</option>
+          <option value="Products">Products</option>
+          <option value="Services">Services</option>
+          <option value="Software">Software</option>
+          <option value="A mix">A mix</option>
+        </select>
+        <select class="select-field" id="inputRevenue">
+          <option value="" disabled selected>Revenue range</option>
+          <option value="Pre-revenue">Pre-revenue</option>
+          <option value="Under $10k/mo">Under $10k/mo</option>
+          <option value="$10k-$50k/mo">$10k–$50k/mo</option>
+          <option value="Over $50k/mo">Over $50k/mo</option>
+        </select>
+      </div>
+      <input type="text" class="input-field" id="inputIndustry" placeholder="Industry or sector">
+      <input type="email" class="input-field" id="inputEmail" placeholder="Email address" autocomplete="email">
     </div>
     <button class="submit-btn" id="submitBtn" onclick="submitAudit()">Get My Audit Report</button>
     <p class="email-note">We send your report and nothing else. No spam.</p>
@@ -526,16 +541,16 @@ h1 .em{color:var(--emerald)}
     <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
   </div>
 
-  <!-- ═══ SCREEN: Loading ═══ -->
+  <!-- LOADING -->
   <div class="screen loading-screen" id="screenLoading">
     <div class="spinner"></div>
     <div>
-      <p class="loading-text">Analysing your answers&hellip;</p>
+      <p class="loading-text">Analysing your answers…</p>
       <p class="loading-status" id="loadingStatus">Building your audit</p>
     </div>
   </div>
 
-  <!-- ═══ SCREEN: Teaser Result ═══ -->
+  <!-- RESULT -->
   <div class="screen result-screen" id="screenResult">
     <div class="score-ring" id="scoreRing">
       <svg viewBox="0 0 120 120">
@@ -549,7 +564,7 @@ h1 .em{color:var(--emerald)}
     </div>
     <div class="result-headline" id="resultHeadline"></div>
     <div class="weak-card">
-      <div class="weak-label">Your biggest gap</div>
+      <div class="weak-label">Biggest gap</div>
       <div class="weak-area" id="weakArea"></div>
       <div class="weak-score-bar">
         <div class="bar-track"><div class="bar-fill" id="weakBar"></div></div>
@@ -559,49 +574,47 @@ h1 .em{color:var(--emerald)}
     </div>
     <div class="email-sent-note">
       <strong>Full report sent to your inbox.</strong><br>
-      Five area scores, top three gaps, estimated revenue impact, and a clear action plan.
+      Five area scores, detailed gaps, revenue impact estimates, and a clear action plan.
     </div>
-    <a class="book-btn" href="https://jovilex.com" target="_blank">
-      Want us to close these gaps?
+    <a class="book-btn" id="ctaBtn" href="https://jovilex.com/contact" target="_blank">
+      Let's fix this — get in touch
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
+    <button class="share-btn" onclick="shareAudit()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8v5a1 1 0 001 1h6a1 1 0 001-1V8M11 4L8 1M8 1L5 4M8 1v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Know someone who should take this?
+    </button>
     <div class="restart-link" onclick="restart()">Take the audit again</div>
     <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
   </div>
 </div>
 
 <script>
-// ── Questions ──
 const questions = [
   {
-    id: 'offering',
-    text: 'What does your business primarily offer?',
-    options: ['Physical products', 'Digital products or software', 'Services', 'A mix of these']
-  },
-  {
     id: 'discovery',
-    text: 'How do most of your customers find you right now?',
-    options: ['Word of mouth and referrals', 'Social media', 'My website or online presence', 'They don\'t — I\'m still figuring this out']
+    text: 'How do customers find you right now?',
+    options: ['Word of mouth / referrals', 'Website or social media', 'Paid advertising or SEO', 'A combination of channels']
   },
   {
     id: 'presence',
-    text: 'What best describes your online presence?',
-    options: ['A professional website that brings in leads', 'A website, but it doesn\'t do much', 'Just social media pages', 'Almost nothing online']
+    text: 'What does your online presence look like?',
+    options: ['Website and social media', 'Social media only', 'Website only', 'Not online yet']
+  },
+  {
+    id: 'conversion',
+    text: 'When someone shows interest in your business, what happens next?',
+    options: ['A clear process — they book, get a proposal, or buy', 'I follow up manually when I can', 'It depends — there\'s no set process', 'I usually lose them before anything happens']
   },
   {
     id: 'payments',
     text: 'How do you handle payments and bookings?',
-    options: ['Automated online system', 'Manual invoicing or bank transfers', 'Cash, POS, or mobile money only', 'No consistent system']
-  },
-  {
-    id: 'bottleneck',
-    text: 'What\'s the biggest bottleneck in your business right now?',
-    options: ['Getting enough customers', 'Delivering consistently at quality', 'Managing day-to-day operations', 'Everything feels stuck']
+    options: ['Automated online system', 'A mix of methods', 'Manual invoicing or transfers only', 'No consistent system']
   },
   {
     id: 'operations',
     text: 'How do you manage your daily operations?',
-    options: ['Dedicated software tools', 'Spreadsheets and documents', 'WhatsApp groups and notes', 'Mostly in my head']
+    options: ['Dedicated software tools', 'Spreadsheets and documents', 'Messaging apps and notes', 'Mostly in my head']
   },
   {
     id: 'dependency',
@@ -609,19 +622,24 @@ const questions = [
     options: ['It would keep running almost normally', 'A few things would slow down', 'Most things would stall', 'It would basically stop']
   },
   {
-    id: 'revenue',
-    text: 'What\'s your approximate monthly revenue?',
-    options: ['Pre-revenue or just starting', 'Under $10,000', '$10,000 – $50,000', 'Over $50,000']
+    id: 'bottleneck',
+    text: 'What\'s the biggest bottleneck in your business right now?',
+    options: ['Getting enough customers', 'Delivering consistently at quality', 'Managing day-to-day operations', 'Multiple things at once']
   },
   {
-    id: 'priority',
-    text: 'What would make the biggest difference in the next 90 days?',
-    options: ['More customers walking through the door', 'Better systems so things run without me', 'A proper digital presence that builds trust', 'Clarity on what to focus on first']
+    id: 'tried',
+    text: 'What have you already tried to fix that?',
+    options: ['Hired help or outsourced', 'Invested in tools or software', 'Tried different strategies myself', 'Nothing structured yet']
   },
   {
     id: 'admin_time',
     text: 'How much of your week is spent on tasks that don\'t directly generate revenue?',
-    options: ['Most of it — I\'m buried in admin', 'About half — it\'s a constant pull', 'Some, but I manage', 'Very little — my systems handle it']
+    options: ['Most of it', 'About half', 'Some of it', 'Very little']
+  },
+  {
+    id: 'priority',
+    text: 'What would make the biggest difference in the next 90 days?',
+    options: ['More customers', 'Better systems and processes', 'A stronger digital presence', 'Clarity on what to focus on first']
   }
 ];
 
@@ -629,12 +647,9 @@ const keys = ['A','B','C','D'];
 let currentQ = 0;
 let answers = {};
 
-// ── Navigation ──
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const screen = document.getElementById(id);
-  screen.classList.remove('active');
-  // Force reflow for animation restart
   void screen.offsetWidth;
   screen.classList.add('active');
 }
@@ -656,14 +671,15 @@ function startAudit() {
 
 function renderQuestion() {
   const q = questions[currentQ];
-  document.getElementById('qNumber').textContent = `QUESTION ${currentQ + 1} OF ${questions.length}`;
+  document.getElementById('qNumber').textContent = 'QUESTION ' + (currentQ + 1) + ' OF ' + questions.length;
   document.getElementById('qText').textContent = q.text;
+  document.getElementById('backBtn').style.display = currentQ === 0 ? 'none' : 'inline-flex';
   const optWrap = document.getElementById('qOptions');
   optWrap.innerHTML = '';
   q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.innerHTML = `<span class="key">${keys[i]}</span><span>${opt}</span>`;
+    btn.innerHTML = '<span class="key">' + keys[i] + '</span><span>' + opt + '</span>';
     btn.onclick = () => selectOption(q.id, i, opt);
     optWrap.appendChild(btn);
   });
@@ -683,16 +699,38 @@ function selectOption(qId, index, label) {
   }
 }
 
-// ── Submit ──
+function goBack() {
+  if (currentQ > 0) {
+    currentQ--;
+    updateProgress();
+    showScreen('screenQuestion');
+    renderQuestion();
+  }
+}
+
+function goBackFromEmail() {
+  currentQ = questions.length - 1;
+  document.getElementById('progressWrap').classList.add('visible');
+  updateProgress();
+  showScreen('screenQuestion');
+  renderQuestion();
+}
+
 async function submitAudit() {
   const name = document.getElementById('inputName').value.trim();
+  const business = document.getElementById('inputBusiness').value.trim();
+  const offering = document.getElementById('inputOffering').value;
+  const revenue = document.getElementById('inputRevenue').value;
+  const industry = document.getElementById('inputIndustry').value.trim();
   const email = document.getElementById('inputEmail').value.trim();
   const errEl = document.getElementById('errorMsg');
   const btn = document.getElementById('submitBtn');
 
   errEl.textContent = '';
-
   if (!name) { errEl.textContent = 'Please enter your name.'; return; }
+  if (!business) { errEl.textContent = 'Please enter your business name.'; return; }
+  if (!offering) { errEl.textContent = 'Please select what you sell.'; return; }
+  if (!revenue) { errEl.textContent = 'Please select a revenue range.'; return; }
   if (!email || !email.includes('@') || !email.includes('.')) {
     errEl.textContent = 'Please enter a valid email address.'; return;
   }
@@ -701,7 +739,6 @@ async function submitAudit() {
   btn.textContent = 'Generating your audit…';
   showScreen('screenLoading');
 
-  // Rotate loading messages
   const msgs = ['Scoring your business', 'Identifying gaps', 'Writing recommendations', 'Finalising your report'];
   let mi = 0;
   const loadInt = setInterval(() => {
@@ -713,37 +750,30 @@ async function submitAudit() {
     const res = await fetch('/api/audit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, answers })
+      body: JSON.stringify({ name, business, offering, revenue, industry, email, answers })
     });
-
     clearInterval(loadInt);
-
     if (!res.ok) throw new Error('Server error');
-
     const data = await res.json();
-    showTeaser(data, name);
+    showTeaser(data, name, business);
   } catch (err) {
     clearInterval(loadInt);
-    // Fallback: generate a client-side approximation
-    const fallback = generateFallback(name);
-    showTeaser(fallback, name);
+    const fallback = generateFallback(name, business);
+    showTeaser(fallback, name, business);
     console.error('API error, showing fallback:', err);
   }
 }
 
-// ── Teaser Display ──
-function showTeaser(data, name) {
+function showTeaser(data, name, business) {
   showScreen('screenResult');
-
   const score = data.score || 25;
   const ring = document.getElementById('scoreRing');
   const fill = document.getElementById('scoreFill');
-  const circumference = 2 * Math.PI * 54; // 339.292
+  const circumference = 2 * Math.PI * 54;
 
   if (score <= 20) ring.classList.add('poor');
   else ring.classList.remove('poor');
 
-  // Animate score number
   const numEl = document.getElementById('scoreNum');
   let current = 0;
   const step = Math.max(1, Math.floor(score / 30));
@@ -753,51 +783,34 @@ function showTeaser(data, name) {
     numEl.textContent = current;
   }, 40);
 
-  // Animate ring
   setTimeout(() => {
     fill.style.strokeDashoffset = circumference - (score / 50 * circumference);
   }, 100);
 
-  // Headline
   let headline = '';
-  if (score >= 40) headline = `Strong foundation, ${name}. A few targeted fixes unlock serious growth.`;
-  else if (score >= 28) headline = `Solid start, ${name}. There\'s clear upside sitting on the table.`;
-  else headline = `${name}, there\'s significant revenue being left on the table.`;
+  if (score >= 40) headline = name + ', ' + business + ' has a strong foundation. A few targeted fixes unlock serious growth.';
+  else if (score >= 28) headline = name + ', ' + business + ' has a solid start. There\'s clear upside sitting on the table.';
+  else headline = name + ', there\'s significant revenue ' + business + ' is leaving on the table.';
   document.getElementById('resultHeadline').textContent = headline;
 
-  // Weakest area
   document.getElementById('weakArea').textContent = data.weakestArea || 'Operations & Systems';
+  const weakArea = data.weakestArea || 'Operations & Systems';
   const weakScore = data.weakestScore || 4;
-  document.getElementById('weakVal').textContent = `${weakScore}/10`;
+  document.getElementById('weakVal').textContent = weakScore + '/10';
   setTimeout(() => {
     document.getElementById('weakBar').style.width = (weakScore / 10 * 100) + '%';
   }, 200);
 
-  // Recommendation
+  // Update CTA with audit context
+  const ctaBtn = document.getElementById('ctaBtn');
+  ctaBtn.href = 'https://jovilex.com/contact?from=audit&area=' + encodeURIComponent(weakArea);
+
   document.getElementById('recText').innerHTML = data.recommendation ||
     '<strong>Recommendation:</strong> Start by building a system for the work you repeat every week. The hours you recover go straight into revenue-generating activity.';
 }
 
-// ── Fallback (client-side scoring if API fails) ──
-function generateFallback(name) {
-  let score = 0;
+function generateFallback(name, business) {
   const a = answers;
-
-  // Rough scoring per question (index 0 = best, 3 = worst)
-  const scoring = {
-    offering: [8, 7, 7, 9],
-    discovery: [7, 8, 9, 3],
-    presence: [10, 5, 4, 2],
-    payments: [10, 6, 4, 2],
-    bottleneck: [6, 6, 5, 3],
-    operations: [10, 6, 4, 2],
-    dependency: [10, 7, 4, 2],
-    revenue: [3, 5, 8, 10],
-    priority: [6, 7, 5, 4],
-    admin_time: [2, 5, 7, 10]
-  };
-
-  // Calculate area scores
   const areas = {
     'Brand & Digital Presence': 0,
     'Customer Acquisition': 0,
@@ -806,25 +819,25 @@ function generateFallback(name) {
     'Team & Leadership': 0
   };
 
-  const pIdx = a.presence?.index ?? 2;
   const dIdx = a.discovery?.index ?? 3;
+  const pIdx = a.presence?.index ?? 3;
+  const cIdx = a.conversion?.index ?? 2;
   const payIdx = a.payments?.index ?? 2;
   const opsIdx = a.operations?.index ?? 2;
-  const admIdx = a.admin_time?.index ?? 1;
-  const botIdx = a.bottleneck?.index ?? 2;
-  const revIdx = a.revenue?.index ?? 1;
   const depIdx = a.dependency?.index ?? 2;
+  const botIdx = a.bottleneck?.index ?? 3;
+  const admIdx = a.admin_time?.index ?? 1;
   const priIdx = a.priority?.index ?? 0;
 
-  areas['Brand & Digital Presence'] = Math.round(([10,5,4,2][pIdx] + [7,8,9,3][dIdx]) / 2);
-  areas['Customer Acquisition'] = Math.round(([7,8,9,3][dIdx] + [6,6,5,3][botIdx] + [6,7,5,4][priIdx]) / 3);
-  areas['Operations & Systems'] = Math.round(([10,6,4,2][payIdx] + [10,6,4,2][opsIdx] + [2,5,7,10][admIdx]) / 3);
-  areas['Revenue Infrastructure'] = Math.round(([10,6,4,2][payIdx] + [3,5,8,10][revIdx]) / 2);
-  areas['Team & Leadership'] = Math.round(([10,7,4,2][depIdx] + [6,6,5,3][botIdx] + [6,7,5,4][priIdx]) / 3);
+  // Scoring: index 0 = strongest, 3 = weakest
+  areas['Brand & Digital Presence'] = Math.round(([7,5,6,2][pIdx] + [6,8,7,5][dIdx]) / 2);
+  areas['Customer Acquisition'] = Math.round(([6,8,7,5][dIdx] + [10,6,4,2][cIdx] + [6,7,6,4][priIdx]) / 3);
+  areas['Operations & Systems'] = Math.round(([10,5,5,2][payIdx] + [10,7,4,2][opsIdx] + [2,5,7,10][admIdx]) / 3);
+  areas['Revenue Infrastructure'] = Math.round(([10,5,5,2][payIdx] + [10,6,4,2][cIdx]) / 2);
+  areas['Team & Leadership'] = Math.round(([10,7,4,2][depIdx] + [6,6,5,3][botIdx] + [6,7,6,4][priIdx]) / 3);
 
-  score = Object.values(areas).reduce((s, v) => s + v, 0);
+  const score = Math.min(50, Math.max(5, Object.values(areas).reduce((s, v) => s + v, 0)));
 
-  // Find weakest
   let weakest = '';
   let weakVal = 11;
   for (const [area, val] of Object.entries(areas)) {
@@ -832,26 +845,42 @@ function generateFallback(name) {
   }
 
   const recs = {
-    'Brand & Digital Presence': '<strong>Recommendation:</strong> Your online presence is the first thing a potential customer sees. A professional site that communicates what you do and converts visitors into enquiries changes the entire pipeline.',
-    'Customer Acquisition': '<strong>Recommendation:</strong> You need a repeatable way to reach the people who already want what you sell. Start with the channel closest to a conversation — direct outreach to the people who already know you.',
+    'Brand & Digital Presence': '<strong>Recommendation:</strong> Your online presence needs to do more than exist — it needs to convert. A clear, professional digital footprint is the first thing any potential client evaluates.',
+    'Customer Acquisition': '<strong>Recommendation:</strong> You need a repeatable way to reach the people who already want what you sell. Start with the channel closest to a conversation — direct outreach to people who already know you.',
     'Operations & Systems': '<strong>Recommendation:</strong> Build a system for the work you repeat every week. Every hour recovered from manual operations is an hour that goes directly into revenue.',
-    'Revenue Infrastructure': '<strong>Recommendation:</strong> Make it frictionless for people to pay you. An automated payment and booking flow removes the gap between "yes" and money in the account.',
-    'Team & Leadership': '<strong>Recommendation:</strong> Your business depends too heavily on you. Start by documenting the one process you repeat most, then hand it to someone else. A business that stops when the founder stops is not a business yet — it is a job.'
+    'Revenue Infrastructure': '<strong>Recommendation:</strong> Make it frictionless for people to pay you. The gap between someone saying yes and money arriving in your account is where revenue leaks.',
+    'Team & Leadership': '<strong>Recommendation:</strong> Your business depends too heavily on you. Start by documenting the one process you repeat most, then hand it to someone else.'
   };
 
   return {
-    score: Math.min(50, Math.max(5, score)),
+    score,
     weakestArea: weakest,
     weakestScore: weakVal,
     recommendation: recs[weakest]
   };
 }
 
-// ── Restart ──
+function shareAudit() {
+  const url = 'https://jovilex.com/audit';
+  if (navigator.share) {
+    navigator.share({ title: 'Free Business Audit', text: 'Find out where your business is leaking revenue — free, 60 seconds.', url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector('.share-btn');
+      btn.textContent = 'Link copied!';
+      setTimeout(() => { btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8v5a1 1 0 001 1h6a1 1 0 001-1V8M11 4L8 1M8 1L5 4M8 1v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Know someone who should take this?'; }, 2000);
+    });
+  }
+}
+
 function restart() {
   currentQ = 0;
   answers = {};
   document.getElementById('inputName').value = '';
+  document.getElementById('inputBusiness').value = '';
+  document.getElementById('inputOffering').selectedIndex = 0;
+  document.getElementById('inputRevenue').selectedIndex = 0;
+  document.getElementById('inputIndustry').value = '';
   document.getElementById('inputEmail').value = '';
   document.getElementById('submitBtn').disabled = false;
   document.getElementById('submitBtn').textContent = 'Get My Audit Report';
@@ -860,7 +889,6 @@ function restart() {
   showScreen('screenLanding');
 }
 
-// ── Keyboard nav ──
 document.addEventListener('keydown', (e) => {
   const screen = document.getElementById('screenQuestion');
   if (!screen.classList.contains('active')) return;
@@ -872,6 +900,5 @@ document.addEventListener('keydown', (e) => {
   }
 });
 </script>
-
 </body>
 </html>
