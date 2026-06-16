@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Business Audit | Jovilex</title>
+<meta name="description" content="Get a free AI-powered audit of your business in 60 seconds. Find out where you're losing revenue and what to fix first.">
+<meta property="og:title" content="Free Business Audit | Jovilex">
+<meta property="og:description" content="Find out where your business is leaking revenue — free, in 60 seconds.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jovilex.com/audit">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='8' y='24' font-family='sans-serif' font-weight='800' font-size='20' fill='white'%3EJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --charcoal:#111111;
+  --deep-black:#1A1A1A;
+  --emerald:#10B981;
+  --emerald-dim:rgba(16,185,129,0.15);
+  --amber:#FF7A2E;
+  --white:#FFFFFF;
+  --grey:#6B7280;
+  --slate:#1F2937;
+  --ice:#F7F8F9;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--charcoal);
+  color:var(--white);
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.container{
+  width:100%;
+  max-width:480px;
+  min-height:100dvh;
+  padding:24px 20px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ── Wordmark ── */
+.wordmark{
+  font-family:'Sora',sans-serif;
+  font-weight:800;
+  font-size:20px;
+  letter-spacing:-0.5px;
+  margin-bottom:8px;
+  text-align:center;
+}
+.wordmark .jovi{color:var(--white)}
+.wordmark .lex{color:var(--emerald)}
+.tagline{
+  font-size:11px;
+  font-weight:300;
+  color:var(--grey);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-align:center;
+  margin-bottom:32px;
+}
+
+/* ── Progress bar ── */
+.progress-wrap{
+  width:100%;
+  height:3px;
+  background:var(--slate);
+  border-radius:2px;
+  margin-bottom:40px;
+  overflow:hidden;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.progress-wrap.visible{opacity:1}
+.progress-bar{
+  height:100%;
+  background:var(--emerald);
+  border-radius:2px;
+  width:0%;
+  transition:width 0.4s ease;
+}
+
+/* ── Screens ── */
+.screen{
+  flex:1;
+  display:none;
+  flex-direction:column;
+  animation:fadeUp 0.35s ease both;
+}
+.screen.active{display:flex}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── Landing ── */
+.landing-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  gap:24px;
+}
+.hero-label{
+  font-size:12px;
+  font-weight:500;
+  color:var(--emerald);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+h1{
+  font-family:'Sora',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  line-height:1.2;
+  letter-spacing:-0.5px;
+}
+h1 .em{color:var(--emerald)}
+.hero-sub{
+  font-size:15px;
+  font-weight:400;
+  color:var(--grey);
+  line-height:1.6;
+  max-width:360px;
+  margin:0 auto;
+}
+.hero-sub strong{color:var(--white);font-weight:500}
+.cta-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:var(--amber);
+  color:var(--charcoal);
+  font-family:'Outfit',sans-serif;
+  font-weight:500;
+  font-size:15px;
+  padding:14px 32px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  transition:transform 0.15s, box-shadow 0.15s;
+  align-self:center;
+}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,122,46,0.3)}
+.cta-btn:active{transform:translateY(0)}
+.trust-line{
+  font-size:12px;
+  color:var(--grey);
+  font-weight:300;
+}
+
+/* ── Questions ── */
+.q-number{
+  font-family:'Sora',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  color:var(--emerald);
+  letter-spacing:1px;
+  margin-bottom:12px;
+}
+.q-text{
+  font-family:'Sora',sans-serif;
+  font-weight:700;
+  font-size:22px;
+  line-height:1.3;
+  letter-spacing:-0.3px;
+  margin-bottom:28px;
+}
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.option-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:var(--deep-black);
+  border:1.5px solid var(--slate);
+  border-radius:10px;
+  padding:14px 16px;
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-size:15px;
+  font-weight:400;
+  cursor:pointer;
+  transition:border-color 0.2s, background 0.2s, transform 0.1s;
+  text-align:left;
+  line-height:1.4;
+}
+.option-btn:hover{border-color:var(--emerald);background:var(--emerald-dim)}
+.option-btn:active{transform:scale(0.98)}
+.option-btn .key{
+  width:28px;
+  height:28px;
+  border-radius:6px;
+  background:var(--slate);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Sora',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  color:var(--grey);
+  flex-shrink:0;
+  transition:background 0.2s, color 0.2s;
+}
+.option-btn:hover .key{background:var(--emerald);color:var(--charcoal)}
+
+/* ── Email capture ── */
+.email-screen{gap:8px}
+.email-icon{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:var(--emerald-dim);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:8px;
+}
+.email-title{
+  font-family:'Sora',sans-serif;
+  font-weight:700;
+  font-size:22px;
+  line-height:1.3;
+  margin-bottom:4px;
+}
+.email-sub{
+  font-size:14px;
+  color:var(--grey);
+  line-height:1.5;
+  margin-bottom:24px;
+}
+.input-group{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:20px;
+}
+.input-field{
+  background:var(--deep-black);
+  border:1.5px solid var(--slate);
+  border-radius:8px;
+  padding:13px 16px;
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-size:15px;
+  font-weight:400;
+  outline:none;
+  transition:border-color 0.2s;
+}
+.input-field::placeholder{color:var(--grey)}
+.input-field:focus{border-color:var(--emerald)}
+.submit-btn{
+  width:100%;
+  background:var(--emerald);
+  color:var(--charcoal);
+  font-family:'Outfit',sans-serif;
+  font-weight:500;
+  font-size:15px;
+  padding:14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:opacity 0.2s, transform 0.15s;
+}
+.submit-btn:hover{opacity:0.9;transform:translateY(-1px)}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.email-note{
+  font-size:12px;
+  color:var(--grey);
+  font-weight:300;
+  text-align:center;
+  margin-top:8px;
+}
+
+/* ── Loading ── */
+.loading-screen{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:24px;
+}
+.spinner{
+  width:48px;height:48px;
+  border:3px solid var(--slate);
+  border-top-color:var(--emerald);
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{
+  font-size:15px;
+  color:var(--grey);
+  line-height:1.6;
+}
+.loading-status{
+  font-family:'Sora',sans-serif;
+  font-weight:600;
+  font-size:14px;
+  color:var(--emerald);
+  min-height:20px;
+}
+
+/* ── Teaser result ── */
+.result-screen{gap:12px}
+.score-ring{
+  width:120px;height:120px;
+  margin:8px auto 4px;
+  position:relative;
+}
+.score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.score-ring .track{fill:none;stroke:var(--slate);stroke-width:6}
+.score-ring .fill{
+  fill:none;stroke:var(--emerald);stroke-width:6;
+  stroke-linecap:round;
+  stroke-dasharray:339.292;
+  stroke-dashoffset:339.292;
+  transition:stroke-dashoffset 1.2s ease;
+}
+.score-ring.poor .fill{stroke:var(--amber)}
+.score-label{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+.score-num{
+  font-family:'Sora',sans-serif;
+  font-weight:800;
+  font-size:32px;
+  line-height:1;
+}
+.score-of{
+  font-size:12px;
+  color:var(--grey);
+  font-weight:300;
+}
+.result-headline{
+  font-family:'Sora',sans-serif;
+  font-weight:700;
+  font-size:20px;
+  text-align:center;
+  line-height:1.3;
+}
+.weak-card{
+  background:var(--deep-black);
+  border:1.5px solid var(--slate);
+  border-radius:10px;
+  padding:16px;
+  margin:8px 0;
+}
+.weak-label{
+  font-size:11px;
+  font-weight:500;
+  color:var(--amber);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.weak-area{
+  font-family:'Sora',sans-serif;
+  font-weight:600;
+  font-size:16px;
+  margin-bottom:4px;
+}
+.weak-score-bar{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;
+}
+.bar-track{
+  flex:1;height:6px;
+  background:var(--slate);
+  border-radius:3px;overflow:hidden;
+}
+.bar-fill{
+  height:100%;border-radius:3px;
+  background:var(--amber);
+  transition:width 1s ease 0.3s;
+  width:0%;
+}
+.bar-val{
+  font-family:'Sora',sans-serif;
+  font-weight:600;
+  font-size:13px;
+  color:var(--amber);
+  min-width:32px;
+}
+.rec-text{
+  font-size:14px;
+  color:var(--grey);
+  line-height:1.5;
+}
+.rec-text strong{color:var(--white);font-weight:500}
+.email-sent-note{
+  background:var(--emerald-dim);
+  border-radius:8px;
+  padding:14px 16px;
+  text-align:center;
+  font-size:13px;
+  color:var(--emerald);
+  line-height:1.5;
+  margin-top:4px;
+}
+.email-sent-note strong{font-weight:500}
+.book-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:var(--amber);
+  color:var(--charcoal);
+  font-family:'Outfit',sans-serif;
+  font-weight:500;
+  font-size:15px;
+  padding:14px 32px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
+  transition:transform 0.15s, box-shadow 0.15s;
+  align-self:center;
+  margin-top:8px;
+}
+.book-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,122,46,0.3)}
+.restart-link{
+  font-size:13px;
+  color:var(--grey);
+  text-align:center;
+  cursor:pointer;
+  margin-top:4px;
+}
+.restart-link:hover{color:var(--white)}
+
+/* ── Error ── */
+.error-msg{
+  color:var(--amber);
+  font-size:13px;
+  text-align:center;
+  min-height:18px;
+  margin-top:4px;
+}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;
+  padding:20px 0 8px;
+  font-size:11px;
+  color:var(--grey);
+  font-weight:300;
+  letter-spacing:0.5px;
+  margin-top:auto;
+}
+.footer a{color:var(--emerald);text-decoration:none}
+
+/* ── Responsive ── */
+@media(min-width:520px){
+  h1{font-size:32px}
+  .q-text{font-size:24px}
+  .container{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Wordmark -->
+  <div class="wordmark"><span class="jovi">Jovi</span><span class="lex">lex</span></div>
+  <div class="tagline">Business Audit</div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- ═══ SCREEN: Landing ═══ -->
+  <div class="screen active" id="screenLanding">
+    <div class="landing-content">
+      <div class="hero-label">Free &middot; 60 Seconds &middot; AI-Powered</div>
+      <h1>Find out where your business is <span class="em">leaking revenue</span></h1>
+      <p class="hero-sub">Answer ten quick questions. Our AI analyses your answers and delivers a <strong>personalised audit</strong> with scores across five areas and specific recommendations to fix what matters most.</p>
+      <button class="cta-btn" onclick="startAudit()">
+        Start My Free Audit
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="trust-line">No payment required. Your report is emailed instantly.</p>
+    </div>
+    <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
+  </div>
+
+  <!-- ═══ SCREEN: Questions (dynamic) ═══ -->
+  <div class="screen" id="screenQuestion">
+    <div class="q-number" id="qNumber"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="qOptions"></div>
+    <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
+  </div>
+
+  <!-- ═══ SCREEN: Email Capture ═══ -->
+  <div class="screen email-screen" id="screenEmail">
+    <div class="email-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="email-title">Your audit is ready.</div>
+    <p class="email-sub">Enter your details below to receive the full personalised report — five area scores, your top three gaps, and specific recommendations.</p>
+    <div class="input-group">
+      <input type="text" class="input-field" id="inputName" placeholder="Your first name" autocomplete="given-name">
+      <input type="email" class="input-field" id="inputEmail" placeholder="Your email address" autocomplete="email">
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="submitAudit()">Get My Audit Report</button>
+    <p class="email-note">We send your report and nothing else. No spam.</p>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
+  </div>
+
+  <!-- ═══ SCREEN: Loading ═══ -->
+  <div class="screen loading-screen" id="screenLoading">
+    <div class="spinner"></div>
+    <div>
+      <p class="loading-text">Analysing your answers&hellip;</p>
+      <p class="loading-status" id="loadingStatus">Building your audit</p>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN: Teaser Result ═══ -->
+  <div class="screen result-screen" id="screenResult">
+    <div class="score-ring" id="scoreRing">
+      <svg viewBox="0 0 120 120">
+        <circle class="track" cx="60" cy="60" r="54"/>
+        <circle class="fill" id="scoreFill" cx="60" cy="60" r="54"/>
+      </svg>
+      <div class="score-label">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-of">out of 50</div>
+      </div>
+    </div>
+    <div class="result-headline" id="resultHeadline"></div>
+    <div class="weak-card">
+      <div class="weak-label">Your biggest gap</div>
+      <div class="weak-area" id="weakArea"></div>
+      <div class="weak-score-bar">
+        <div class="bar-track"><div class="bar-fill" id="weakBar"></div></div>
+        <div class="bar-val" id="weakVal"></div>
+      </div>
+      <p class="rec-text" id="recText"></p>
+    </div>
+    <div class="email-sent-note">
+      <strong>Full report sent to your inbox.</strong><br>
+      Five area scores, top three gaps, estimated revenue impact, and a clear action plan.
+    </div>
+    <a class="book-btn" href="https://jovilex.com" target="_blank">
+      Want us to close these gaps?
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="restart-link" onclick="restart()">Take the audit again</div>
+    <div class="footer"><a href="https://jovilex.com">jovilex.com</a></div>
+  </div>
+</div>
+
+<script>
+// ── Questions ──
+const questions = [
+  {
+    id: 'offering',
+    text: 'What does your business primarily offer?',
+    options: ['Physical products', 'Digital products or software', 'Services', 'A mix of these']
+  },
+  {
+    id: 'discovery',
+    text: 'How do most of your customers find you right now?',
+    options: ['Word of mouth and referrals', 'Social media', 'My website or online presence', 'They don\'t — I\'m still figuring this out']
+  },
+  {
+    id: 'presence',
+    text: 'What best describes your online presence?',
+    options: ['A professional website that brings in leads', 'A website, but it doesn\'t do much', 'Just social media pages', 'Almost nothing online']
+  },
+  {
+    id: 'payments',
+    text: 'How do you handle payments and bookings?',
+    options: ['Automated online system', 'Manual invoicing or bank transfers', 'Cash, POS, or mobile money only', 'No consistent system']
+  },
+  {
+    id: 'bottleneck',
+    text: 'What\'s the biggest bottleneck in your business right now?',
+    options: ['Getting enough customers', 'Delivering consistently at quality', 'Managing day-to-day operations', 'Everything feels stuck']
+  },
+  {
+    id: 'operations',
+    text: 'How do you manage your daily operations?',
+    options: ['Dedicated software tools', 'Spreadsheets and documents', 'WhatsApp groups and notes', 'Mostly in my head']
+  },
+  {
+    id: 'dependency',
+    text: 'If you disappeared for two weeks, what would happen to your business?',
+    options: ['It would keep running almost normally', 'A few things would slow down', 'Most things would stall', 'It would basically stop']
+  },
+  {
+    id: 'revenue',
+    text: 'What\'s your approximate monthly revenue?',
+    options: ['Pre-revenue or just starting', 'Under $10,000', '$10,000 – $50,000', 'Over $50,000']
+  },
+  {
+    id: 'priority',
+    text: 'What would make the biggest difference in the next 90 days?',
+    options: ['More customers walking through the door', 'Better systems so things run without me', 'A proper digital presence that builds trust', 'Clarity on what to focus on first']
+  },
+  {
+    id: 'admin_time',
+    text: 'How much of your week is spent on tasks that don\'t directly generate revenue?',
+    options: ['Most of it — I\'m buried in admin', 'About half — it\'s a constant pull', 'Some, but I manage', 'Very little — my systems handle it']
+  }
+];
+
+const keys = ['A','B','C','D'];
+let currentQ = 0;
+let answers = {};
+
+// ── Navigation ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById(id);
+  screen.classList.remove('active');
+  // Force reflow for animation restart
+  void screen.offsetWidth;
+  screen.classList.add('active');
+}
+
+function updateProgress() {
+  const wrap = document.getElementById('progressWrap');
+  const bar = document.getElementById('progressBar');
+  wrap.classList.add('visible');
+  bar.style.width = ((currentQ + 1) / questions.length * 100) + '%';
+}
+
+function startAudit() {
+  currentQ = 0;
+  answers = {};
+  renderQuestion();
+  updateProgress();
+  showScreen('screenQuestion');
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('qNumber').textContent = `QUESTION ${currentQ + 1} OF ${questions.length}`;
+  document.getElementById('qText').textContent = q.text;
+  const optWrap = document.getElementById('qOptions');
+  optWrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="key">${keys[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectOption(q.id, i, opt);
+    optWrap.appendChild(btn);
+  });
+}
+
+function selectOption(qId, index, label) {
+  answers[qId] = { index, label };
+  currentQ++;
+  if (currentQ < questions.length) {
+    updateProgress();
+    showScreen('screenQuestion');
+    renderQuestion();
+  } else {
+    document.getElementById('progressWrap').classList.remove('visible');
+    showScreen('screenEmail');
+    document.getElementById('inputName').focus();
+  }
+}
+
+// ── Submit ──
+async function submitAudit() {
+  const name = document.getElementById('inputName').value.trim();
+  const email = document.getElementById('inputEmail').value.trim();
+  const errEl = document.getElementById('errorMsg');
+  const btn = document.getElementById('submitBtn');
+
+  errEl.textContent = '';
+
+  if (!name) { errEl.textContent = 'Please enter your name.'; return; }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    errEl.textContent = 'Please enter a valid email address.'; return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Generating your audit…';
+  showScreen('screenLoading');
+
+  // Rotate loading messages
+  const msgs = ['Scoring your business', 'Identifying gaps', 'Writing recommendations', 'Finalising your report'];
+  let mi = 0;
+  const loadInt = setInterval(() => {
+    mi = (mi + 1) % msgs.length;
+    document.getElementById('loadingStatus').textContent = msgs[mi];
+  }, 2500);
+
+  try {
+    const res = await fetch('/api/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, answers })
+    });
+
+    clearInterval(loadInt);
+
+    if (!res.ok) throw new Error('Server error');
+
+    const data = await res.json();
+    showTeaser(data, name);
+  } catch (err) {
+    clearInterval(loadInt);
+    // Fallback: generate a client-side approximation
+    const fallback = generateFallback(name);
+    showTeaser(fallback, name);
+    console.error('API error, showing fallback:', err);
+  }
+}
+
+// ── Teaser Display ──
+function showTeaser(data, name) {
+  showScreen('screenResult');
+
+  const score = data.score || 25;
+  const ring = document.getElementById('scoreRing');
+  const fill = document.getElementById('scoreFill');
+  const circumference = 2 * Math.PI * 54; // 339.292
+
+  if (score <= 20) ring.classList.add('poor');
+  else ring.classList.remove('poor');
+
+  // Animate score number
+  const numEl = document.getElementById('scoreNum');
+  let current = 0;
+  const step = Math.max(1, Math.floor(score / 30));
+  const counter = setInterval(() => {
+    current += step;
+    if (current >= score) { current = score; clearInterval(counter); }
+    numEl.textContent = current;
+  }, 40);
+
+  // Animate ring
+  setTimeout(() => {
+    fill.style.strokeDashoffset = circumference - (score / 50 * circumference);
+  }, 100);
+
+  // Headline
+  let headline = '';
+  if (score >= 40) headline = `Strong foundation, ${name}. A few targeted fixes unlock serious growth.`;
+  else if (score >= 28) headline = `Solid start, ${name}. There\'s clear upside sitting on the table.`;
+  else headline = `${name}, there\'s significant revenue being left on the table.`;
+  document.getElementById('resultHeadline').textContent = headline;
+
+  // Weakest area
+  document.getElementById('weakArea').textContent = data.weakestArea || 'Operations & Systems';
+  const weakScore = data.weakestScore || 4;
+  document.getElementById('weakVal').textContent = `${weakScore}/10`;
+  setTimeout(() => {
+    document.getElementById('weakBar').style.width = (weakScore / 10 * 100) + '%';
+  }, 200);
+
+  // Recommendation
+  document.getElementById('recText').innerHTML = data.recommendation ||
+    '<strong>Recommendation:</strong> Start by building a system for the work you repeat every week. The hours you recover go straight into revenue-generating activity.';
+}
+
+// ── Fallback (client-side scoring if API fails) ──
+function generateFallback(name) {
+  let score = 0;
+  const a = answers;
+
+  // Rough scoring per question (index 0 = best, 3 = worst)
+  const scoring = {
+    offering: [8, 7, 7, 9],
+    discovery: [7, 8, 9, 3],
+    presence: [10, 5, 4, 2],
+    payments: [10, 6, 4, 2],
+    bottleneck: [6, 6, 5, 3],
+    operations: [10, 6, 4, 2],
+    dependency: [10, 7, 4, 2],
+    revenue: [3, 5, 8, 10],
+    priority: [6, 7, 5, 4],
+    admin_time: [2, 5, 7, 10]
+  };
+
+  // Calculate area scores
+  const areas = {
+    'Brand & Digital Presence': 0,
+    'Customer Acquisition': 0,
+    'Operations & Systems': 0,
+    'Revenue Infrastructure': 0,
+    'Team & Leadership': 0
+  };
+
+  const pIdx = a.presence?.index ?? 2;
+  const dIdx = a.discovery?.index ?? 3;
+  const payIdx = a.payments?.index ?? 2;
+  const opsIdx = a.operations?.index ?? 2;
+  const admIdx = a.admin_time?.index ?? 1;
+  const botIdx = a.bottleneck?.index ?? 2;
+  const revIdx = a.revenue?.index ?? 1;
+  const depIdx = a.dependency?.index ?? 2;
+  const priIdx = a.priority?.index ?? 0;
+
+  areas['Brand & Digital Presence'] = Math.round(([10,5,4,2][pIdx] + [7,8,9,3][dIdx]) / 2);
+  areas['Customer Acquisition'] = Math.round(([7,8,9,3][dIdx] + [6,6,5,3][botIdx] + [6,7,5,4][priIdx]) / 3);
+  areas['Operations & Systems'] = Math.round(([10,6,4,2][payIdx] + [10,6,4,2][opsIdx] + [2,5,7,10][admIdx]) / 3);
+  areas['Revenue Infrastructure'] = Math.round(([10,6,4,2][payIdx] + [3,5,8,10][revIdx]) / 2);
+  areas['Team & Leadership'] = Math.round(([10,7,4,2][depIdx] + [6,6,5,3][botIdx] + [6,7,5,4][priIdx]) / 3);
+
+  score = Object.values(areas).reduce((s, v) => s + v, 0);
+
+  // Find weakest
+  let weakest = '';
+  let weakVal = 11;
+  for (const [area, val] of Object.entries(areas)) {
+    if (val < weakVal) { weakVal = val; weakest = area; }
+  }
+
+  const recs = {
+    'Brand & Digital Presence': '<strong>Recommendation:</strong> Your online presence is the first thing a potential customer sees. A professional site that communicates what you do and converts visitors into enquiries changes the entire pipeline.',
+    'Customer Acquisition': '<strong>Recommendation:</strong> You need a repeatable way to reach the people who already want what you sell. Start with the channel closest to a conversation — direct outreach to the people who already know you.',
+    'Operations & Systems': '<strong>Recommendation:</strong> Build a system for the work you repeat every week. Every hour recovered from manual operations is an hour that goes directly into revenue.',
+    'Revenue Infrastructure': '<strong>Recommendation:</strong> Make it frictionless for people to pay you. An automated payment and booking flow removes the gap between "yes" and money in the account.',
+    'Team & Leadership': '<strong>Recommendation:</strong> Your business depends too heavily on you. Start by documenting the one process you repeat most, then hand it to someone else. A business that stops when the founder stops is not a business yet — it is a job.'
+  };
+
+  return {
+    score: Math.min(50, Math.max(5, score)),
+    weakestArea: weakest,
+    weakestScore: weakVal,
+    recommendation: recs[weakest]
+  };
+}
+
+// ── Restart ──
+function restart() {
+  currentQ = 0;
+  answers = {};
+  document.getElementById('inputName').value = '';
+  document.getElementById('inputEmail').value = '';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Get My Audit Report';
+  document.getElementById('errorMsg').textContent = '';
+  document.getElementById('progressWrap').classList.remove('visible');
+  showScreen('screenLanding');
+}
+
+// ── Keyboard nav ──
+document.addEventListener('keydown', (e) => {
+  const screen = document.getElementById('screenQuestion');
+  if (!screen.classList.contains('active')) return;
+  const keyMap = { a: 0, b: 1, c: 2, d: 3 };
+  const idx = keyMap[e.key.toLowerCase()];
+  if (idx !== undefined) {
+    const btns = document.querySelectorAll('#qOptions .option-btn');
+    if (btns[idx]) btns[idx].click();
+  }
+});
+</script>
+
+</body>
+</html>
