@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in Touch</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='7' y='24' font-family='system-ui' font-weight='800' font-size='18' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; background: #f7f8f9; color: #111111; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+.loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; font-size: 15px; color: #6b7280; }
+.loading .spinner { width: 24px; height: 24px; border: 2.5px solid #e5e7eb; border-top-color: #10B981; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px; text-align: center; }
+.error-page h1 { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.error-page p { color: #6b7280; font-size: 15px; }
+
+.container { width: 100%; max-width: 520px; padding: 32px 20px 48px; }
+
+.header { text-align: center; margin-bottom: 32px; }
+.header .logo { height: 44px; margin-bottom: 16px; }
+.header .biz-name { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; color: #111111; margin-bottom: 6px; }
+.header .biz-desc { font-size: 14px; color: #6b7280; line-height: 1.5; }
+
+.card { background: #ffffff; border-radius: 16px; padding: 32px 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04); }
+
+.form-title { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.form-sub { font-size: 14px; color: #6b7280; margin-bottom: 28px; line-height: 1.5; }
+
+.field { margin-bottom: 20px; }
+.field label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+.field label .req { color: #ef4444; margin-left: 2px; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+  font-family: inherit; font-size: 15px; color: #111111; background: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: #10B981; box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+}
+.field input::placeholder, .field textarea::placeholder { color: #9ca3af; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+
+.submit-btn {
+  width: 100%; padding: 14px; background: #111111; color: #ffffff; border: none; border-radius: 10px;
+  font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: background 0.2s, transform 0.1s; margin-top: 8px;
+}
+.submit-btn:hover { background: #1f2937; }
+.submit-btn:active { transform: scale(0.99); }
+.submit-btn:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+
+.submitting .submit-btn { position: relative; color: transparent; }
+.submitting .submit-btn::after {
+  content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #ffffff;
+  border-radius: 50%; animation: spin 0.6s linear infinite;
+}
+
+/* Success state */
+.success-card { text-align: center; padding: 48px 28px; }
+.success-icon { width: 64px; height: 64px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-icon svg { width: 32px; height: 32px; }
+.success-card h2 { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.success-card .time-badge { display: inline-block; background: #ecfdf5; color: #059669; font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
+.success-card p { font-size: 15px; color: #6b7280; line-height: 1.6; }
+.success-card .cta { display: inline-block; margin-top: 24px; padding: 12px 24px; background: #10B981; color: #ffffff; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+.footer { text-align: center; padding: 24px 0; font-size: 11px; color: #9ca3af; }
+.footer a { color: #10B981; text-decoration: none; font-weight: 500; }
+
+.demo-banner { background: #111111; color: #ffffff; text-align: center; padding: 10px 20px; font-size: 13px; font-weight: 500; width: 100%; }
+.demo-banner a { color: #10B981; text-decoration: none; font-weight: 600; }
+
+@media (max-width: 480px) {
+  .container { padding: 24px 16px 40px; }
+  .card { padding: 24px 20px; border-radius: 14px; }
+  .header .biz-name { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="loading"><div class="spinner"></div>Loading...</div>
+</div>
+
+<script>
+const API_BASE = window.location.hostname === 'localhost' ? '' : '';
+
+// Parse URL to get slug or demo industry
+function getConfig() {
+  const path = window.location.pathname;
+  const params = new URLSearchParams(window.location.search);
+  
+  // Demo mode: /snaplead/demo/dental or ?demo=dental
+  const demoMatch = path.match(/\/demo\/(\w+)/);
+  if (demoMatch) return { mode: 'demo', industry: demoMatch[1] };
+  if (params.get('demo')) return { mode: 'demo', industry: params.get('demo') };
+
+  // Business mode: /snaplead/s/slug or ?s=slug or /s/slug
+  const slugMatch = path.match(/\/s\/([a-z0-9-]+)/);
+  if (slugMatch) return { mode: 'business', slug: slugMatch[1] };
+  if (params.get('s')) return { mode: 'business', slug: params.get('s') };
+
+  return { mode: 'error' };
+}
+
+async function init() {
+  const config = getConfig();
+  
+  if (config.mode === 'error') {
+    showError('Page not found', 'This link may be invalid or expired.');
+    return;
+  }
+
+  try {
+    if (config.mode === 'demo') {
+      const resp = await fetch(`/api/snaplead-public?action=demo&industry=${config.industry}`);
+      if (!resp.ok) throw new Error('Template not found');
+      const data = await resp.json();
+      const t = data.template;
+      const demo = typeof t.demo_business === 'string' ? JSON.parse(t.demo_business) : t.demo_business;
+      renderForm({
+        business_name: demo.name,
+        business_description: demo.description,
+        business_slug: `demo-${config.industry}`,
+        custom_questions: typeof t.default_questions === 'string' ? JSON.parse(t.default_questions) : t.default_questions,
+        logo_url: null,
+        calendar_link: null,
+        is_demo: true,
+        industry: config.industry
+      });
+    } else {
+      const resp = await fetch(`/api/snaplead-public?action=business&slug=${config.slug}`);
+      if (!resp.ok) throw new Error('Business not found');
+      const data = await resp.json();
+      const biz = data.business;
+      biz.custom_questions = typeof biz.custom_questions === 'string' ? JSON.parse(biz.custom_questions) : biz.custom_questions;
+      renderForm({ ...biz, is_demo: false });
+    }
+  } catch (err) {
+    showError('Unable to load', 'This business page may no longer be active.');
+  }
+}
+
+function showError(title, message) {
+  document.getElementById('app').innerHTML = `
+    <div class="error-page">
+      <h1>${title}</h1>
+      <p>${message}</p>
+    </div>`;
+}
+
+function renderForm(biz) {
+  const questions = biz.custom_questions || [];
+  
+  let fieldsHtml = `
+    <div class="field">
+      <label>Your name <span class="req">*</span></label>
+      <input type="text" id="f_name" placeholder="Full name" required>
+    </div>
+    <div class="field">
+      <label>Email <span class="req">*</span></label>
+      <input type="email" id="f_email" placeholder="you@email.com" required>
+    </div>
+    <div class="field">
+      <label>Phone</label>
+      <input type="tel" id="f_phone" placeholder="(555) 123-4567">
+    </div>
+  `;
+
+  questions.forEach(q => {
+    const reqMark = q.required ? '<span class="req">*</span>' : '';
+    if (q.type === 'select') {
+      const opts = (q.options || []).map(o => `<option value="${o}">${o}</option>`).join('');
+      fieldsHtml += `
+        <div class="field">
+          <label>${q.label} ${reqMark}</label>
+          <select id="f_${q.id}" ${q.required ? 'required' : ''}>
+            <option value="">Select...</option>
+            ${opts}
+          </select>
+        </div>`;
+    } else if (q.type === 'textarea') {
+      fieldsHtml += `
+        <div class="field">
+          <label>${q.label} ${reqMark}</label>
+          <textarea id="f_${q.id}" placeholder="${q.placeholder || ''}" ${q.required ? 'required' : ''}></textarea>
+        </div>`;
+    } else {
+      fieldsHtml += `
+        <div class="field">
+          <label>${q.label} ${reqMark}</label>
+          <input type="text" id="f_${q.id}" placeholder="${q.placeholder || ''}" ${q.required ? 'required' : ''}>
+        </div>`;
+    }
+  });
+
+  document.getElementById('app').innerHTML = `
+    ${biz.is_demo ? '<div class="demo-banner">This is a demo — <a href="/snaplead/signup">Get SnapLead for your business</a></div>' : ''}
+    <div class="container">
+      <div class="header">
+        ${biz.logo_url ? `<img src="${biz.logo_url}" alt="${biz.business_name}" class="logo">` : ''}
+        <div class="biz-name">${biz.business_name}</div>
+        ${biz.business_description ? `<div class="biz-desc">${biz.business_description}</div>` : ''}
+      </div>
+      <div class="card" id="form-card">
+        <div class="form-title">Get in touch</div>
+        <div class="form-sub">Fill this out and we'll get back to you right away.</div>
+        <form id="lead-form">
+          ${fieldsHtml}
+          <button type="submit" class="submit-btn">Send</button>
+        </form>
+      </div>
+      <div class="footer">
+        Powered by <a href="https://jovilex.com/snaplead">SnapLead</a>
+      </div>
+    </div>`;
+
+  document.getElementById('lead-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const card = document.getElementById('form-card');
+    
+    const name = document.getElementById('f_name').value.trim();
+    const email = document.getElementById('f_email').value.trim();
+    const phone = document.getElementById('f_phone').value.trim();
+
+    if (!name || !email) return;
+
+    // Collect answers
+    const answers = {};
+    questions.forEach(q => {
+      const el = document.getElementById(`f_${q.id}`);
+      if (el && el.value) answers[q.id] = el.value;
+    });
+
+    // Disable form
+    card.classList.add('submitting');
+    const btn = form.querySelector('.submit-btn');
+    btn.disabled = true;
+
+    try {
+      const resp = await fetch('/api/snaplead-respond', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          business_slug: biz.business_slug,
+          customer_name: name,
+          customer_email: email,
+          customer_phone: phone || null,
+          answers,
+          source: biz.is_demo ? 'demo' : 'standalone'
+        })
+      });
+
+      const data = await resp.json();
+
+      if (data.success) {
+        const seconds = (data.response_time_ms / 1000).toFixed(1);
+        card.innerHTML = `
+          <div class="success-card">
+            <div class="success-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="time-badge">Responded in ${seconds}s</div>
+            <h2>You're all set, ${name.split(' ')[0]}!</h2>
+            <p>We've sent a personalised response to <strong>${email}</strong>. Check your inbox — someone from the team will follow up shortly.</p>
+            ${biz.calendar_link ? `<a href="${biz.calendar_link}" class="cta" target="_blank">Book a time now</a>` : ''}
+          </div>`;
+      } else {
+        throw new Error(data.error || 'Something went wrong');
+      }
+    } catch (err) {
+      card.classList.remove('submitting');
+      btn.disabled = false;
+      btn.textContent = 'Try again';
+      alert('Something went wrong. Please try again.');
+    }
+  });
+}
+
+init();
+</script>
+</body>
+</html>

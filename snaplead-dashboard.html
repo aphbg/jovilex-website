@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SnapLead — Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='7' y='24' font-family='system-ui' font-weight='800' font-size='18' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; background: #111111; color: #ffffff; min-height: 100vh; }
+
+/* Nav */
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid #1f2937; }
+.nav-brand { display: flex; align-items: center; gap: 6px; }
+.nav-brand span:first-child { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 18px; }
+.nav-brand .lead { color: #10B981; }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-tab { font-size: 13px; font-weight: 500; color: #6b7280; cursor: pointer; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; }
+.nav-tab:hover, .nav-tab.active { color: #ffffff; background: #1f2937; }
+.nav-biz { font-size: 13px; color: #9ca3af; }
+.nav-logout { font-size: 12px; color: #ef4444; cursor: pointer; padding: 4px 10px; border: 1px solid #374151; border-radius: 6px; }
+.nav-logout:hover { border-color: #ef4444; }
+
+/* Main */
+.main { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+
+/* Stats row */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.stat-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 20px; }
+.stat-card .stat-label { font-size: 12px; color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.stat-card .stat-val { font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 800; color: #ffffff; }
+.stat-card .stat-sub { font-size: 12px; color: #10B981; margin-top: 4px; }
+
+/* Quick actions */
+.actions-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.actions-bar h2 { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; }
+.filter-pills { display: flex; gap: 6px; }
+.pill { font-size: 12px; font-weight: 500; color: #6b7280; padding: 5px 12px; border-radius: 20px; border: 1px solid #2a2a2a; cursor: pointer; transition: all 0.2s; }
+.pill:hover, .pill.active { color: #10B981; border-color: #10B981; background: rgba(16,185,129,0.08); }
+.share-link { display: flex; align-items: center; gap: 8px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #9ca3af; cursor: pointer; }
+.share-link:hover { border-color: #10B981; color: #10B981; }
+
+/* Leads table */
+.leads-table { width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; overflow: hidden; }
+.leads-table table { width: 100%; border-collapse: collapse; }
+.leads-table th { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: left; border-bottom: 1px solid #2a2a2a; }
+.leads-table td { font-size: 13px; padding: 14px 16px; border-bottom: 1px solid #1f2937; color: #d1d5db; }
+.leads-table tr:last-child td { border-bottom: none; }
+.leads-table tr:hover td { background: #222222; }
+.leads-table .name { font-weight: 600; color: #ffffff; cursor: pointer; }
+.leads-table .name:hover { color: #10B981; }
+
+.status-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.status-new { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.status-responded { background: rgba(16,185,129,0.15); color: #10B981; }
+.status-booked { background: rgba(249,115,22,0.15); color: #fb923c; }
+.status-won { background: rgba(16,185,129,0.25); color: #34d399; }
+.status-lost { background: rgba(239,68,68,0.15); color: #f87171; }
+
+.urgency-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.urgency-emergency { background: #dc2626; }
+.urgency-high { background: #f59e0b; }
+.urgency-medium { background: #10B981; }
+.urgency-low { background: #6b7280; }
+
+.time-ago { color: #6b7280; font-size: 12px; }
+.response-time { color: #10B981; font-size: 12px; font-weight: 500; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #6b7280; }
+.empty-state h3 { font-family: 'Sora', sans-serif; font-size: 18px; color: #ffffff; margin-bottom: 8px; }
+.empty-state p { font-size: 14px; margin-bottom: 20px; }
+.empty-state .share-btn { display: inline-block; padding: 10px 20px; background: #10B981; color: #ffffff; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; border: none; font-family: inherit; }
+
+/* Lead detail modal */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 14px; width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #2a2a2a; }
+.modal-header h3 { font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 700; }
+.modal-close { font-size: 20px; color: #6b7280; cursor: pointer; background: none; border: none; padding: 4px; }
+.modal-body { padding: 20px 24px; }
+.detail-section { margin-bottom: 20px; }
+.detail-label { font-size: 11px; font-weight: 600; color: #10B981; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.detail-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #1f2937; }
+.detail-row .dk { color: #6b7280; }
+.detail-row .dv { color: #ffffff; font-weight: 500; }
+.ai-response { font-size: 13px; line-height: 1.7; color: #d1d5db; background: #111111; border-radius: 8px; padding: 16px; }
+.modal-actions { display: flex; gap: 8px; padding: 16px 24px; border-top: 1px solid #2a2a2a; }
+.modal-actions select { flex: 1; padding: 10px; background: #111111; border: 1px solid #2a2a2a; border-radius: 8px; color: #ffffff; font-family: inherit; font-size: 13px; }
+.modal-actions button { padding: 10px 20px; background: #10B981; color: #ffffff; border: none; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+/* Settings tab */
+.settings-panel { display: none; }
+.settings-panel.active { display: block; }
+.setting-group { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+.setting-group h3 { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+.setting-field { margin-bottom: 14px; }
+.setting-field label { display: block; font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 4px; }
+.setting-field input, .setting-field select, .setting-field textarea {
+  width: 100%; padding: 10px 12px; background: #111111; border: 1px solid #2a2a2a; border-radius: 8px;
+  color: #ffffff; font-family: inherit; font-size: 13px; outline: none;
+}
+.setting-field input:focus, .setting-field select:focus, .setting-field textarea:focus { border-color: #10B981; }
+.setting-field textarea { resize: vertical; min-height: 80px; }
+.save-btn { padding: 10px 24px; background: #10B981; color: #ffffff; border: none; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.save-btn:disabled { background: #374151; cursor: not-allowed; }
+
+.link-box { background: #111111; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+.link-box code { font-size: 13px; color: #10B981; word-break: break-all; }
+.copy-btn { font-size: 12px; color: #ffffff; background: #374151; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; white-space: nowrap; margin-left: 12px; }
+
+.loading { display: flex; align-items: center; justify-content: center; min-height: 50vh; font-size: 15px; color: #6b7280; }
+.spinner { width: 24px; height: 24px; border: 2.5px solid #2a2a2a; border-top-color: #10B981; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .leads-table { overflow-x: auto; }
+  .leads-table table { min-width: 600px; }
+  .nav { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+  .main { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"><div class="loading"><div class="spinner"></div>Loading dashboard...</div></div>
+
+<!-- Lead detail modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-name">Lead</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-actions">
+      <select id="modal-status">
+        <option value="new">New</option>
+        <option value="responded">Responded</option>
+        <option value="booked">Booked</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+      </select>
+      <button onclick="updateLeadStatus()">Update</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+let token = localStorage.getItem('snaplead_token');
+let business = null;
+let currentTab = 'leads';
+let currentFilter = 'all';
+let currentLead = null;
+
+async function apiFetch(url, opts = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const resp = await fetch(url, { ...opts, headers });
+  if (resp.status === 401) { logout(); return null; }
+  return resp.json();
+}
+
+function logout() {
+  localStorage.removeItem('snaplead_token');
+  localStorage.removeItem('snaplead_business');
+  window.location.href = '/snaplead/signup';
+}
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - new Date(date)) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  if (s < 604800) return Math.floor(s / 86400) + 'd ago';
+  return new Date(date).toLocaleDateString();
+}
+
+async function init() {
+  if (!token) { window.location.href = '/snaplead/signup'; return; }
+
+  const data = await apiFetch('/api/snaplead-auth', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'verify' })
+  });
+
+  if (!data || !data.success) { logout(); return; }
+  business = data.business;
+
+  render();
+  loadTab('leads');
+}
+
+function render() {
+  document.getElementById('app').innerHTML = `
+    <nav class="nav">
+      <div class="nav-brand"><span>Snap</span><span class="lead">Lead</span></div>
+      <div class="nav-right">
+        <div class="nav-tab ${currentTab === 'leads' ? 'active' : ''}" onclick="loadTab('leads')">Leads</div>
+        <div class="nav-tab ${currentTab === 'settings' ? 'active' : ''}" onclick="loadTab('settings')">Settings</div>
+        <span class="nav-biz">${business.business_name}</span>
+        <span class="nav-logout" onclick="logout()">Log out</span>
+      </div>
+    </nav>
+    <div class="main">
+      <div id="stats-row"></div>
+      <div id="content"></div>
+    </div>`;
+
+  loadStats();
+}
+
+async function loadStats() {
+  const data = await apiFetch('/api/snaplead-data?action=stats');
+  if (!data) return;
+
+  const trialDays = business.plan === 'trial'
+    ? Math.max(0, Math.ceil((new Date(business.trial_ends_at) - Date.now()) / 86400000))
+    : null;
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Today</div>
+        <div class="stat-val">${data.today_leads}</div>
+        <div class="stat-sub">leads</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">This month</div>
+        <div class="stat-val">${data.month_leads}</div>
+        <div class="stat-sub">${data.total_leads} total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg response</div>
+        <div class="stat-val">${data.avg_response_seconds}s</div>
+        <div class="stat-sub">AI-powered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Conversion</div>
+        <div class="stat-val">${data.conversion_rate}%</div>
+        <div class="stat-sub">${trialDays !== null ? `Trial: ${trialDays}d left` : business.plan}</div>
+      </div>
+    </div>`;
+}
+
+async function loadTab(tab) {
+  currentTab = tab;
+  render();
+
+  if (tab === 'leads') {
+    await loadLeads();
+  } else if (tab === 'settings') {
+    loadSettings();
+  }
+}
+
+async function loadLeads() {
+  const content = document.getElementById('content');
+  content.innerHTML = '<div class="loading"><div class="spinner"></div>Loading leads...</div>';
+
+  const filterParam = currentFilter !== 'all' ? `&status=${currentFilter}` : '';
+  const data = await apiFetch(`/api/snaplead-data?action=leads${filterParam}`);
+  if (!data) return;
+
+  const formUrl = `${window.location.origin}/snaplead/s/${business.business_slug}`;
+
+  if (data.leads.length === 0 && currentFilter === 'all') {
+    content.innerHTML = `
+      <div class="empty-state">
+        <h3>No leads yet</h3>
+        <p>Share your SnapLead page to start receiving AI-powered lead responses.</p>
+        <div class="link-box" style="max-width:400px;margin:0 auto 16px;">
+          <code>${formUrl}</code>
+          <button class="copy-btn" onclick="copyLink('${formUrl}')">Copy</button>
+        </div>
+        <a href="${formUrl}" target="_blank" class="share-btn">Preview your page</a>
+      </div>`;
+    return;
+  }
+
+  const pills = ['all', 'new', 'responded', 'booked', 'won', 'lost'].map(s =>
+    `<span class="pill ${currentFilter === s ? 'active' : ''}" onclick="filterLeads('${s}')">${s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}</span>`
+  ).join('');
+
+  const rows = data.leads.map(l => `
+    <tr>
+      <td><span class="urgency-dot urgency-${l.urgency}"></span><span class="name" onclick="openLead('${l.id}')">${l.customer_name}</span></td>
+      <td>${l.customer_email}</td>
+      <td>${l.answers ? Object.values(l.answers)[0] || '—' : '—'}</td>
+      <td><span class="status-badge status-${l.status}">${l.status}</span></td>
+      <td><span class="response-time">${(l.response_time_ms / 1000).toFixed(1)}s</span></td>
+      <td><span class="time-ago">${timeAgo(l.created_at)}</span></td>
+    </tr>
+  `).join('');
+
+  content.innerHTML = `
+    <div class="actions-bar">
+      <h2>Leads</h2>
+      <div class="filter-pills">${pills}</div>
+      <div class="share-link" onclick="copyLink('${formUrl}')">
+        <span>📋</span> Copy form link
+      </div>
+    </div>
+    <div class="leads-table">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Need</th><th>Status</th><th>Response</th><th>When</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function filterLeads(status) {
+  currentFilter = status;
+  loadLeads();
+}
+
+async function openLead(id) {
+  const data = await apiFetch(`/api/snaplead-data?action=leads`);
+  if (!data) return;
+  const lead = data.leads.find(l => l.id === id);
+  if (!lead) return;
+
+  currentLead = lead;
+  document.getElementById('modal-name').textContent = lead.customer_name;
+  document.getElementById('modal-status').value = lead.status;
+
+  const questions = business.custom_questions || [];
+  let answersHtml = '';
+  if (lead.answers) {
+    for (const [key, value] of Object.entries(lead.answers)) {
+      const q = questions.find(qq => qq.id === key);
+      answersHtml += `<div class="detail-row"><span class="dk">${q ? q.label : key}</span><span class="dv">${value}</span></div>`;
+    }
+  }
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="detail-section">
+      <div class="detail-label">Contact</div>
+      <div class="detail-row"><span class="dk">Email</span><span class="dv"><a href="mailto:${lead.customer_email}" style="color:#10B981;text-decoration:none;">${lead.customer_email}</a></span></div>
+      ${lead.customer_phone ? `<div class="detail-row"><span class="dk">Phone</span><span class="dv"><a href="tel:${lead.customer_phone}" style="color:#10B981;text-decoration:none;">${lead.customer_phone}</a></span></div>` : ''}
+      <div class="detail-row"><span class="dk">Received</span><span class="dv">${new Date(lead.created_at).toLocaleString()}</span></div>
+      <div class="detail-row"><span class="dk">Response time</span><span class="dv" style="color:#10B981;">${(lead.response_time_ms / 1000).toFixed(1)} seconds</span></div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Responses</div>
+      ${answersHtml}
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">AI Response Sent</div>
+      <div class="ai-response">${lead.ai_response ? lead.ai_response.split('\n').filter(p => p.trim()).map(p => `<p style="margin:0 0 10px 0;">${p}</p>`).join('') : 'No response recorded'}</div>
+    </div>`;
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  currentLead = null;
+}
+
+async function updateLeadStatus() {
+  if (!currentLead) return;
+  const newStatus = document.getElementById('modal-status').value;
+  await apiFetch('/api/snaplead-data?action=update_lead', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'update_lead', lead_id: currentLead.id, status: newStatus })
+  });
+  closeModal();
+  loadLeads();
+  loadStats();
+}
+
+function loadSettings() {
+  const formUrl = `${window.location.origin}/snaplead/s/${business.business_slug}`;
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div class="setting-group">
+      <h3>Your SnapLead page</h3>
+      <p style="font-size:13px;color:#9ca3af;margin-bottom:12px;">Share this link on your website, social media, or anywhere you want leads.</p>
+      <div class="link-box">
+        <code>${formUrl}</code>
+        <button class="copy-btn" onclick="copyLink('${formUrl}')">Copy</button>
+      </div>
+    </div>
+    <div class="setting-group">
+      <h3>Business details</h3>
+      <div class="setting-field">
+        <label>Business name</label>
+        <input type="text" id="set_name" value="${business.business_name || ''}">
+      </div>
+      <div class="setting-field">
+        <label>Business description</label>
+        <textarea id="set_desc">${business.business_description || ''}</textarea>
+      </div>
+      <div class="setting-field">
+        <label>Notification email</label>
+        <input type="email" id="set_notify" value="${business.notification_email || ''}">
+      </div>
+      <div class="setting-field">
+        <label>Calendar booking link</label>
+        <input type="url" id="set_cal" value="${business.calendar_link || ''}" placeholder="https://calendly.com/...">
+      </div>
+      <div class="setting-field">
+        <label>Phone</label>
+        <input type="tel" id="set_phone" value="${business.phone || ''}">
+      </div>
+      <div class="setting-field">
+        <label>Website</label>
+        <input type="url" id="set_web" value="${business.website || ''}">
+      </div>
+      <div class="setting-field">
+        <label>Response tone</label>
+        <select id="set_tone">
+          <option value="friendly" ${business.response_tone === 'friendly' ? 'selected' : ''}>Friendly</option>
+          <option value="professional" ${business.response_tone === 'professional' ? 'selected' : ''}>Professional</option>
+          <option value="direct" ${business.response_tone === 'direct' ? 'selected' : ''}>Direct</option>
+        </select>
+      </div>
+      <button class="save-btn" id="save-settings" onclick="saveSettings()">Save changes</button>
+    </div>
+    <div class="setting-group">
+      <h3>Plan</h3>
+      <div class="detail-row" style="border:none;padding:0;">
+        <span class="dk" style="color:#6b7280;">Current plan</span>
+        <span class="dv" style="color:#10B981;font-weight:600;">${business.plan === 'trial' ? 'Free Trial' : business.plan.charAt(0).toUpperCase() + business.plan.slice(1)}</span>
+      </div>
+      ${business.plan === 'trial' ? `<p style="font-size:12px;color:#9ca3af;margin-top:8px;">Trial ends ${new Date(business.trial_ends_at).toLocaleDateString()}</p>` : ''}
+    </div>`;
+}
+
+async function saveSettings() {
+  const btn = document.getElementById('save-settings');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  const settings = {
+    business_name: document.getElementById('set_name').value.trim(),
+    business_description: document.getElementById('set_desc').value.trim(),
+    notification_email: document.getElementById('set_notify').value.trim(),
+    calendar_link: document.getElementById('set_cal').value.trim(),
+    phone: document.getElementById('set_phone').value.trim(),
+    website: document.getElementById('set_web').value.trim(),
+    response_tone: document.getElementById('set_tone').value
+  };
+
+  const data = await apiFetch('/api/snaplead-auth', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'update', settings })
+  });
+
+  if (data && data.success) {
+    business = { ...business, ...settings };
+    localStorage.setItem('snaplead_business', JSON.stringify(business));
+    btn.textContent = 'Saved ✓';
+    setTimeout(() => { btn.disabled = false; btn.textContent = 'Save changes'; }, 1500);
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'Save changes';
+    alert('Failed to save. Please try again.');
+  }
+}
+
+function copyLink(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    btns.forEach(b => { if (b.textContent !== 'Copied!') { b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500); }});
+  });
+}
+
+// Close modal on overlay click
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal-overlay')) closeModal();
+});
+
+init();
+</script>
+</body>
+</html>
