@@ -142,50 +142,52 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to store lead' });
     }
 
-    // 6. Log the response
-    await supabaseInsert('snaplead_responses', {
-      lead_id: lead.id,
-      business_id: business.id,
-      response_time_ms: responseTimeMs,
-      tokens_used: tokensUsed,
-      delivery_method: 'email',
-      delivered: true,
-      cost_cents: Math.ceil(tokensUsed * 0.003 * 100)
-    });
-
-    // 7. Update business lead counts
-    await supabaseUpdate('snaplead_businesses', `id=eq.${business.id}`, {
-      monthly_leads: (business.monthly_leads || 0) + 1,
-      total_leads: (business.total_leads || 0) + 1,
-      updated_at: new Date().toISOString()
-    });
-
-    // 8. Send email to customer
+    // 6-9: Run remaining tasks in PARALLEL (not sequential) to save time
+    // All four run at once instead of one after another
     const customerEmailHtml = buildCustomerEmail(business.business_name, customer_name, aiText, business.logo_url);
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({
-        from: `${business.business_name} via SnapLead <noreply@jovilex.com>`,
-        to: customer_email,
-        subject: `Thanks for reaching out, ${customer_name.split(' ')[0]}!`,
-        html: customerEmailHtml
-      })
-    });
-
-    // 9. Notify business owner
     const notifyEmail = business.notification_email || business.owner_email;
     const notifyHtml = buildNotificationEmail(business.business_name, customer_name, customer_email, customer_phone, answers, questions, urgency, aiText, responseTimeMs);
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({
-        from: 'SnapLead <noreply@jovilex.com>',
-        to: notifyEmail,
-        subject: `${urgency === 'emergency' ? '🚨 URGENT: ' : ''}New lead: ${customer_name} — ${Object.values(answers)[0] || 'General enquiry'}`,
-        html: notifyHtml
+
+    await Promise.allSettled([
+      // Log the response
+      supabaseInsert('snaplead_responses', {
+        lead_id: lead.id,
+        business_id: business.id,
+        response_time_ms: responseTimeMs,
+        tokens_used: tokensUsed,
+        delivery_method: 'email',
+        delivered: true,
+        cost_cents: Math.ceil(tokensUsed * 0.003 * 100)
+      }),
+      // Update business lead counts
+      supabaseUpdate('snaplead_businesses', `id=eq.${business.id}`, {
+        monthly_leads: (business.monthly_leads || 0) + 1,
+        total_leads: (business.total_leads || 0) + 1,
+        updated_at: new Date().toISOString()
+      }),
+      // Email customer
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+        body: JSON.stringify({
+          from: `${business.business_name} via SnapLead <noreply@jovilex.com>`,
+          to: customer_email,
+          subject: `Thanks for reaching out, ${customer_name.split(' ')[0]}!`,
+          html: customerEmailHtml
+        })
+      }),
+      // Notify business owner
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+        body: JSON.stringify({
+          from: 'SnapLead <noreply@jovilex.com>',
+          to: notifyEmail,
+          subject: `${urgency === 'emergency' ? '🚨 URGENT: ' : ''}New lead: ${customer_name} — ${Object.values(answers)[0] || 'General enquiry'}`,
+          html: notifyHtml
+        })
       })
-    });
+    ]);
 
     // 10. Return success
     return res.status(200).json({
