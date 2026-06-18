@@ -1,5 +1,15 @@
 {
     "rewrites": [
+        { "source": "/", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-marketing.html" },
+        { "source": "/signup", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-signup.html" },
+        { "source": "/dashboard", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-dashboard.html" },
+        { "source": "/s/:slug", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-form.html" },
+        { "source": "/demo/:industry", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-form.html" },
+        { "source": "/for/dental", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-dental.html" },
+        { "source": "/for/home-services", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-home-services.html" },
+        { "source": "/for/legal", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-legal.html" },
+        { "source": "/for/medspa", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-medspa.html" },
+
         { "source": "/intake", "destination": "/intake.html" },
         { "source": "/links", "destination": "/links.html" },
         { "source": "/collect", "destination": "/collect.html" },
