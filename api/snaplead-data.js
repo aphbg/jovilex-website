@@ -1,7 +1,6 @@
 // api/snaplead-data.js
 // Dashboard data: leads list, stats, analytics
-
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+// Uses Supabase REST API directly — no client library needed
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -14,13 +13,40 @@ function verifyToken(token) {
   } catch { return null; }
 }
 
-export default async function handler(req, res) {
+async function supabaseGet(table, query) {
+  const resp = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  const countHeader = resp.headers.get('content-range');
+  const data = await resp.json();
+  let total = null;
+  if (countHeader) {
+    const match = countHeader.match(/\/(\d+)/);
+    if (match) total = parseInt(match[1]);
+  }
+  return { data, total };
+}
+
+async function supabaseUpdate(table, query, data) {
+  const resp = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(data)
+  });
+  const result = await resp.json();
+  return Array.isArray(result) ? result[0] : result;
+}
+
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
-
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // Auth check
   const authHeader = req.headers.authorization;
@@ -29,127 +55,121 @@ export default async function handler(req, res) {
   if (!payload) return res.status(401).json({ error: 'Invalid or expired token' });
 
   const businessId = payload.id;
-  const action = req.query.action || req.body?.action;
+  const action = req.query.action || (req.body && req.body.action);
 
-  // ---- LEADS LIST ----
-  if (action === 'leads') {
-    const page = parseInt(req.query.page || '1');
-    const limit = 20;
-    const offset = (page - 1) * limit;
-    const status = req.query.status; // optional filter
+  try {
+    // ---- LEADS LIST ----
+    if (action === 'leads') {
+      const page = parseInt(req.query.page || '1');
+      const limit = 20;
+      const offset = (page - 1) * limit;
+      const status = req.query.status;
 
-    let query = supabase
-      .from('snaplead_leads')
-      .select('*', { count: 'exact' })
-      .eq('business_id', businessId)
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
+      let query = `business_id=eq.${businessId}&order=created_at.desc&offset=${offset}&limit=${limit}&select=*`;
+      if (status && status !== 'all') {
+        query += `&status=eq.${status}`;
+      }
 
-    if (status && status !== 'all') {
-      query = query.eq('status', status);
+      // Use Prefer header for count
+      const resp = await fetch(`${SUPABASE_URL}/rest/v1/snaplead_leads?${query}`, {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'count=exact'
+        }
+      });
+
+      const countHeader = resp.headers.get('content-range');
+      const leads = await resp.json();
+      let total = 0;
+      if (countHeader) {
+        const match = countHeader.match(/\/(\d+|\*)/);
+        if (match && match[1] !== '*') total = parseInt(match[1]);
+      }
+
+      return res.status(200).json({
+        leads: Array.isArray(leads) ? leads : [],
+        total,
+        page,
+        pages: Math.ceil(total / limit) || 1
+      });
     }
 
-    const { data: leads, count, error } = await query;
-    if (error) return res.status(500).json({ error: 'Failed to fetch leads' });
+    // ---- STATS ----
+    if (action === 'stats') {
+      // Total leads
+      const allLeadsResp = await fetch(`${SUPABASE_URL}/rest/v1/snaplead_leads?business_id=eq.${businessId}&select=status,created_at`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const allLeads = await allLeadsResp.json();
+      const totalLeads = Array.isArray(allLeads) ? allLeads.length : 0;
 
-    return res.status(200).json({
-      leads: leads || [],
-      total: count || 0,
-      page,
-      pages: Math.ceil((count || 0) / limit)
-    });
+      // This month
+      const monthStart = new Date();
+      monthStart.setDate(1);
+      monthStart.setHours(0, 0, 0, 0);
+      const monthLeads = Array.isArray(allLeads) ? allLeads.filter(l => new Date(l.created_at) >= monthStart).length : 0;
+
+      // Today
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const todayLeads = Array.isArray(allLeads) ? allLeads.filter(l => new Date(l.created_at) >= todayStart).length : 0;
+
+      // Average response time
+      const responsesResp = await fetch(`${SUPABASE_URL}/rest/v1/snaplead_responses?business_id=eq.${businessId}&select=response_time_ms`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const responses = await responsesResp.json();
+      const avgResponseMs = Array.isArray(responses) && responses.length > 0
+        ? responses.reduce((sum, r) => sum + r.response_time_ms, 0) / responses.length
+        : 0;
+
+      // Status breakdown
+      const statusCounts = {};
+      if (Array.isArray(allLeads)) {
+        allLeads.forEach(l => {
+          statusCounts[l.status] = (statusCounts[l.status] || 0) + 1;
+        });
+      }
+
+      const converted = (statusCounts.booked || 0) + (statusCounts.won || 0);
+      const conversionRate = totalLeads > 0 ? ((converted / totalLeads) * 100).toFixed(1) : '0.0';
+
+      return res.status(200).json({
+        total_leads: totalLeads,
+        month_leads: monthLeads,
+        today_leads: todayLeads,
+        avg_response_ms: Math.round(avgResponseMs),
+        avg_response_seconds: (avgResponseMs / 1000).toFixed(1),
+        status_breakdown: statusCounts,
+        conversion_rate: conversionRate
+      });
+    }
+
+    // ---- UPDATE LEAD STATUS ----
+    if (action === 'update_lead') {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'POST required' });
+
+      const { lead_id, status, notes, estimated_value } = req.body;
+      if (!lead_id) return res.status(400).json({ error: 'lead_id required' });
+
+      const updates = {};
+      if (status) updates.status = status;
+      if (notes !== undefined) updates.notes = notes;
+      if (estimated_value !== undefined) updates.estimated_value = estimated_value;
+
+      const result = await supabaseUpdate('snaplead_leads', `id=eq.${lead_id}&business_id=eq.${businessId}`, updates);
+
+      if (!result || result.code) {
+        return res.status(500).json({ error: 'Failed to update lead' });
+      }
+
+      return res.status(200).json({ success: true, lead: result });
+    }
+
+    return res.status(400).json({ error: 'Invalid action. Use: leads, stats, update_lead' });
+  } catch (err) {
+    console.error('snaplead-data error:', err);
+    return res.status(500).json({ error: 'Internal server error', details: err.message });
   }
-
-  // ---- STATS ----
-  if (action === 'stats') {
-    // Total leads
-    const { count: totalLeads } = await supabase
-      .from('snaplead_leads')
-      .select('*', { count: 'exact', head: true })
-      .eq('business_id', businessId);
-
-    // This month's leads
-    const monthStart = new Date();
-    monthStart.setDate(1);
-    monthStart.setHours(0, 0, 0, 0);
-    const { count: monthLeads } = await supabase
-      .from('snaplead_leads')
-      .select('*', { count: 'exact', head: true })
-      .eq('business_id', businessId)
-      .gte('created_at', monthStart.toISOString());
-
-    // Today's leads
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-    const { count: todayLeads } = await supabase
-      .from('snaplead_leads')
-      .select('*', { count: 'exact', head: true })
-      .eq('business_id', businessId)
-      .gte('created_at', todayStart.toISOString());
-
-    // Average response time
-    const { data: avgData } = await supabase
-      .from('snaplead_responses')
-      .select('response_time_ms')
-      .eq('business_id', businessId);
-    
-    const avgResponseMs = avgData && avgData.length > 0
-      ? avgData.reduce((sum, r) => sum + r.response_time_ms, 0) / avgData.length
-      : 0;
-
-    // Lead status breakdown
-    const { data: allLeads } = await supabase
-      .from('snaplead_leads')
-      .select('status')
-      .eq('business_id', businessId);
-
-    const statusCounts = {};
-    (allLeads || []).forEach(l => {
-      statusCounts[l.status] = (statusCounts[l.status] || 0) + 1;
-    });
-
-    // Conversion rate (booked + won / total)
-    const converted = (statusCounts.booked || 0) + (statusCounts.won || 0);
-    const conversionRate = totalLeads > 0 ? ((converted / totalLeads) * 100).toFixed(1) : '0.0';
-
-    return res.status(200).json({
-      total_leads: totalLeads || 0,
-      month_leads: monthLeads || 0,
-      today_leads: todayLeads || 0,
-      avg_response_ms: Math.round(avgResponseMs),
-      avg_response_seconds: (avgResponseMs / 1000).toFixed(1),
-      status_breakdown: statusCounts,
-      conversion_rate: conversionRate
-    });
-  }
-
-  // ---- UPDATE LEAD STATUS ----
-  if (action === 'update_lead') {
-    if (req.method !== 'POST') return res.status(405).json({ error: 'POST required' });
-
-    const { lead_id, status, notes, estimated_value } = req.body;
-    if (!lead_id) return res.status(400).json({ error: 'lead_id required' });
-
-    const updates = {};
-    if (status) updates.status = status;
-    if (notes !== undefined) updates.notes = notes;
-    if (estimated_value !== undefined) updates.estimated_value = estimated_value;
-
-    const { data, error } = await supabase
-      .from('snaplead_leads')
-      .update(updates)
-      .eq('id', lead_id)
-      .eq('business_id', businessId) // security: only own leads
-      .select()
-      .single();
-
-    if (error) return res.status(500).json({ error: 'Failed to update lead' });
-
-    return res.status(200).json({ success: true, lead: data });
-  }
-
-  // ---- GET BUSINESS PUBLIC CONFIG (no auth needed for this one) ----
-  // This is called by the lead form to get questions and branding
-
-  return res.status(400).json({ error: 'Invalid action. Use: leads, stats, update_lead' });
-}
+};
