@@ -1,4 +1,5 @@
 {
+    "trailingSlash": false,
     "rewrites": [
         { "source": "/", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-marketing.html" },
         { "source": "/signup", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-signup.html" },
@@ -10,6 +11,7 @@
         { "source": "/for/legal", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-legal.html" },
         { "source": "/for/medspa", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-medspa.html" },
 
+        { "source": "/", "destination": "/jovilex-home.html" },
         { "source": "/intake", "destination": "/intake.html" },
         { "source": "/links", "destination": "/links.html" },
         { "source": "/collect", "destination": "/collect.html" },
