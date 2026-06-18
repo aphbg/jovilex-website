@@ -11,9 +11,20 @@
         { "source": "/audit", "destination": "/audit.html" },
         { "source": "/contact", "destination": "/contact.html" },
         { "source": "/leads", "destination": "/leads.html" },
+        { "source": "/snaplead", "destination": "/snaplead-marketing.html" },
         { "source": "/snaplead/signup", "destination": "/snaplead-signup.html" },
         { "source": "/snaplead/dashboard", "destination": "/snaplead-dashboard.html" },
         { "source": "/snaplead/s/:slug", "destination": "/snaplead-form.html" },
-        { "source": "/snaplead/demo/:industry", "destination": "/snaplead-form.html" }
+        { "source": "/snaplead/demo/:industry", "destination": "/snaplead-form.html" },
+        { "source": "/snaplead/for/dental", "destination": "/snaplead-dental.html" },
+        { "source": "/snaplead/for/home-services", "destination": "/snaplead-home-services.html" },
+        { "source": "/snaplead/for/legal", "destination": "/snaplead-legal.html" },
+        { "source": "/snaplead/for/medspa", "destination": "/snaplead-medspa.html" }
+    ],
+    "crons": [
+        {
+            "path": "/api/snaplead-cron",
+            "schedule": "0 0 1 * *"
+        }
     ]
 }
