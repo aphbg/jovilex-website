@@ -1,15 +1,19 @@
 {
-  "rewrites": [
-    { "source": "/intake", "destination": "/intake.html" },
-    { "source": "/links", "destination": "/links.html" },
-    { "source": "/collect", "destination": "/collect.html" },
-    { "source": "/nda", "destination": "/nda.html" },
-    { "source": "/sign", "destination": "/sign.html" },
-    { "source": "/pay", "destination": "/pay.html" },
-    { "source": "/portal", "destination": "/portal.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/audit", "destination": "/audit.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/leads", "destination": "/leads.html" }
-  ]
+    "rewrites": [
+        { "source": "/intake", "destination": "/intake.html" },
+        { "source": "/links", "destination": "/links.html" },
+        { "source": "/collect", "destination": "/collect.html" },
+        { "source": "/nda", "destination": "/nda.html" },
+        { "source": "/sign", "destination": "/sign.html" },
+        { "source": "/pay", "destination": "/pay.html" },
+        { "source": "/portal", "destination": "/portal.html" },
+        { "source": "/admin", "destination": "/admin.html" },
+        { "source": "/audit", "destination": "/audit.html" },
+        { "source": "/contact", "destination": "/contact.html" },
+        { "source": "/leads", "destination": "/leads.html" },
+        { "source": "/snaplead/signup", "destination": "/snaplead-signup.html" },
+        { "source": "/snaplead/dashboard", "destination": "/snaplead-dashboard.html" },
+        { "source": "/snaplead/s/:slug", "destination": "/snaplead-form.html" },
+        { "source": "/snaplead/demo/:industry", "destination": "/snaplead-form.html" }
+    ]
 }
