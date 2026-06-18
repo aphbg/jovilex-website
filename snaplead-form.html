@@ -61,7 +61,6 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
   border-radius: 50%; animation: spin 0.6s linear infinite;
 }
 
-/* Success state */
 .success-card { text-align: center; padding: 48px 28px; }
 .success-icon { width: 64px; height: 64px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
 .success-icon svg { width: 32px; height: 32px; }
@@ -69,6 +68,7 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
 .success-card .time-badge { display: inline-block; background: #ecfdf5; color: #059669; font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
 .success-card p { font-size: 15px; color: #6b7280; line-height: 1.6; }
 .success-card .cta { display: inline-block; margin-top: 24px; padding: 12px 24px; background: #10B981; color: #ffffff; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; }
+.success-card .demo-cta { display: inline-block; margin-top: 24px; padding: 12px 24px; background: #111111; color: #ffffff; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; }
 
 .footer { text-align: center; padding: 24px 0; font-size: 11px; color: #9ca3af; }
 .footer a { color: #10B981; text-decoration: none; font-weight: 500; }
@@ -90,19 +90,14 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
 </div>
 
 <script>
-const API_BASE = window.location.hostname === 'localhost' ? '' : '';
-
-// Parse URL to get slug or demo industry
 function getConfig() {
   const path = window.location.pathname;
   const params = new URLSearchParams(window.location.search);
   
-  // Demo mode: /snaplead/demo/dental or ?demo=dental
   const demoMatch = path.match(/\/demo\/(\w+)/);
   if (demoMatch) return { mode: 'demo', industry: demoMatch[1] };
   if (params.get('demo')) return { mode: 'demo', industry: params.get('demo') };
 
-  // Business mode: /snaplead/s/slug or ?s=slug or /s/slug
   const slugMatch = path.match(/\/s\/([a-z0-9-]+)/);
   if (slugMatch) return { mode: 'business', slug: slugMatch[1] };
   if (params.get('s')) return { mode: 'business', slug: params.get('s') };
@@ -218,13 +213,12 @@ function renderForm(biz) {
         </form>
       </div>
       <div class="footer">
-        Powered by <a href="https://jovilex.com/snaplead">SnapLead</a>
+        Powered by <a href="https://jovilex.com/snaplead/signup">SnapLead</a>
       </div>
     </div>`;
 
   document.getElementById('lead-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const form = e.target;
     const card = document.getElementById('form-card');
     
     const name = document.getElementById('f_name').value.trim();
@@ -242,9 +236,28 @@ function renderForm(biz) {
 
     // Disable form
     card.classList.add('submitting');
-    const btn = form.querySelector('.submit-btn');
+    const btn = document.querySelector('.submit-btn');
     btn.disabled = true;
 
+    // DEMO MODE: show simulated success without calling API
+    if (biz.is_demo) {
+      await new Promise(r => setTimeout(r, 1500));
+      card.innerHTML = `
+        <div class="success-card">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="time-badge">Responded in 3.2s (simulated)</div>
+          <h2>That's how fast it works</h2>
+          <p>In a real setup, ${name.split(' ')[0]} would have received a personalised AI response at ${email} within seconds — and you'd get a detailed lead notification instantly.</p>
+          <a href="/snaplead/signup" class="demo-cta">Get SnapLead for your business</a>
+        </div>`;
+      return;
+    }
+
+    // REAL MODE: call the API
     try {
       const resp = await fetch('/api/snaplead-respond', {
         method: 'POST',
@@ -255,7 +268,7 @@ function renderForm(biz) {
           customer_email: email,
           customer_phone: phone || null,
           answers,
-          source: biz.is_demo ? 'demo' : 'standalone'
+          source: 'standalone'
         })
       });
 
