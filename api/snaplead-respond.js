@@ -1,50 +1,16 @@
 // api/snaplead-respond.js
-// Core engine: receive lead → Claude AI response → email to customer → notify business → store
-// Uses Supabase REST API directly — no client library needed
+// Core engine: receive lead → Claude AI response → email → notify → store
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const {
+  supabaseGet, supabaseInsert, supabaseUpdate,
+  checkRateLimit, sanitize, sanitizeObject, isValidEmail, setCORS
+} = require('./_utils');
+
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const RESEND_KEY = process.env.RESEND_API_KEY;
 
-async function supabaseGet(table, query) {
-  const resp = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-  });
-  return resp.json();
-}
-
-async function supabaseInsert(table, data) {
-  const resp = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify(data)
-  });
-  const result = await resp.json();
-  return Array.isArray(result) ? result[0] : result;
-}
-
-async function supabaseUpdate(table, query, data) {
-  await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
-    method: 'PATCH',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-}
-
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  setCORS(res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -53,9 +19,19 @@ module.exports = async function handler(req, res) {
   try {
     const { business_slug, customer_name, customer_email, customer_phone, answers, source } = req.body;
 
+    // Validate required fields
     if (!business_slug || !customer_name || !customer_email) {
       return res.status(400).json({ error: 'Missing required fields: business_slug, customer_name, customer_email' });
     }
+    if (!isValidEmail(customer_email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
+
+    // Sanitize all inputs
+    const cleanName = sanitize(customer_name);
+    const cleanEmail = customer_email.toLowerCase().trim();
+    const cleanPhone = customer_phone ? sanitize(customer_phone) : null;
+    const cleanAnswers = sanitizeObject(answers || {});
 
     // 1. Fetch business config
     const businesses = await supabaseGet('snaplead_businesses', `business_slug=eq.${encodeURIComponent(business_slug)}&select=*&limit=1`);
@@ -71,19 +47,25 @@ module.exports = async function handler(req, res) {
       return res.status(403).json({ error: 'Trial has expired' });
     }
 
-    // 2. Fetch industry template for system prompt
+    // 2. Rate limit check
+    const rateLimit = await checkRateLimit(business.id, 100);
+    if (!rateLimit.allowed) {
+      return res.status(429).json({ error: 'Rate limit exceeded. Please try again later.' });
+    }
+
+    // 3. Fetch industry template for system prompt
     const templates = await supabaseGet('snaplead_templates', `industry_key=eq.${encodeURIComponent(business.industry)}&select=system_prompt&limit=1`);
     const templatePrompt = templates && templates.length > 0 ? templates[0].system_prompt : '';
 
-    // 3. Build the prompt
+    // 4. Build the prompt
     const systemPrompt = templatePrompt
       .replace(/\{\{business_name\}\}/g, business.business_name)
       .replace(/\{\{industry_description\}\}/g, business.business_description || business.industry);
 
     const questions = typeof business.custom_questions === 'string' ? JSON.parse(business.custom_questions) : (business.custom_questions || []);
     let answersText = '';
-    if (answers && typeof answers === 'object') {
-      for (const [key, value] of Object.entries(answers)) {
+    if (cleanAnswers && typeof cleanAnswers === 'object') {
+      for (const [key, value] of Object.entries(cleanAnswers)) {
         const question = questions.find(q => q.id === key);
         const label = question ? question.label : key;
         answersText += `${label}: ${value}\n`;
@@ -92,7 +74,7 @@ module.exports = async function handler(req, res) {
 
     // Determine urgency
     let urgency = 'medium';
-    const urgencyAnswer = answers?.urgency || answers?.visit_reason || '';
+    const urgencyAnswer = cleanAnswers?.urgency || cleanAnswers?.visit_reason || '';
     if (typeof urgencyAnswer === 'string') {
       const lower = urgencyAnswer.toLowerCase();
       if (lower.includes('emergency') || lower.includes('urgent')) urgency = 'emergency';
@@ -100,9 +82,9 @@ module.exports = async function handler(req, res) {
       else if (lower.includes('just') || lower.includes('exploring') || lower.includes('getting quotes')) urgency = 'low';
     }
 
-    const userMessage = `New lead from ${customer_name} (${customer_email}${customer_phone ? ', ' + customer_phone : ''}).\n\nTheir responses:\n${answersText}\nWrite a personalised response to this potential customer.`;
+    const userMessage = `New lead from ${cleanName} (${cleanEmail}${cleanPhone ? ', ' + cleanPhone : ''}).\n\nTheir responses:\n${answersText}\nWrite a personalised response to this potential customer.`;
 
-    // 4. Call Claude
+    // 5. Call Claude
     const aiResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -123,13 +105,13 @@ module.exports = async function handler(req, res) {
     const tokensUsed = (aiData.usage?.input_tokens || 0) + (aiData.usage?.output_tokens || 0);
     const responseTimeMs = Date.now() - startTime;
 
-    // 5. Store the lead
+    // 6. Store the lead (must complete before response)
     const lead = await supabaseInsert('snaplead_leads', {
       business_id: business.id,
-      customer_name,
-      customer_email,
-      customer_phone: customer_phone || null,
-      answers: answers || {},
+      customer_name: cleanName,
+      customer_email: cleanEmail,
+      customer_phone: cleanPhone,
+      answers: cleanAnswers,
       urgency,
       ai_response: aiText,
       response_time_ms: responseTimeMs,
@@ -142,14 +124,12 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to store lead' });
     }
 
-    // 6-9: Run remaining tasks in PARALLEL (not sequential) to save time
-    // All four run at once instead of one after another
-    const customerEmailHtml = buildCustomerEmail(business.business_name, customer_name, aiText, business.logo_url);
+    // 7-10: Run remaining tasks in PARALLEL to save time
+    const customerEmailHtml = buildCustomerEmail(business.business_name, cleanName, aiText, business.logo_url);
     const notifyEmail = business.notification_email || business.owner_email;
-    const notifyHtml = buildNotificationEmail(business.business_name, customer_name, customer_email, customer_phone, answers, questions, urgency, aiText, responseTimeMs);
+    const notifyHtml = buildNotificationEmail(business.business_name, cleanName, cleanEmail, cleanPhone, cleanAnswers, questions, urgency, aiText, responseTimeMs);
 
     await Promise.allSettled([
-      // Log the response
       supabaseInsert('snaplead_responses', {
         lead_id: lead.id,
         business_id: business.id,
@@ -159,37 +139,33 @@ module.exports = async function handler(req, res) {
         delivered: true,
         cost_cents: Math.ceil(tokensUsed * 0.003 * 100)
       }),
-      // Update business lead counts
       supabaseUpdate('snaplead_businesses', `id=eq.${business.id}`, {
         monthly_leads: (business.monthly_leads || 0) + 1,
         total_leads: (business.total_leads || 0) + 1,
         updated_at: new Date().toISOString()
       }),
-      // Email customer
       fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
         body: JSON.stringify({
           from: `${business.business_name} via SnapLead <noreply@jovilex.com>`,
-          to: customer_email,
-          subject: `Thanks for reaching out, ${customer_name.split(' ')[0]}!`,
+          to: cleanEmail,
+          subject: `Thanks for reaching out, ${cleanName.split(' ')[0]}!`,
           html: customerEmailHtml
         })
       }),
-      // Notify business owner
       fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
         body: JSON.stringify({
           from: 'SnapLead <noreply@jovilex.com>',
           to: notifyEmail,
-          subject: `${urgency === 'emergency' ? '🚨 URGENT: ' : ''}New lead: ${customer_name} — ${Object.values(answers)[0] || 'General enquiry'}`,
+          subject: `${urgency === 'emergency' ? '🚨 URGENT: ' : ''}New lead: ${cleanName} — ${Object.values(cleanAnswers)[0] || 'General enquiry'}`,
           html: notifyHtml
         })
       })
     ]);
 
-    // 10. Return success
     return res.status(200).json({
       success: true,
       response_time_ms: responseTimeMs,
@@ -199,7 +175,7 @@ module.exports = async function handler(req, res) {
 
   } catch (err) {
     console.error('SnapLead respond error:', err);
-    return res.status(500).json({ error: 'Internal server error', details: err.message });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
