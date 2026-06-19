@@ -39,11 +39,14 @@
 </div>
 <script>
 const API='/api/snaplead-admin';
-let pw='';
+let pw=sessionStorage.getItem('snaplead_admin_pw')||'';
+
+if(pw)loadDashboard();
 
 function doLogin(){
   pw=document.getElementById('pw').value;
   if(!pw){document.getElementById('login-err').textContent='Enter password';document.getElementById('login-err').style.display='block';return}
+  sessionStorage.setItem('snaplead_admin_pw',pw);
   loadDashboard();
 }
 
@@ -66,6 +69,7 @@ async function loadDashboard(){
 
   const data=await api({action:'list_partners'});
   if(!data.success){
+    sessionStorage.removeItem('snaplead_admin_pw');
     app.innerHTML='<div class="login" id="login-box"><h2>Partner Management</h2><div class="err" style="display:block">Invalid password</div><input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key===\'Enter\')doLogin()"><button onclick="doLogin()">Access</button></div>';
     return;
   }
@@ -155,7 +159,7 @@ async function createPartner(){
   if(data.success){
     msg.textContent=`Partner "${body.name}" created with code "${body.code}"`;msg.className='msg ok';
     btn.disabled=false;btn.textContent='Create partner';
-    setTimeout(()=>loadDashboard(),1500);
+    setTimeout(()=>loadDashboard(),800);
   }else{
     msg.textContent=data.error||'Failed to create';msg.className='msg bad';
     btn.disabled=false;btn.textContent='Create partner';
