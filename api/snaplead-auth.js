@@ -72,7 +72,8 @@ module.exports = async function handler(req, res) {
         custom_questions: defaultQuestions,
         plan: 'trial',
         status: 'trial',
-        trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
+        trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+        referred_by: req.body.referred_by || null
       });
 
       if (!business || business.code) {
