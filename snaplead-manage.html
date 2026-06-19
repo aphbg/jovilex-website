@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SnapLead — Partner Management</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='7' y='24' font-family='system-ui' font-weight='800' font-size='18' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',-apple-system,sans-serif;background:#111;color:#fff;min-height:100vh}
+.nav{padding:16px 28px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #1f2937}.nav span{font-family:'Sora',sans-serif;font-weight:800;font-size:18px}.nav .g{color:#10B981}.nav .tag{font-size:12px;color:#6b7280;margin-left:8px}
+.main{max-width:1000px;margin:0 auto;padding:28px 24px}
+/* Login */
+.login{max-width:360px;margin:100px auto;text-align:center}.login h2{font-family:'Sora',sans-serif;font-size:20px;margin-bottom:20px}.login input{width:100%;padding:12px;background:#1a1a1a;border:1.5px solid #2a2a2a;border-radius:9px;color:#fff;font-family:inherit;font-size:14px;outline:none;margin-bottom:12px}.login input:focus{border-color:#10B981}.login button{width:100%;padding:12px;background:#10B981;color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}.login .err{color:#ef4444;font-size:13px;margin-bottom:8px;display:none}
+/* Stats */
+.top-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}.ts{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:18px}.ts .tl{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}.ts .tv{font-family:'Sora',sans-serif;font-size:24px;font-weight:800}.ts .tc{font-size:11px;color:#10B981;margin-top:2px}
+/* Create form */
+.create-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:24px;margin-bottom:24px}.create-box h3{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:16px;color:#10B981}.create-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}.create-row .cf{flex:1;min-width:180px}.cf label{display:block;font-size:11px;font-weight:600;color:#6b7280;margin-bottom:4px}.cf input,.cf select{width:100%;padding:9px 11px;background:#111;border:1px solid #2a2a2a;border-radius:8px;color:#fff;font-family:inherit;font-size:13px;outline:none}.cf input:focus,.cf select:focus{border-color:#10B981}.create-btn{padding:10px 24px;background:#10B981;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px}.create-btn:disabled{opacity:0.5}
+.msg{padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:12px;display:none}.msg.ok{display:block;background:rgba(16,185,129,0.1);color:#10B981;border:1px solid rgba(16,185,129,0.2)}.msg.bad{display:block;background:#fef2f2;color:#ef4444;border:1px solid #fecaca}
+/* Partners table */
+.pt{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden}.pt h3{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;padding:16px 20px;border-bottom:1px solid #2a2a2a}.pt table{width:100%;border-collapse:collapse}.pt th{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;padding:10px 14px;text-align:left;border-bottom:1px solid #2a2a2a}.pt td{font-size:12px;padding:12px 14px;border-bottom:1px solid #1f2937;color:#d1d5db}.pt tr:last-child td{border-bottom:none}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:12px}.badge-active{background:rgba(16,185,129,0.15);color:#10B981}.badge-suspended{background:rgba(239,68,68,0.15);color:#f87171}
+.action-btn{font-size:11px;padding:4px 10px;border-radius:4px;border:1px solid #2a2a2a;background:none;color:#9ca3af;cursor:pointer;margin-right:4px;font-family:inherit}.action-btn:hover{border-color:#10B981;color:#10B981}.action-btn.danger:hover{border-color:#ef4444;color:#ef4444}
+.copy-code{color:#10B981;cursor:pointer;font-weight:600}.copy-code:hover{text-decoration:underline}
+.empty{text-align:center;padding:40px;color:#6b7280}
+.loading{display:flex;align-items:center;justify-content:center;min-height:200px;color:#6b7280}.spinner{width:20px;height:20px;border:2px solid #2a2a2a;border-top-color:#10B981;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:10px}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){.top-stats{grid-template-columns:repeat(2,1fr)}.pt{overflow-x:auto}.pt table{min-width:700px}.create-row .cf{min-width:100%}}
+</style>
+</head>
+<body>
+<nav class="nav"><span>Snap</span><span class="g">Lead</span><span class="tag">Partner Management</span></nav>
+<div class="main" id="app">
+  <div class="login" id="login-box">
+    <h2>Partner Management</h2>
+    <div class="err" id="login-err"></div>
+    <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Access</button>
+  </div>
+</div>
+<script>
+const API='/api/snaplead-admin';
+let pw='';
+
+function doLogin(){
+  pw=document.getElementById('pw').value;
+  if(!pw){document.getElementById('login-err').textContent='Enter password';document.getElementById('login-err').style.display='block';return}
+  loadDashboard();
+}
+
+function autoCode(){
+  var name=document.getElementById('c_name')?.value?.trim()||'';
+  var territory=document.getElementById('c_territory')?.value?.trim()||'';
+  if(!name)return;
+  var first=name.split(' ')[0].toLowerCase().replace(/[^a-z]/g,'');
+  var city=territory.split(',')[0].trim().toLowerCase().replace(/[^a-z]/g,'');
+  var code=city?first+'-'+city:first;
+  var el=document.getElementById('c_code');
+  if(el&&!el.dataset.locked)el.value=code;
+}
+
+async function api(body){
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,password:pw})});
+  return r.json();
+}
+
+async function loadDashboard(){
+  const app=document.getElementById('app');
+  app.innerHTML='<div class="loading"><div class="spinner"></div>Loading partners...</div>';
+
+  const data=await api({action:'list_partners'});
+  if(!data.success){
+    app.innerHTML='<div class="login" id="login-box"><h2>Partner Management</h2><div class="err" style="display:block">Invalid password</div><input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key===\'Enter\')doLogin()"><button onclick="doLogin()">Access</button></div>';
+    return;
+  }
+
+  const partners=data.partners||[];
+  const totalPartners=partners.length;
+  const activePartners=partners.filter(p=>p.status==='active').length;
+  const totalClients=partners.reduce((s,p)=>s+p.total_clients,0);
+  const totalCommission=partners.reduce((s,p)=>s+p.monthly_commission,0);
+
+  let rows='';
+  if(partners.length>0){
+    rows=partners.map(p=>{
+      const sc=p.status==='active'?'badge-active':'badge-suspended';
+      return `<tr>
+        <td><strong style="color:#fff">${p.name}</strong><br><span style="font-size:10px;color:#6b7280">${p.email}</span></td>
+        <td><span class="copy-code" onclick="copyCode('${p.code}')" title="Click to copy">${p.code}</span></td>
+        <td>${p.territory}</td>
+        <td>${p.commission_rate}%</td>
+        <td><span class="badge ${sc}">${p.status}</span></td>
+        <td>${p.total_clients} <span style="color:#6b7280">(${p.paid_clients} paid, ${p.trial_clients} trial)</span></td>
+        <td style="color:#10B981;font-weight:600">$${p.monthly_commission.toFixed(0)}/mo</td>
+        <td>
+          <button class="action-btn" onclick="editPartner('${p.id}','${p.name}','${p.email}','${p.territory}','${p.phone||''}','${p.commission_rate}','${p.notes||''}')">Edit</button>
+          ${p.status==='active'?`<button class="action-btn danger" onclick="toggleStatus('${p.id}','suspended')">Suspend</button>`:`<button class="action-btn" onclick="toggleStatus('${p.id}','active')">Activate</button>`}
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  app.innerHTML=`
+    <div class="top-stats">
+      <div class="ts"><div class="tl">Total partners</div><div class="tv">${totalPartners}</div><div class="tc">${activePartners} active</div></div>
+      <div class="ts"><div class="tl">Total clients</div><div class="tv">${totalClients}</div><div class="tc">across all partners</div></div>
+      <div class="ts"><div class="tl">Monthly commission</div><div class="tv">$${totalCommission.toFixed(0)}</div><div class="tc">total payout</div></div>
+      <div class="ts"><div class="tl">Avg per partner</div><div class="tv">$${activePartners>0?(totalCommission/activePartners).toFixed(0):'0'}</div><div class="tc">monthly</div></div>
+    </div>
+
+    <div class="create-box">
+      <h3>Add new partner</h3>
+      <div class="msg" id="create-msg"></div>
+      <div class="create-row">
+        <div class="cf"><label>Name</label><input type="text" id="c_name" placeholder="James Okafor" oninput="autoCode()"></div>
+        <div class="cf"><label>Email</label><input type="email" id="c_email" placeholder="james@email.com"></div>
+        <div class="cf"><label>Referral code (auto-generated)</label><input type="text" id="c_code" placeholder="auto-generates from name + city" readonly style="color:#10B981;background:#0a0a0a;cursor:default"></div>
+      </div>
+      <div class="create-row">
+        <div class="cf"><label>Territory (city/region)</label><input type="text" id="c_territory" placeholder="Newcastle, UK" oninput="autoCode()"></div>
+        <div class="cf"><label>Phone (optional)</label><input type="tel" id="c_phone" placeholder="+44..."></div>
+        <div class="cf"><label>Commission rate (%)</label><select id="c_rate"><option value="15">15%</option><option value="20">20%</option></select></div>
+      </div>
+      <button class="create-btn" id="create-btn" onclick="createPartner()">Create partner</button>
+    </div>
+
+    <div class="pt">
+      <h3>All partners</h3>
+      ${partners.length>0?`<table>
+        <thead><tr><th>Partner</th><th>Code</th><th>Territory</th><th>Rate</th><th>Status</th><th>Clients</th><th>Commission</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`:'<div class="empty">No partners yet. Create your first partner above.</div>'}
+    </div>`;
+}
+
+async function createPartner(){
+  const msg=document.getElementById('create-msg');
+  msg.className='msg';msg.style.display='none';
+  const btn=document.getElementById('create-btn');
+  btn.disabled=true;btn.textContent='Creating...';
+
+  const body={
+    action:'create_partner',
+    name:document.getElementById('c_name').value.trim(),
+    email:document.getElementById('c_email').value.trim(),
+    code:document.getElementById('c_code').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,''),
+    territory:document.getElementById('c_territory').value.trim(),
+    phone:document.getElementById('c_phone').value.trim()||null,
+    commission_rate:parseFloat(document.getElementById('c_rate').value)
+  };
+
+  if(!body.name||!body.email||!body.code||!body.territory){
+    msg.textContent='Name, email, code, and territory are required';msg.className='msg bad';
+    btn.disabled=false;btn.textContent='Create partner';return;
+  }
+
+  const data=await api(body);
+  if(data.success){
+    msg.textContent=`Partner "${body.name}" created with code "${body.code}"`;msg.className='msg ok';
+    btn.disabled=false;btn.textContent='Create partner';
+    setTimeout(()=>loadDashboard(),1500);
+  }else{
+    msg.textContent=data.error||'Failed to create';msg.className='msg bad';
+    btn.disabled=false;btn.textContent='Create partner';
+  }
+}
+
+async function toggleStatus(id,newStatus){
+  if(!confirm(`${newStatus==='suspended'?'Suspend':'Activate'} this partner?`))return;
+  await api({action:'update_partner',partner_id:id,updates:{status:newStatus}});
+  loadDashboard();
+}
+
+function editPartner(id,name,email,territory,phone,rate,notes){
+  const panel=document.querySelector('.create-box');
+  panel.querySelector('h3').textContent='Edit partner';
+  document.getElementById('c_name').value=name;
+  document.getElementById('c_email').value=email;
+  document.getElementById('c_code').disabled=true;
+  document.getElementById('c_territory').value=territory;
+  document.getElementById('c_phone').value=phone;
+  document.getElementById('c_rate').value=rate;
+
+  const btn=document.getElementById('create-btn');
+  btn.textContent='Save changes';
+  btn.onclick=async function(){
+    btn.disabled=true;btn.textContent='Saving...';
+    await api({action:'update_partner',partner_id:id,updates:{
+      name:document.getElementById('c_name').value.trim(),
+      email:document.getElementById('c_email').value.trim(),
+      territory:document.getElementById('c_territory').value.trim(),
+      phone:document.getElementById('c_phone').value.trim()||null,
+      commission_rate:parseFloat(document.getElementById('c_rate').value)
+    }});
+    loadDashboard();
+  };
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+function copyCode(code){
+  const link='snaplead.jovilex.com/signup?ref='+code;
+  navigator.clipboard.writeText(link).then(()=>alert('Copied: '+link));
+}
+</script>
+</body>
+</html>
