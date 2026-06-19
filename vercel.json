@@ -10,6 +10,10 @@
         { "source": "/for/home-services", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-home-services.html" },
         { "source": "/for/legal", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-legal.html" },
         { "source": "/for/medspa", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-medspa.html" },
+        { "source": "/terms", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-terms.html" },
+        { "source": "/privacy", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-privacy.html" },
+        { "source": "/partner", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-partner.html" },
+        { "source": "/widget.js", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-widget.js" },
 
         { "source": "/", "destination": "/jovilex-home.html" },
         { "source": "/intake", "destination": "/intake.html" },
@@ -31,7 +35,10 @@
         { "source": "/snaplead/for/dental", "destination": "/snaplead-dental.html" },
         { "source": "/snaplead/for/home-services", "destination": "/snaplead-home-services.html" },
         { "source": "/snaplead/for/legal", "destination": "/snaplead-legal.html" },
-        { "source": "/snaplead/for/medspa", "destination": "/snaplead-medspa.html" }
+        { "source": "/snaplead/for/medspa", "destination": "/snaplead-medspa.html" },
+        { "source": "/snaplead/terms", "destination": "/snaplead-terms.html" },
+        { "source": "/snaplead/privacy", "destination": "/snaplead-privacy.html" },
+        { "source": "/snaplead/partner", "destination": "/snaplead-partner.html" }
     ],
     "crons": [
         {
