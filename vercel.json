@@ -14,6 +14,7 @@
         { "source": "/privacy", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-privacy.html" },
         { "source": "/partner", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-partner.html" },
         { "source": "/widget.js", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-widget.js" },
+        { "source": "/manage", "has": [{ "type": "host", "value": "snaplead.jovilex.com" }], "destination": "/snaplead-manage.html" },
 
         { "source": "/", "destination": "/jovilex-home.html" },
         { "source": "/intake", "destination": "/intake.html" },
