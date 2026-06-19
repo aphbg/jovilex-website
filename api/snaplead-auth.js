@@ -99,7 +99,7 @@ module.exports = async function handler(req, res) {
       if (password.length < 8) {
         return res.status(400).json({ error: 'Password must be at least 8 characters' });
       }
-      const validIndustries = ['home_services', 'dental', 'legal', 'medspa'];
+      const validIndustries = ['home_services', 'dental', 'legal', 'medspa', 'other'];
       if (!validIndustries.includes(industry)) {
         return res.status(400).json({ error: 'Invalid industry' });
       }
@@ -178,6 +178,7 @@ module.exports = async function handler(req, res) {
         status: 'trial',
         trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
         referred_by: req.body.referred_by || null,
+        business_description: (industry === 'other' && req.body.other_industry) ? sanitize(req.body.other_industry) : null,
         signup_ip: clientIP,
         fraud_flags: fraudFlags.length > 0 ? JSON.stringify(fraudFlags) : '[]'
       });
