@@ -1,6 +1,6 @@
 // api/snaplead-auth.js
 // Business owner signup, login, verify, update settings
-// With trial abuse protection: phone uniqueness, disposable email block, duplicate name flagging, IP logging
+// With trial abuse protection + phone normalization to E.164
 
 const {
   signJWT, requireAuth, setCORS, slugify,
@@ -37,6 +37,46 @@ function getClientIP(req) {
     || 'unknown';
 }
 
+// Normalize any phone format to E.164 (+XXXXXXXXXXX)
+// Handles: 09034047640, +2349034047640, +234 903 404 7640, 0903-404-7640, etc.
+function normalizePhone(raw) {
+  if (!raw) return null;
+
+  // Strip everything except digits and leading +
+  let hasPlus = raw.trim().startsWith('+');
+  let digits = raw.replace(/[^0-9]/g, '');
+
+  if (!digits || digits.length < 7) return null;
+
+  // If had a + prefix, it's already international — keep as-is
+  if (hasPlus) {
+    return '+' + digits;
+  }
+
+  // Nigerian local format: starts with 0, 11 digits (0XXXXXXXXXX)
+  if (digits.startsWith('0') && digits.length === 11) {
+    return '+234' + digits.substring(1);
+  }
+
+  // Nigerian without leading zero: 10 digits starting with 7/8/9
+  if (digits.length === 10 && ['7','8','9'].includes(digits[0])) {
+    return '+234' + digits;
+  }
+
+  // Already has country code embedded (e.g., 2349034047640)
+  if (digits.startsWith('234') && digits.length === 13) {
+    return '+' + digits;
+  }
+
+  // US/Canada: 10 digits starting with area code
+  if (digits.length === 10 && !digits.startsWith('0')) {
+    return '+1' + digits;
+  }
+
+  // Fallback: prepend + and hope it's valid international
+  return '+' + digits;
+}
+
 module.exports = async function handler(req, res) {
   setCORS(res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -49,7 +89,7 @@ module.exports = async function handler(req, res) {
     if (action === 'signup') {
       const { owner_name, owner_email, password, business_name, industry, phone, website } = req.body;
 
-      // Required field validation — phone is now required
+      // Required field validation
       if (!owner_name || !owner_email || !password || !business_name || !industry || !phone) {
         return res.status(400).json({ error: 'All fields are required including phone number' });
       }
@@ -67,7 +107,12 @@ module.exports = async function handler(req, res) {
       const cleanEmail = owner_email.toLowerCase().trim();
       const cleanName = sanitize(owner_name);
       const cleanBizName = sanitize(business_name);
-      const cleanPhone = sanitize(phone).replace(/[^0-9+\-() ]/g, '');
+
+      // Normalize phone to E.164 — this is the key protection
+      const normalizedPhone = normalizePhone(phone);
+      if (!normalizedPhone) {
+        return res.status(400).json({ error: 'Please enter a valid phone number with country code' });
+      }
 
       // PROTECTION 1: Block disposable email providers
       if (isDisposableEmail(cleanEmail)) {
@@ -80,8 +125,8 @@ module.exports = async function handler(req, res) {
         return res.status(409).json({ error: 'An account with this email already exists' });
       }
 
-      // PROTECTION 3: Check if phone already exists
-      const existingPhone = await supabaseGet('snaplead_businesses', `phone=eq.${encodeURIComponent(cleanPhone)}&select=id,business_name&limit=1`);
+      // PROTECTION 3: Check if normalized phone already exists
+      const existingPhone = await supabaseGet('snaplead_businesses', `phone=eq.${encodeURIComponent(normalizedPhone)}&select=id,business_name&limit=1`);
       if (existingPhone && existingPhone.length > 0) {
         return res.status(409).json({ error: 'This phone number is already registered to another account' });
       }
@@ -90,13 +135,11 @@ module.exports = async function handler(req, res) {
       const fraudFlags = [];
       const clientIP = getClientIP(req);
 
-      // Check for similar business names
       const similarNames = await supabaseGet('snaplead_businesses', `business_name=ilike.${encodeURIComponent(cleanBizName)}&select=id,owner_email&limit=3`);
       if (similarNames && similarNames.length > 0) {
         fraudFlags.push({ type: 'duplicate_name', details: `Business name "${cleanBizName}" matches ${similarNames.length} existing account(s)`, timestamp: new Date().toISOString() });
       }
 
-      // Check for multiple signups from same IP in last 24 hours
       if (clientIP !== 'unknown') {
         const recentFromIP = await supabaseGet('snaplead_businesses', `signup_ip=eq.${encodeURIComponent(clientIP)}&created_at=gte.${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}&select=id&limit=5`);
         if (recentFromIP && recentFromIP.length >= 2) {
@@ -127,7 +170,7 @@ module.exports = async function handler(req, res) {
         business_name: cleanBizName,
         business_slug: slug,
         industry,
-        phone: cleanPhone,
+        phone: normalizedPhone,
         website: website ? sanitize(website) : null,
         notification_email: cleanEmail,
         custom_questions: defaultQuestions,
@@ -141,7 +184,6 @@ module.exports = async function handler(req, res) {
 
       if (!business || business.code) {
         console.error('Signup insert error:', business);
-        // Check if it's a phone uniqueness violation
         if (business?.message?.includes('idx_businesses_phone_unique')) {
           return res.status(409).json({ error: 'This phone number is already registered to another account' });
         }
@@ -231,6 +273,10 @@ module.exports = async function handler(req, res) {
         if (settings[key] !== undefined) {
           updates[key] = typeof settings[key] === 'string' ? sanitize(settings[key]) : settings[key];
         }
+      }
+      // Normalize phone if being updated
+      if (updates.phone) {
+        updates.phone = normalizePhone(updates.phone) || updates.phone;
       }
       if (updates.notification_email && !isValidEmail(updates.notification_email)) {
         return res.status(400).json({ error: 'Invalid notification email' });
