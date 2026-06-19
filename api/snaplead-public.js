@@ -1,5 +1,5 @@
 // api/snaplead-public.js
-// Public endpoints: business config for lead forms, demo data, templates
+// Public endpoints: business config for lead forms, demo data, templates, partner stats
 
 const { supabaseGet, setCORS } = require('./_utils');
 
@@ -49,7 +49,24 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ templates: data || [] });
     }
 
-    return res.status(400).json({ error: 'Invalid action. Use: business, demo, templates' });
+    // PARTNER STATS — returns attributed clients for a referral code
+    if (action === 'partner') {
+      const code = req.query.code;
+      if (!code) return res.status(400).json({ error: 'code required' });
+
+      const data = await supabaseGet(
+        'snaplead_businesses',
+        `referred_by=eq.${encodeURIComponent(code)}&select=business_name,industry,plan,status,created_at&order=created_at.desc`
+      );
+
+      if (!data || data.length === 0) {
+        return res.status(200).json({ success: true, clients: [] });
+      }
+
+      return res.status(200).json({ success: true, clients: data });
+    }
+
+    return res.status(400).json({ error: 'Invalid action. Use: business, demo, templates, partner' });
   } catch (err) {
     console.error('snaplead-public error:', err);
     return res.status(500).json({ error: 'Internal server error' });
