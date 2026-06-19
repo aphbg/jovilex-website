@@ -1,11 +1,41 @@
 // api/snaplead-auth.js
 // Business owner signup, login, verify, update settings
+// With trial abuse protection: phone uniqueness, disposable email block, duplicate name flagging, IP logging
 
 const {
   signJWT, requireAuth, setCORS, slugify,
   supabaseGet, supabaseInsert, supabaseUpdate,
   hashPassword, verifyPassword, isValidEmail, sanitize
 } = require('./_utils');
+
+// Disposable email domains — blocks throwaway email signups
+const DISPOSABLE_DOMAINS = new Set([
+  'tempmail.com','guerrillamail.com','guerrillamail.net','guerrillamail.org','yopmail.com','yopmail.fr',
+  'mailinator.com','throwaway.email','temp-mail.org','fakeinbox.com','sharklasers.com','guerrillamailblock.com',
+  'grr.la','dispostable.com','maildrop.cc','mailnesia.com','tempail.com','tempr.email','discard.email',
+  'trashmail.com','trashmail.me','trashmail.net','10minutemail.com','10minutemail.net','minutemail.com',
+  'emailondeck.com','33mail.com','maildrop.cc','mailcatch.com','mytemp.email','mohmal.com',
+  'getnada.com','tempmailo.com','burnermail.io','inboxkitten.com','mailsac.com','harakirimail.com',
+  'crazymailing.com','tmail.ws','temp-mail.io','fakemail.net','throwawaymail.com','mailtemp.net',
+  'tempinbox.com','tmpmail.net','tmpmail.org','getairmail.com','mailexpire.com','dispostable.com',
+  'anonbox.net','binkmail.com','bobmail.info','chammy.info','devnullmail.com','letthemeatspam.com',
+  'mailblocks.com','mailcatch.com','mailmoat.com','mailnull.com','notmailinator.com','spamfree24.org',
+  'spamgourmet.com','spamhole.com','trashymail.com','trashymail.net','wh4f.org','mailforspam.com',
+  'safetymail.info','veryrealemail.com','tempmail.ninja','emailfake.com','cmail.net','10mail.org',
+  'guerrillamail.de','guerrillamail.biz','spam4.me','trash-mail.com','bugmenot.com','maildrop.cc'
+]);
+
+function isDisposableEmail(email) {
+  const domain = email.split('@')[1]?.toLowerCase();
+  return DISPOSABLE_DOMAINS.has(domain);
+}
+
+function getClientIP(req) {
+  return req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+    || req.headers['x-real-ip']
+    || req.connection?.remoteAddress
+    || 'unknown';
+}
 
 module.exports = async function handler(req, res) {
   setCORS(res, 'POST, OPTIONS');
@@ -19,8 +49,9 @@ module.exports = async function handler(req, res) {
     if (action === 'signup') {
       const { owner_name, owner_email, password, business_name, industry, phone, website } = req.body;
 
-      if (!owner_name || !owner_email || !password || !business_name || !industry) {
-        return res.status(400).json({ error: 'Missing required fields' });
+      // Required field validation — phone is now required
+      if (!owner_name || !owner_email || !password || !business_name || !industry || !phone) {
+        return res.status(400).json({ error: 'All fields are required including phone number' });
       }
       if (!isValidEmail(owner_email)) {
         return res.status(400).json({ error: 'Invalid email address' });
@@ -36,11 +67,41 @@ module.exports = async function handler(req, res) {
       const cleanEmail = owner_email.toLowerCase().trim();
       const cleanName = sanitize(owner_name);
       const cleanBizName = sanitize(business_name);
+      const cleanPhone = sanitize(phone).replace(/[^0-9+\-() ]/g, '');
 
-      // Check if email exists
-      const existing = await supabaseGet('snaplead_businesses', `owner_email=eq.${encodeURIComponent(cleanEmail)}&select=id&limit=1`);
-      if (existing && existing.length > 0) {
+      // PROTECTION 1: Block disposable email providers
+      if (isDisposableEmail(cleanEmail)) {
+        return res.status(400).json({ error: 'Please use a business or personal email address, not a temporary one' });
+      }
+
+      // PROTECTION 2: Check if email already exists
+      const existingEmail = await supabaseGet('snaplead_businesses', `owner_email=eq.${encodeURIComponent(cleanEmail)}&select=id&limit=1`);
+      if (existingEmail && existingEmail.length > 0) {
         return res.status(409).json({ error: 'An account with this email already exists' });
+      }
+
+      // PROTECTION 3: Check if phone already exists
+      const existingPhone = await supabaseGet('snaplead_businesses', `phone=eq.${encodeURIComponent(cleanPhone)}&select=id,business_name&limit=1`);
+      if (existingPhone && existingPhone.length > 0) {
+        return res.status(409).json({ error: 'This phone number is already registered to another account' });
+      }
+
+      // PROTECTION 4: Flag duplicate business names and IP addresses
+      const fraudFlags = [];
+      const clientIP = getClientIP(req);
+
+      // Check for similar business names
+      const similarNames = await supabaseGet('snaplead_businesses', `business_name=ilike.${encodeURIComponent(cleanBizName)}&select=id,owner_email&limit=3`);
+      if (similarNames && similarNames.length > 0) {
+        fraudFlags.push({ type: 'duplicate_name', details: `Business name "${cleanBizName}" matches ${similarNames.length} existing account(s)`, timestamp: new Date().toISOString() });
+      }
+
+      // Check for multiple signups from same IP in last 24 hours
+      if (clientIP !== 'unknown') {
+        const recentFromIP = await supabaseGet('snaplead_businesses', `signup_ip=eq.${encodeURIComponent(clientIP)}&created_at=gte.${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}&select=id&limit=5`);
+        if (recentFromIP && recentFromIP.length >= 2) {
+          fraudFlags.push({ type: 'ip_velocity', details: `${recentFromIP.length} signups from IP ${clientIP} in last 24h`, timestamp: new Date().toISOString() });
+        }
       }
 
       // Generate unique slug
@@ -66,18 +127,24 @@ module.exports = async function handler(req, res) {
         business_name: cleanBizName,
         business_slug: slug,
         industry,
-        phone: phone ? sanitize(phone) : null,
+        phone: cleanPhone,
         website: website ? sanitize(website) : null,
         notification_email: cleanEmail,
         custom_questions: defaultQuestions,
         plan: 'trial',
         status: 'trial',
         trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-        referred_by: req.body.referred_by || null
+        referred_by: req.body.referred_by || null,
+        signup_ip: clientIP,
+        fraud_flags: fraudFlags.length > 0 ? JSON.stringify(fraudFlags) : '[]'
       });
 
       if (!business || business.code) {
         console.error('Signup insert error:', business);
+        // Check if it's a phone uniqueness violation
+        if (business?.message?.includes('idx_businesses_phone_unique')) {
+          return res.status(409).json({ error: 'This phone number is already registered to another account' });
+        }
         return res.status(500).json({ error: 'Failed to create account' });
       }
 
