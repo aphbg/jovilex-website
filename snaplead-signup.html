@@ -137,7 +137,7 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
         <input type="hidden" id="s_industry" required>
 
         <div class="row">
-          <div class="field"><label>Phone (optional)</label><input type="tel" id="s_phone" placeholder="(555) 123-4567"></div>
+          <div class="field"><label>Phone number</label><input type="tel" id="s_phone" placeholder="+1 (555) 123-4567" required></div>
           <div class="field"><label>Website (optional)</label><input type="url" id="s_website" placeholder="https://..."></div>
         </div>
 
@@ -211,6 +211,12 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     return;
   }
 
+  const phoneVal = document.getElementById('s_phone').value.trim();
+  if (!phoneVal || phoneVal.length < 7) {
+    showError('Please enter a valid phone number');
+    return;
+  }
+
   const btn = document.getElementById('signup-btn');
   btn.disabled = true;
   btn.textContent = 'Creating account...';
@@ -226,7 +232,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
         password: document.getElementById('s_password').value,
         business_name: document.getElementById('s_biz').value.trim(),
         industry: selectedIndustry,
-        phone: document.getElementById('s_phone').value.trim() || null,
+        phone: document.getElementById('s_phone').value.trim(),
         website: document.getElementById('s_website').value.trim() || null,
         referred_by: refCode || null
       })
