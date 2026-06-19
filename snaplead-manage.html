@@ -48,12 +48,9 @@ function doLogin(){
 }
 
 function autoCode(){
-  var name=document.getElementById('c_name')?.value?.trim()||'';
-  var territory=document.getElementById('c_territory')?.value?.trim()||'';
-  if(!name)return;
-  var first=name.split(' ')[0].toLowerCase().replace(/[^a-z]/g,'');
-  var city=territory.split(',')[0].trim().toLowerCase().replace(/[^a-z]/g,'');
-  var code=city?first+'-'+city:first;
+  var chars='abcdefghjkmnpqrstuvwxyz23456789';
+  var code='sl-';
+  for(var i=0;i<6;i++)code+=chars.charAt(Math.floor(Math.random()*chars.length));
   var el=document.getElementById('c_code');
   if(el&&!el.dataset.locked)el.value=code;
 }
@@ -111,12 +108,12 @@ async function loadDashboard(){
       <h3>Add new partner</h3>
       <div class="msg" id="create-msg"></div>
       <div class="create-row">
-        <div class="cf"><label>Name</label><input type="text" id="c_name" placeholder="James Okafor" oninput="autoCode()"></div>
+        <div class="cf"><label>Name</label><input type="text" id="c_name" placeholder="James Okafor"></div>
         <div class="cf"><label>Email</label><input type="email" id="c_email" placeholder="james@email.com"></div>
         <div class="cf"><label>Referral code (auto-generated)</label><input type="text" id="c_code" placeholder="auto-generates from name + city" readonly style="color:#10B981;background:#0a0a0a;cursor:default"></div>
       </div>
       <div class="create-row">
-        <div class="cf"><label>Territory (city/region)</label><input type="text" id="c_territory" placeholder="Newcastle, UK" oninput="autoCode()"></div>
+        <div class="cf"><label>Territory (city/region)</label><input type="text" id="c_territory" placeholder="Newcastle, UK"></div>
         <div class="cf"><label>Phone (optional)</label><input type="tel" id="c_phone" placeholder="+44..."></div>
         <div class="cf"><label>Commission rate (%)</label><select id="c_rate"><option value="15">15%</option><option value="20">20%</option></select></div>
       </div>
@@ -130,6 +127,7 @@ async function loadDashboard(){
         <tbody>${rows}</tbody>
       </table>`:'<div class="empty">No partners yet. Create your first partner above.</div>'}
     </div>`;
+  autoCode();
 }
 
 async function createPartner(){
