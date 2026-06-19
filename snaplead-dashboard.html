@@ -114,6 +114,37 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
 .spinner { width: 24px; height: 24px; border: 2.5px solid #2a2a2a; border-top-color: #10B981; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* Onboarding overlay */
+.onboard-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.onboard-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;width:100%;max-width:520px;overflow:hidden}
+.onboard-header{padding:28px 28px 0;text-align:center}
+.onboard-header h2{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px}
+.onboard-header p{font-size:14px;color:#9ca3af}
+.onboard-steps{padding:24px 28px}
+.onboard-step{display:none}
+.onboard-step.active{display:block}
+.onboard-step .step-num{font-size:11px;font-weight:600;color:#10B981;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.onboard-step h3{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.onboard-step p{font-size:13px;color:#9ca3af;line-height:1.7;margin-bottom:12px}
+.onboard-link{background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;margin:12px 0}
+.onboard-link code{font-size:12px;color:#10B981;word-break:break-all}
+.onboard-link button{font-size:11px;color:#fff;background:#374151;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;white-space:nowrap;margin-left:10px}
+.onboard-places{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+.onboard-places span{font-size:12px;padding:6px 12px;background:#111;border:1px solid #2a2a2a;border-radius:20px;color:#d1d5db}
+.onboard-flow{display:flex;align-items:center;gap:8px;margin:16px 0;flex-wrap:wrap}
+.onboard-flow .flow-step{background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;text-align:center;flex:1;min-width:100px}
+.onboard-flow .flow-step .flow-icon{font-size:20px;margin-bottom:4px}
+.onboard-flow .flow-step .flow-text{font-size:11px;color:#d1d5db}
+.onboard-flow .flow-arrow{color:#10B981;font-weight:700;font-size:16px;flex-shrink:0}
+.onboard-footer{padding:16px 28px 24px;display:flex;justify-content:space-between;align-items:center}
+.onboard-skip{font-size:13px;color:#6b7280;cursor:pointer;background:none;border:none;font-family:inherit}
+.onboard-skip:hover{color:#fff}
+.onboard-next{padding:10px 24px;background:#10B981;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.onboard-next:hover{background:#059669}
+.onboard-dots{display:flex;gap:6px;justify-content:center;margin-top:16px}
+.onboard-dots .dot{width:8px;height:8px;border-radius:50%;background:#2a2a2a}
+.onboard-dots .dot.active{background:#10B981}
+
 @media (max-width: 768px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .leads-table { overflow-x: auto; }
@@ -144,6 +175,58 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
         <option value="lost">Lost</option>
       </select>
       <button onclick="updateLeadStatus()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Onboarding overlay -->
+<div class="onboard-overlay" id="onboarding" style="display:none;">
+  <div class="onboard-card">
+    <div class="onboard-header">
+      <h2>Welcome to <span style="color:#10B981;">SnapLead</span></h2>
+      <p>Let's get your first lead in under 5 minutes</p>
+    </div>
+    <div class="onboard-steps">
+      <div class="onboard-step active" id="ob-step-1">
+        <div class="step-num">Step 1 of 3</div>
+        <h3>Here's your lead form link</h3>
+        <p>This is the page your customers will fill out. Every form submission triggers an AI response in under 60 seconds.</p>
+        <div class="onboard-link"><code id="ob-link"></code><button onclick="copyOnboardLink()">Copy</button></div>
+        <p style="font-size:12px;color:#6b7280;">You can also find this link anytime in Settings.</p>
+      </div>
+      <div class="onboard-step" id="ob-step-2">
+        <div class="step-num">Step 2 of 3</div>
+        <h3>Share it with customers</h3>
+        <p>Add the link anywhere potential customers can find it.</p>
+        <div class="onboard-places">
+          <span>Your website</span>
+          <span>Email signature</span>
+          <span>Google Business</span>
+          <span>Social media bio</span>
+          <span>Business cards</span>
+        </div>
+        <p style="font-size:12px;color:#6b7280;">The link works on every device. No app download needed for your customers.</p>
+      </div>
+      <div class="onboard-step" id="ob-step-3">
+        <div class="step-num">Step 3 of 3</div>
+        <h3>What happens when a lead comes in</h3>
+        <p>The whole process takes less than 60 seconds, with no action needed from you.</p>
+        <div class="onboard-flow">
+          <div class="flow-step"><div class="flow-icon">&#128221;</div><div class="flow-text">Customer fills form</div></div>
+          <div class="flow-arrow">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon">&#129302;</div><div class="flow-text">AI writes response</div></div>
+          <div class="flow-arrow">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon">&#128231;</div><div class="flow-text">Customer gets email</div></div>
+          <div class="flow-arrow">&#8594;</div>
+          <div class="flow-step"><div class="flow-icon">&#128276;</div><div class="flow-text">You get notified</div></div>
+        </div>
+        <p style="font-size:12px;color:#6b7280;">You can review every response and manage leads from this dashboard.</p>
+      </div>
+      <div class="onboard-dots"><span class="dot active" id="dot-1"></span><span class="dot" id="dot-2"></span><span class="dot" id="dot-3"></span></div>
+    </div>
+    <div class="onboard-footer">
+      <button class="onboard-skip" onclick="closeOnboarding()">Skip</button>
+      <button class="onboard-next" id="ob-next" onclick="nextOnboardStep()">Next</button>
     </div>
   </div>
 </div>
@@ -192,6 +275,11 @@ async function init() {
 
   render();
   loadTab('leads');
+
+  // Show onboarding on first visit
+  if (!localStorage.getItem('snaplead_onboarded')) {
+    showOnboarding();
+  }
 }
 
 function render() {
@@ -428,6 +516,15 @@ function loadSettings() {
         <span class="dv" style="color:#10B981;font-weight:600;">${business.plan === 'trial' ? 'Free Trial' : business.plan.charAt(0).toUpperCase() + business.plan.slice(1)}</span>
       </div>
       ${business.plan === 'trial' ? `<p style="font-size:12px;color:#9ca3af;margin-top:8px;">Trial ends ${new Date(business.trial_ends_at).toLocaleDateString()}</p>` : ''}
+    </div>
+    <div class="setting-group">
+      <h3>Embed widget on your website</h3>
+      <p style="font-size:13px;color:#9ca3af;margin-bottom:12px;">Paste this code before the closing &lt;/body&gt; tag on any page where you want the SnapLead widget to appear.</p>
+      <div class="link-box" style="flex-direction:column;align-items:stretch;gap:8px;">
+        <code id="widget-code" style="font-size:12px;word-break:break-all;line-height:1.6;">&lt;script src="https://snaplead.jovilex.com/widget.js" data-slug="${business.business_slug}"&gt;&lt;/script&gt;</code>
+        <button class="copy-btn" style="align-self:flex-end;" onclick="copyLink(document.getElementById('widget-code').textContent)">Copy embed code</button>
+      </div>
+      <p style="font-size:11px;color:#6b7280;margin-top:8px;">A floating button will appear on your site. Customers click it, fill out the form, and get an AI response in under 60 seconds.</p>
     </div>`;
 }
 
@@ -467,6 +564,39 @@ function copyLink(text) {
   navigator.clipboard.writeText(text).then(() => {
     const btns = document.querySelectorAll('.copy-btn');
     btns.forEach(b => { if (b.textContent !== 'Copied!') { b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500); }});
+  });
+}
+
+// Onboarding
+let onboardStep = 1;
+
+function showOnboarding() {
+  const formUrl = `${window.location.origin}/snaplead/s/${business.business_slug}`;
+  document.getElementById('ob-link').textContent = formUrl;
+  document.getElementById('onboarding').style.display = 'flex';
+}
+
+function nextOnboardStep() {
+  onboardStep++;
+  if (onboardStep > 3) { closeOnboarding(); return; }
+  document.querySelectorAll('.onboard-step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.onboard-dots .dot').forEach(d => d.classList.remove('active'));
+  document.getElementById(`ob-step-${onboardStep}`).classList.add('active');
+  document.getElementById(`dot-${onboardStep}`).classList.add('active');
+  if (onboardStep === 3) document.getElementById('ob-next').textContent = 'Got it — let\'s go';
+}
+
+function closeOnboarding() {
+  document.getElementById('onboarding').style.display = 'none';
+  localStorage.setItem('snaplead_onboarded', 'true');
+}
+
+function copyOnboardLink() {
+  const text = document.getElementById('ob-link').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('ob-link').nextElementSibling;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
   });
 }
 

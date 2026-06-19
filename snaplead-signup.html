@@ -7,304 +7,35 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='7' y='24' font-family='system-ui' font-weight='800' font-size='18' fill='white'%3ES%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; background: #111111; color: #ffffff; min-height: 100vh; }
-.page { display: flex; min-height: 100vh; }
-.left { flex: 1; padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; max-width: 560px; }
-.brand { display: flex; align-items: center; gap: 8px; margin-bottom: 48px; }
-.brand-snap { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 24px; color: #ffffff; }
-.brand-lead { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 24px; color: #10B981; }
-.brand-by { font-size: 12px; color: #6b7280; margin-left: 12px; font-weight: 400; }
-.hero-text { font-family: 'Sora', sans-serif; font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }
-.hero-text em { font-style: normal; color: #10B981; }
-.hero-sub { font-size: 16px; color: #9ca3af; line-height: 1.7; margin-bottom: 40px; }
-.proof-points { list-style: none; }
-.proof-points li { font-size: 14px; color: #d1d5db; padding: 10px 0; border-bottom: 1px solid #1f2937; display: flex; align-items: flex-start; gap: 10px; }
-.proof-points li:last-child { border-bottom: none; }
-.proof-points .check { color: #10B981; font-weight: 700; font-size: 16px; flex-shrink: 0; }
-.stat-row { display: flex; gap: 32px; margin-top: 40px; }
-.stat { text-align: left; }
-.stat .num { font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 800; color: #10B981; }
-.stat .label { font-size: 12px; color: #6b7280; margin-top: 2px; }
-.right { flex: 1; background: #f7f8f9; display: flex; align-items: center; justify-content: center; padding: 40px; }
-.form-card { width: 100%; max-width: 440px; background: #ffffff; border-radius: 16px; padding: 36px 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.form-card h2 { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; color: #111111; margin-bottom: 4px; }
-.form-card .form-sub { font-size: 14px; color: #6b7280; margin-bottom: 28px; }
-.field { margin-bottom: 18px; }
-.field label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
-.field input, .field select { width: 100%; padding: 11px 13px; border: 1.5px solid #e5e7eb; border-radius: 9px; font-family: inherit; font-size: 14px; color: #111111; background: #ffffff; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
-.field input:focus, .field select:focus { border-color: #10B981; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
-.field input::placeholder { color: #9ca3af; }
-.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 36px; }
-.row { display: flex; gap: 12px; }
-.row .field { flex: 1; }
-.phone-row { display: flex; gap: 8px; }
-.phone-row .cc-wrap { width: 130px; flex-shrink: 0; }
-.phone-row .cc-wrap select { width: 100%; padding: 11px 8px; font-size: 13px; padding-right: 28px; }
-.phone-row .num-field { flex: 1; }
-.industry-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-.ind-card { padding: 12px; border: 1.5px solid #e5e7eb; border-radius: 9px; cursor: pointer; text-align: center; transition: all 0.2s; }
-.ind-card:hover { border-color: #10B981; background: #f0fdf4; }
-.ind-card.selected { border-color: #10B981; background: #ecfdf5; }
-.ind-card .ind-icon { font-size: 22px; margin-bottom: 4px; }
-.ind-card .ind-name { font-size: 12px; font-weight: 600; color: #374151; }
-.submit-btn { width: 100%; padding: 13px; background: #111111; color: #ffffff; border: none; border-radius: 9px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
-.submit-btn:hover { background: #1f2937; }
-.submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
-.form-footer { text-align: center; margin-top: 16px; font-size: 13px; color: #6b7280; }
-.toggle-link { cursor: pointer; color: #10B981; font-weight: 500; }
-.trial-note { text-align: center; font-size: 12px; color: #9ca3af; margin-top: 12px; }
-.error-msg { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none; }
-@media (max-width: 900px) { .page { flex-direction: column; } .left { max-width: 100%; padding: 40px 24px 32px; } .right { padding: 0 16px 40px; } .hero-text { font-size: 28px; } .stat-row { gap: 20px; } .stat .num { font-size: 22px; } }
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;background:#111111;color:#fff;min-height:100vh}.page{display:flex;min-height:100vh}.left{flex:1;padding:60px 48px;display:flex;flex-direction:column;justify-content:center;max-width:560px}.brand{display:flex;align-items:center;gap:8px;margin-bottom:48px}.brand-snap{font-family:'Sora',sans-serif;font-weight:800;font-size:24px;color:#fff}.brand-lead{font-family:'Sora',sans-serif;font-weight:800;font-size:24px;color:#10B981}.brand-by{font-size:12px;color:#6b7280;margin-left:12px}.hero-text{font-family:'Sora',sans-serif;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-0.5px}.hero-text em{font-style:normal;color:#10B981}.hero-sub{font-size:16px;color:#9ca3af;line-height:1.7;margin-bottom:40px}.proof-points{list-style:none}.proof-points li{font-size:14px;color:#d1d5db;padding:10px 0;border-bottom:1px solid #1f2937;display:flex;align-items:flex-start;gap:10px}.proof-points li:last-child{border-bottom:none}.proof-points .check{color:#10B981;font-weight:700;font-size:16px;flex-shrink:0}.stat-row{display:flex;gap:32px;margin-top:40px}.stat{text-align:left}.stat .num{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#10B981}.stat .label{font-size:12px;color:#6b7280;margin-top:2px}.right{flex:1;background:#f7f8f9;display:flex;align-items:center;justify-content:center;padding:40px}.form-card{width:100%;max-width:440px;background:#fff;border-radius:16px;padding:36px 32px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}.form-card h2{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:4px}.form-card .form-sub{font-size:14px;color:#6b7280;margin-bottom:28px}.field{margin-bottom:18px}.field label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5px}.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-family:inherit;font-size:14px;color:#111;background:#fff;transition:border-color 0.2s,box-shadow 0.2s;outline:none}.field input:focus,.field select:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,0.1)}.field input::placeholder{color:#9ca3af}.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}.row{display:flex;gap:12px}.row .field{flex:1}.phone-row{display:flex;gap:8px}.phone-row .cc-wrap{width:120px;flex-shrink:0}.phone-row .cc-wrap select{width:100%;padding:11px 8px;font-size:13px;padding-right:28px}.phone-row .num-field{flex:1}.industry-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}.ind-card{padding:12px;border:1.5px solid #e5e7eb;border-radius:9px;cursor:pointer;text-align:center;transition:all 0.2s}.ind-card:hover{border-color:#10B981;background:#f0fdf4}.ind-card.selected{border-color:#10B981;background:#ecfdf5}.ind-card .ind-icon{font-size:22px;margin-bottom:4px}.ind-card .ind-name{font-size:12px;font-weight:600;color:#374151}.other-wrap{margin-bottom:18px}.other-card{padding:12px;border:1.5px solid #e5e7eb;border-radius:9px;cursor:pointer;text-align:center;transition:all 0.2s;margin-bottom:8px}.other-card:hover{border-color:#10B981;background:#f0fdf4}.other-card.selected{border-color:#10B981;background:#ecfdf5}.other-card .ind-name{font-size:12px;font-weight:600;color:#374151}.other-input{display:none;margin-top:0}.other-input.visible{display:block}.other-input input{width:100%;padding:11px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-family:inherit;font-size:14px;color:#111;outline:none;transition:border-color 0.2s,box-shadow 0.2s}.other-input input:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,0.1)}.submit-btn{width:100%;padding:13px;background:#111;color:#fff;border:none;border-radius:9px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.2s;margin-top:4px}.submit-btn:hover{background:#1f2937}.submit-btn:disabled{background:#9ca3af;cursor:not-allowed}.form-footer{text-align:center;margin-top:16px;font-size:13px;color:#6b7280}.toggle-link{cursor:pointer;color:#10B981;font-weight:500}.trial-note{text-align:center;font-size:12px;color:#9ca3af;margin-top:12px}.error-msg{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}@media(max-width:900px){.page{flex-direction:column}.left{max-width:100%;padding:40px 24px 32px}.right{padding:0 16px 40px}.hero-text{font-size:28px}.stat-row{gap:20px}.stat .num{font-size:22px}}
 </style>
 </head>
 <body>
 <div class="page">
-  <div class="left">
-    <div class="brand"><span class="brand-snap">Snap</span><span class="brand-lead">Lead</span><span class="brand-by">by Jovilex</span></div>
-    <div class="hero-text">Every lead gets a <em>personalised AI response</em> in under 60 seconds</div>
-    <div class="hero-sub">Your customers don't wait. When they fill out a form, SnapLead instantly sends a tailored, intelligent response — so they feel heard and you never lose a lead to a slow callback.</div>
-    <ul class="proof-points">
-      <li><span class="check">&#10003;</span> AI reads what they need and writes a real, personalised reply</li>
-      <li><span class="check">&#10003;</span> You get notified instantly with a qualified lead brief</li>
-      <li><span class="check">&#10003;</span> Works 24/7 — nights, weekends, holidays</li>
-      <li><span class="check">&#10003;</span> Set up in 5 minutes. No code, no integrations</li>
-      <li><span class="check">&#10003;</span> 14-day free trial. No credit card required</li>
-    </ul>
-    <div class="stat-row">
-      <div class="stat"><div class="num">&lt;60s</div><div class="label">Average response time</div></div>
-      <div class="stat"><div class="num">78%</div><div class="label">Customers hire first responder</div></div>
-      <div class="stat"><div class="num">24/7</div><div class="label">Always on, always fast</div></div>
-    </div>
-  </div>
-  <div class="right">
-    <div class="form-card" id="form-card">
-      <h2 id="form-title">Start your free trial</h2>
-      <div class="form-sub" id="form-sub">No credit card required. Live in 5 minutes.</div>
-      <div class="error-msg" id="error-msg"></div>
-      <form id="signup-form">
-        <div class="row">
-          <div class="field"><label>Your name</label><input type="text" id="s_name" placeholder="Full name" required></div>
-          <div class="field"><label>Email</label><input type="email" id="s_email" placeholder="you@company.com" required></div>
-        </div>
-        <div class="field"><label>Password</label><input type="password" id="s_password" placeholder="8+ characters" minlength="8" required></div>
-        <div class="field"><label>Business name</label><input type="text" id="s_biz" placeholder="Your company name" required></div>
-        <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:8px;">Your industry</label>
-        <div class="industry-cards">
-          <div class="ind-card" data-val="home_services" onclick="selectIndustry(this)"><div class="ind-icon">&#127968;</div><div class="ind-name">Home Services</div></div>
-          <div class="ind-card" data-val="dental" onclick="selectIndustry(this)"><div class="ind-icon">&#129463;</div><div class="ind-name">Dental</div></div>
-          <div class="ind-card" data-val="legal" onclick="selectIndustry(this)"><div class="ind-icon">&#9878;&#65039;</div><div class="ind-name">Law Firms</div></div>
-          <div class="ind-card" data-val="medspa" onclick="selectIndustry(this)"><div class="ind-icon">&#10024;</div><div class="ind-name">Med Spa</div></div>
-        </div>
-        <input type="hidden" id="s_industry" required>
-        <div class="field">
-          <label>Phone number</label>
-          <div class="phone-row">
-            <div class="cc-wrap"><select id="s_cc"></select></div>
-            <div class="num-field"><input type="tel" id="s_phone" placeholder="555 123 4567" required></div>
-          </div>
-        </div>
-        <div class="field"><label>Website (optional)</label><input type="url" id="s_website" placeholder="https://..."></div>
-        <button type="submit" class="submit-btn" id="signup-btn">Create account — it's free</button>
-        <div class="trial-note">14-day free trial · No credit card · Cancel anytime</div>
-        <div class="form-footer">Already have an account? <span class="toggle-link" onclick="showLogin()">Log in</span></div>
-      </form>
-      <form id="login-form" style="display:none;">
-        <div class="field"><label>Email</label><input type="email" id="l_email" placeholder="you@company.com" required></div>
-        <div class="field"><label>Password</label><input type="password" id="l_password" required></div>
-        <button type="submit" class="submit-btn" id="login-btn">Log in</button>
-        <div class="form-footer" style="margin-top:16px;">New here? <span class="toggle-link" onclick="showSignup()">Create an account</span></div>
-      </form>
-    </div>
-  </div>
-</div>
+<div class="left"><div class="brand"><span class="brand-snap">Snap</span><span class="brand-lead">Lead</span><span class="brand-by">by Jovilex</span></div><div class="hero-text">Every lead gets a <em>personalised AI response</em> in under 60 seconds</div><div class="hero-sub">Your customers don't wait. When they fill out a form, SnapLead instantly sends a tailored, intelligent response — so they feel heard and you never lose a lead to a slow callback.</div><ul class="proof-points"><li><span class="check">&#10003;</span> AI reads what they need and writes a real, personalised reply</li><li><span class="check">&#10003;</span> You get notified instantly with a qualified lead brief</li><li><span class="check">&#10003;</span> Works 24/7 — nights, weekends, holidays</li><li><span class="check">&#10003;</span> Set up in 5 minutes. No code, no integrations</li><li><span class="check">&#10003;</span> 14-day free trial. No credit card required</li></ul><div class="stat-row"><div class="stat"><div class="num">&lt;60s</div><div class="label">Average response time</div></div><div class="stat"><div class="num">78%</div><div class="label">Customers hire first responder</div></div><div class="stat"><div class="num">24/7</div><div class="label">Always on, always fast</div></div></div></div>
+<div class="right"><div class="form-card" id="form-card"><h2 id="form-title">Start your free trial</h2><div class="form-sub" id="form-sub">No credit card required. Live in 5 minutes.</div><div class="error-msg" id="error-msg"></div>
+<form id="signup-form"><div class="row"><div class="field"><label>Your name</label><input type="text" id="s_name" placeholder="Full name" required></div><div class="field"><label>Email</label><input type="email" id="s_email" placeholder="you@company.com" required></div></div><div class="field"><label>Password</label><input type="password" id="s_password" placeholder="8+ characters" minlength="8" required></div><div class="field"><label>Business name</label><input type="text" id="s_biz" placeholder="Your company name" required></div>
+<label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:8px;">Your industry</label><div class="industry-cards"><div class="ind-card" data-val="home_services" onclick="selectIndustry(this)"><div class="ind-icon">&#127968;</div><div class="ind-name">Home Services</div></div><div class="ind-card" data-val="dental" onclick="selectIndustry(this)"><div class="ind-icon">&#129463;</div><div class="ind-name">Dental</div></div><div class="ind-card" data-val="legal" onclick="selectIndustry(this)"><div class="ind-icon">&#9878;&#65039;</div><div class="ind-name">Law Firms</div></div><div class="ind-card" data-val="medspa" onclick="selectIndustry(this)"><div class="ind-icon">&#10024;</div><div class="ind-name">Med Spa</div></div></div><div class="other-wrap"><div class="other-card" onclick="selectOther()"><div class="ind-name">Other industry</div></div><div class="other-input" id="other-input"><input type="text" id="s_other_industry" placeholder="Type your industry (e.g. Real Estate, Fitness, Consulting...)"></div></div><input type="hidden" id="s_industry">
+<div class="field"><label>Phone number</label><div class="phone-row"><div class="cc-wrap"><select id="s_cc"></select></div><div class="num-field"><input type="tel" id="s_phone" placeholder="555 123 4567" required></div></div></div><div class="field"><label>Website (optional)</label><input type="url" id="s_website" placeholder="https://..."></div>
+<button type="submit" class="submit-btn" id="signup-btn">Create account &#8212; it's free</button><div class="trial-note">14-day free trial &#183; No credit card &#183; Cancel anytime</div><div class="form-footer">Already have an account? <span class="toggle-link" onclick="showLogin()">Log in</span></div></form>
+<form id="login-form" style="display:none;"><div class="field"><label>Email</label><input type="email" id="l_email" placeholder="you@company.com" required></div><div class="field"><label>Password</label><input type="password" id="l_password" required></div><button type="submit" class="submit-btn" id="login-btn">Log in</button><div class="form-footer" style="margin-top:16px;">New here? <span class="toggle-link" onclick="showSignup()">Create an account</span></div></form></div></div></div>
+
 <script>
-let selectedIndustry = '';
-const refCode = new URLSearchParams(window.location.search).get('ref') || '';
-
-// Country codes with flags — US first, then partner markets, then alphabetical
-const countries = [
-  { code: '+1', label: 'US +1', flag: '\u{1F1FA}\u{1F1F8}', ph: '555 123 4567' },
-  { code: '+44', label: 'UK +44', flag: '\u{1F1EC}\u{1F1E7}', ph: '7911 123456' },
-  { code: '+1_ca', label: 'CA +1', flag: '\u{1F1E8}\u{1F1E6}', ph: '416 123 4567' },
-  { code: '+61', label: 'AU +61', flag: '\u{1F1E6}\u{1F1FA}', ph: '412 345 678' },
-  { code: '+353', label: 'IE +353', flag: '\u{1F1EE}\u{1F1EA}', ph: '85 123 4567' },
-  { code: '+49', label: 'DE +49', flag: '\u{1F1E9}\u{1F1EA}', ph: '151 1234 5678' },
-  { code: '+33', label: 'FR +33', flag: '\u{1F1EB}\u{1F1F7}', ph: '6 12 34 56 78' },
-  { code: '+31', label: 'NL +31', flag: '\u{1F1F3}\u{1F1F1}', ph: '6 1234 5678' },
-  { code: '+34', label: 'ES +34', flag: '\u{1F1EA}\u{1F1F8}', ph: '612 345 678' },
-  { code: '+39', label: 'IT +39', flag: '\u{1F1EE}\u{1F1F9}', ph: '312 345 6789' },
-  { code: '+46', label: 'SE +46', flag: '\u{1F1F8}\u{1F1EA}', ph: '70 123 4567' },
-  { code: '+47', label: 'NO +47', flag: '\u{1F1F3}\u{1F1F4}', ph: '412 34 567' },
-  { code: '+45', label: 'DK +45', flag: '\u{1F1E9}\u{1F1F0}', ph: '20 12 34 56' },
-  { code: '+41', label: 'CH +41', flag: '\u{1F1E8}\u{1F1ED}', ph: '78 123 45 67' },
-  { code: '+43', label: 'AT +43', flag: '\u{1F1E6}\u{1F1F9}', ph: '664 1234567' },
-  { code: '+32', label: 'BE +32', flag: '\u{1F1E7}\u{1F1EA}', ph: '470 12 34 56' },
-  { code: '+48', label: 'PL +48', flag: '\u{1F1F5}\u{1F1F1}', ph: '512 345 678' },
-  { code: '+351', label: 'PT +351', flag: '\u{1F1F5}\u{1F1F9}', ph: '912 345 678' },
-  { code: '+64', label: 'NZ +64', flag: '\u{1F1F3}\u{1F1FF}', ph: '21 123 4567' },
-  { code: '+971', label: 'UAE +971', flag: '\u{1F1E6}\u{1F1EA}', ph: '50 123 4567' },
-  { code: '+966', label: 'SA +966', flag: '\u{1F1F8}\u{1F1E6}', ph: '50 123 4567' },
-  { code: '+972', label: 'IL +972', flag: '\u{1F1EE}\u{1F1F1}', ph: '50 123 4567' },
-  { code: '+91', label: 'IN +91', flag: '\u{1F1EE}\u{1F1F3}', ph: '98765 43210' },
-  { code: '+65', label: 'SG +65', flag: '\u{1F1F8}\u{1F1EC}', ph: '9123 4567' },
-  { code: '+852', label: 'HK +852', flag: '\u{1F1ED}\u{1F1F0}', ph: '9123 4567' },
-  { code: '+81', label: 'JP +81', flag: '\u{1F1EF}\u{1F1F5}', ph: '90 1234 5678' },
-  { code: '+82', label: 'KR +82', flag: '\u{1F1F0}\u{1F1F7}', ph: '10 1234 5678' },
-  { code: '+60', label: 'MY +60', flag: '\u{1F1F2}\u{1F1FE}', ph: '12 345 6789' },
-  { code: '+63', label: 'PH +63', flag: '\u{1F1F5}\u{1F1ED}', ph: '917 123 4567' },
-  { code: '+55', label: 'BR +55', flag: '\u{1F1E7}\u{1F1F7}', ph: '11 91234 5678' },
-  { code: '+52', label: 'MX +52', flag: '\u{1F1F2}\u{1F1FD}', ph: '55 1234 5678' },
-  { code: '+57', label: 'CO +57', flag: '\u{1F1E8}\u{1F1F4}', ph: '301 234 5678' },
-  { code: '+56', label: 'CL +56', flag: '\u{1F1E8}\u{1F1F1}', ph: '9 1234 5678' },
-  { code: '+54', label: 'AR +54', flag: '\u{1F1E6}\u{1F1F7}', ph: '11 1234 5678' },
-  { code: '+27', label: 'ZA +27', flag: '\u{1F1FF}\u{1F1E6}', ph: '71 123 4567' },
-  { code: '+234', label: 'NG +234', flag: '\u{1F1F3}\u{1F1EC}', ph: '803 123 4567' },
-  { code: '+233', label: 'GH +233', flag: '\u{1F1EC}\u{1F1ED}', ph: '24 123 4567' },
-  { code: '+254', label: 'KE +254', flag: '\u{1F1F0}\u{1F1EA}', ph: '712 345678' },
-  { code: '+256', label: 'UG +256', flag: '\u{1F1FA}\u{1F1EC}', ph: '772 123456' },
-  { code: '+255', label: 'TZ +255', flag: '\u{1F1F9}\u{1F1FF}', ph: '712 345678' },
-  { code: '+237', label: 'CM +237', flag: '\u{1F1E8}\u{1F1F2}', ph: '671 234567' },
-  { code: '+20', label: 'EG +20', flag: '\u{1F1EA}\u{1F1EC}', ph: '100 123 4567' },
-  { code: '+212', label: 'MA +212', flag: '\u{1F1F2}\u{1F1E6}', ph: '612 345678' }
-];
-
-// Build the dropdown
-const ccSelect = document.getElementById('s_cc');
-countries.forEach((c, i) => {
-  const opt = document.createElement('option');
-  opt.value = c.code;
-  opt.textContent = c.flag + ' ' + c.label;
-  if (i === 0) opt.selected = true;
-  ccSelect.appendChild(opt);
-});
-
-// Update placeholder when country changes
-ccSelect.addEventListener('change', function() {
-  const selected = countries.find(c => c.code === this.value);
-  if (selected) document.getElementById('s_phone').placeholder = selected.ph;
-});
-
-function selectIndustry(el) {
-  document.querySelectorAll('.ind-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedIndustry = el.dataset.val;
-  document.getElementById('s_industry').value = selectedIndustry;
-}
-function showLogin() {
-  document.getElementById('signup-form').style.display = 'none';
-  document.getElementById('login-form').style.display = 'block';
-  document.getElementById('form-title').textContent = 'Welcome back';
-  document.getElementById('form-sub').textContent = 'Log in to your SnapLead dashboard.';
-  hideError();
-}
-function showSignup() {
-  document.getElementById('login-form').style.display = 'none';
-  document.getElementById('signup-form').style.display = 'block';
-  document.getElementById('form-title').textContent = 'Start your free trial';
-  document.getElementById('form-sub').textContent = 'No credit card required. Live in 5 minutes.';
-  hideError();
-}
-function showError(msg) { const el = document.getElementById('error-msg'); el.textContent = msg; el.style.display = 'block'; }
-function hideError() { document.getElementById('error-msg').style.display = 'none'; }
-
-function normalizePhone() {
-  let cc = document.getElementById('s_cc').value;
-  if (cc === '+1_ca') cc = '+1';
-  const raw = document.getElementById('s_phone').value;
-  let digits = raw.replace(/[^0-9]/g, '');
-  if (digits.startsWith('0')) digits = digits.substring(1);
-  return cc + digits;
-}
-
-document.getElementById('s_phone').addEventListener('input', function() {
-  let val = this.value.replace(/[^0-9]/g, '');
-  if (val.startsWith('0')) val = val.substring(1);
-  if (val.length > 3 && val.length <= 6) {
-    val = val.substring(0, 3) + ' ' + val.substring(3);
-  } else if (val.length > 6) {
-    val = val.substring(0, 3) + ' ' + val.substring(3, 6) + ' ' + val.substring(6, 10);
-  }
-  this.value = val;
-});
-
-function checkAuth() {
-  const token = localStorage.getItem('snaplead_token');
-  if (token) window.location.href = '/snaplead/dashboard';
-}
-
-document.getElementById('signup-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  hideError();
-  if (!selectedIndustry) { showError('Please select your industry'); return; }
-  const phone = normalizePhone();
-  const digitsOnly = phone.replace(/[^0-9]/g, '');
-  if (digitsOnly.length < 10 || digitsOnly.length > 15) { showError('Please enter a valid phone number'); return; }
-  const btn = document.getElementById('signup-btn');
-  btn.disabled = true;
-  btn.textContent = 'Creating account...';
-  try {
-    const resp = await fetch('/api/snaplead-auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'signup',
-        owner_name: document.getElementById('s_name').value.trim(),
-        owner_email: document.getElementById('s_email').value.trim(),
-        password: document.getElementById('s_password').value,
-        business_name: document.getElementById('s_biz').value.trim(),
-        industry: selectedIndustry,
-        phone: phone,
-        website: document.getElementById('s_website').value.trim() || null,
-        referred_by: refCode || null
-      })
-    });
-    const data = await resp.json();
-    if (data.success) {
-      localStorage.setItem('snaplead_token', data.token);
-      localStorage.setItem('snaplead_business', JSON.stringify(data.business));
-      window.location.href = '/snaplead/dashboard';
-    } else {
-      showError(data.error || 'Something went wrong');
-      btn.disabled = false;
-      btn.textContent = "Create account — it's free";
-    }
-  } catch (err) {
-    showError('Network error. Please try again.');
-    btn.disabled = false;
-    btn.textContent = "Create account — it's free";
-  }
-});
-
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  hideError();
-  const btn = document.getElementById('login-btn');
-  btn.disabled = true;
-  btn.textContent = 'Logging in...';
-  try {
-    const resp = await fetch('/api/snaplead-auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'login', email: document.getElementById('l_email').value.trim(), password: document.getElementById('l_password').value })
-    });
-    const data = await resp.json();
-    if (data.success) {
-      localStorage.setItem('snaplead_token', data.token);
-      localStorage.setItem('snaplead_business', JSON.stringify(data.business));
-      window.location.href = '/snaplead/dashboard';
-    } else {
-      showError(data.error || 'Invalid credentials');
-      btn.disabled = false;
-      btn.textContent = 'Log in';
-    }
-  } catch (err) {
-    showError('Network error. Please try again.');
-    btn.disabled = false;
-    btn.textContent = 'Log in';
-  }
-});
-
+let selectedIndustry='';let isOtherSelected=false;const refCode=new URLSearchParams(window.location.search).get('ref')||'';
+const countries=[{code:'+1',label:'US +1',ph:'555 123 4567'},{code:'+44',label:'UK +44',ph:'7911 123456'},{code:'+1_ca',label:'CA +1',ph:'416 123 4567'},{code:'+61',label:'AU +61',ph:'412 345 678'},{code:'+353',label:'IE +353',ph:'85 123 4567'},{code:'+49',label:'DE +49',ph:'151 1234 5678'},{code:'+33',label:'FR +33',ph:'6 12 34 56 78'},{code:'+31',label:'NL +31',ph:'6 1234 5678'},{code:'+34',label:'ES +34',ph:'612 345 678'},{code:'+39',label:'IT +39',ph:'312 345 6789'},{code:'+46',label:'SE +46',ph:'70 123 4567'},{code:'+47',label:'NO +47',ph:'412 34 567'},{code:'+45',label:'DK +45',ph:'20 12 34 56'},{code:'+41',label:'CH +41',ph:'78 123 45 67'},{code:'+43',label:'AT +43',ph:'664 1234567'},{code:'+32',label:'BE +32',ph:'470 12 34 56'},{code:'+48',label:'PL +48',ph:'512 345 678'},{code:'+351',label:'PT +351',ph:'912 345 678'},{code:'+64',label:'NZ +64',ph:'21 123 4567'},{code:'+971',label:'UAE +971',ph:'50 123 4567'},{code:'+966',label:'SA +966',ph:'50 123 4567'},{code:'+972',label:'IL +972',ph:'50 123 4567'},{code:'+91',label:'IN +91',ph:'98765 43210'},{code:'+65',label:'SG +65',ph:'9123 4567'},{code:'+852',label:'HK +852',ph:'9123 4567'},{code:'+81',label:'JP +81',ph:'90 1234 5678'},{code:'+82',label:'KR +82',ph:'10 1234 5678'},{code:'+60',label:'MY +60',ph:'12 345 6789'},{code:'+63',label:'PH +63',ph:'917 123 4567'},{code:'+55',label:'BR +55',ph:'11 91234 5678'},{code:'+52',label:'MX +52',ph:'55 1234 5678'},{code:'+57',label:'CO +57',ph:'301 234 5678'},{code:'+56',label:'CL +56',ph:'9 1234 5678'},{code:'+54',label:'AR +54',ph:'11 1234 5678'},{code:'+27',label:'ZA +27',ph:'71 123 4567'},{code:'+234',label:'NG +234',ph:'803 123 4567'},{code:'+233',label:'GH +233',ph:'24 123 4567'},{code:'+254',label:'KE +254',ph:'712 345678'},{code:'+256',label:'UG +256',ph:'772 123456'},{code:'+255',label:'TZ +255',ph:'712 345678'},{code:'+237',label:'CM +237',ph:'671 234567'},{code:'+20',label:'EG +20',ph:'100 123 4567'},{code:'+212',label:'MA +212',ph:'612 345678'}];
+const ccSelect=document.getElementById('s_cc');countries.forEach((c,i)=>{const opt=document.createElement('option');opt.value=c.code;opt.textContent=c.label;if(i===0)opt.selected=true;ccSelect.appendChild(opt)});
+ccSelect.addEventListener('change',function(){const sel=countries.find(c=>c.code===this.value);if(sel)document.getElementById('s_phone').placeholder=sel.ph});
+function selectIndustry(el){document.querySelectorAll('.ind-card').forEach(c=>c.classList.remove('selected'));document.querySelector('.other-card').classList.remove('selected');document.getElementById('other-input').classList.remove('visible');el.classList.add('selected');selectedIndustry=el.dataset.val;isOtherSelected=false;document.getElementById('s_industry').value=selectedIndustry}
+function selectOther(){document.querySelectorAll('.ind-card').forEach(c=>c.classList.remove('selected'));document.querySelector('.other-card').classList.add('selected');document.getElementById('other-input').classList.add('visible');document.getElementById('s_other_industry').focus();selectedIndustry='other';isOtherSelected=true;document.getElementById('s_industry').value='other'}
+function showLogin(){document.getElementById('signup-form').style.display='none';document.getElementById('login-form').style.display='block';document.getElementById('form-title').textContent='Welcome back';document.getElementById('form-sub').textContent='Log in to your SnapLead dashboard.';hideError()}
+function showSignup(){document.getElementById('login-form').style.display='none';document.getElementById('signup-form').style.display='block';document.getElementById('form-title').textContent='Start your free trial';document.getElementById('form-sub').textContent='No credit card required. Live in 5 minutes.';hideError()}
+function showError(msg){const el=document.getElementById('error-msg');el.textContent=msg;el.style.display='block'}
+function hideError(){document.getElementById('error-msg').style.display='none'}
+function normalizePhone(){let cc=document.getElementById('s_cc').value;if(cc==='+1_ca')cc='+1';const raw=document.getElementById('s_phone').value;let digits=raw.replace(/[^0-9]/g,'');if(digits.startsWith('0'))digits=digits.substring(1);return cc+digits}
+document.getElementById('s_phone').addEventListener('input',function(){let val=this.value.replace(/[^0-9]/g,'');if(val.startsWith('0'))val=val.substring(1);if(val.length>3&&val.length<=6)val=val.substring(0,3)+' '+val.substring(3);else if(val.length>6)val=val.substring(0,3)+' '+val.substring(3,6)+' '+val.substring(6,10);this.value=val});
+function checkAuth(){const token=localStorage.getItem('snaplead_token');if(token)window.location.href='/snaplead/dashboard'}
+document.getElementById('signup-form').addEventListener('submit',async(e)=>{e.preventDefault();hideError();if(!selectedIndustry){showError('Please select your industry');return}if(isOtherSelected){const otherVal=document.getElementById('s_other_industry').value.trim();if(!otherVal){showError('Please type your industry');return}}const phone=normalizePhone();const digitsOnly=phone.replace(/[^0-9]/g,'');if(digitsOnly.length<10||digitsOnly.length>15){showError('Please enter a valid phone number');return}const btn=document.getElementById('signup-btn');btn.disabled=true;btn.textContent='Creating account...';try{const payload={action:'signup',owner_name:document.getElementById('s_name').value.trim(),owner_email:document.getElementById('s_email').value.trim(),password:document.getElementById('s_password').value,business_name:document.getElementById('s_biz').value.trim(),industry:selectedIndustry,phone:phone,website:document.getElementById('s_website').value.trim()||null,referred_by:refCode||null};if(isOtherSelected)payload.other_industry=document.getElementById('s_other_industry').value.trim();const resp=await fetch('/api/snaplead-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await resp.json();if(data.success){localStorage.setItem('snaplead_token',data.token);localStorage.setItem('snaplead_business',JSON.stringify(data.business));window.location.href='/snaplead/dashboard'}else{showError(data.error||'Something went wrong');btn.disabled=false;btn.textContent="Create account \u2014 it's free"}}catch(err){showError('Network error. Please try again.');btn.disabled=false;btn.textContent="Create account \u2014 it's free"}});
+document.getElementById('login-form').addEventListener('submit',async(e)=>{e.preventDefault();hideError();const btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='Logging in...';try{const resp=await fetch('/api/snaplead-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email:document.getElementById('l_email').value.trim(),password:document.getElementById('l_password').value})});const data=await resp.json();if(data.success){localStorage.setItem('snaplead_token',data.token);localStorage.setItem('snaplead_business',JSON.stringify(data.business));window.location.href='/snaplead/dashboard'}else{showError(data.error||'Invalid credentials');btn.disabled=false;btn.textContent='Log in'}}catch(err){showError('Network error. Please try again.');btn.disabled=false;btn.textContent='Log in'}});
 checkAuth();
 </script>
 </body>

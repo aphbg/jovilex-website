@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SnapLead — Partner Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111111'/%3E%3Ccircle cx='22' cy='8' r='3' fill='%2310B981'/%3E%3Ctext x='7' y='24' font-family='system-ui' font-weight='800' font-size='18' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',-apple-system,sans-serif;background:#111;color:#fff;min-height:100vh}
+.nav{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1f2937}.nav-brand{display:flex;align-items:center;gap:6px;text-decoration:none}.nav-brand span{font-family:'Sora',sans-serif;font-weight:800;font-size:18px;color:#fff}.nav-brand .g{color:#10B981}.nav-tag{font-size:12px;color:#6b7280;margin-left:12px}
+.main{max-width:900px;margin:0 auto;padding:32px 24px}
+
+/* Login state */
+.login-box{max-width:400px;margin:80px auto;text-align:center}
+.login-box h2{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px}
+.login-box p{font-size:14px;color:#9ca3af;margin-bottom:28px}
+.login-box input{width:100%;padding:12px 14px;border:1.5px solid #2a2a2a;border-radius:9px;background:#1a1a1a;color:#fff;font-family:inherit;font-size:14px;outline:none;margin-bottom:12px}
+.login-box input:focus{border-color:#10B981}
+.login-box input::placeholder{color:#6b7280}
+.login-box button{width:100%;padding:12px;background:#10B981;color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.login-box button:hover{background:#059669}
+.login-box .err{color:#ef4444;font-size:13px;margin-bottom:12px;display:none}
+
+/* Dashboard state */
+.partner-header{margin-bottom:28px}
+.partner-header h1{font-family:'Sora',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
+.partner-header .code{font-size:13px;color:#6b7280}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:20px}
+.stat-card .label{font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.stat-card .val{font-family:'Sora',sans-serif;font-size:28px;font-weight:800}
+.stat-card .sub{font-size:12px;color:#10B981;margin-top:4px}
+
+.clients-table{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden}
+.clients-table h3{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;padding:16px 20px;border-bottom:1px solid #2a2a2a}
+.clients-table table{width:100%;border-collapse:collapse}
+.clients-table th{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;padding:10px 16px;text-align:left;border-bottom:1px solid #2a2a2a}
+.clients-table td{font-size:13px;padding:12px 16px;border-bottom:1px solid #1f2937;color:#d1d5db}
+.clients-table tr:last-child td{border-bottom:none}
+.badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.badge-trial{background:rgba(59,130,246,0.15);color:#60a5fa}
+.badge-active{background:rgba(16,185,129,0.15);color:#10B981}
+.badge-paused{background:rgba(107,114,128,0.15);color:#9ca3af}
+
+.commission-note{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin-top:20px}
+.commission-note h3{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#10B981;margin-bottom:8px}
+.commission-note p{font-size:13px;color:#9ca3af;line-height:1.6}
+
+.empty{text-align:center;padding:48px 20px;color:#6b7280}
+.empty h3{font-family:'Sora',sans-serif;font-size:18px;color:#fff;margin-bottom:8px}
+
+.loading{display:flex;align-items:center;justify-content:center;min-height:50vh;font-size:15px;color:#6b7280}
+.spinner{width:24px;height:24px;border:2.5px solid #2a2a2a;border-top-color:#10B981;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.clients-table{overflow-x:auto}.clients-table table{min-width:500px}}
+</style>
+</head>
+<body>
+<nav class="nav"><a href="/snaplead" class="nav-brand"><span>Snap</span><span class="g">Lead</span></a><span class="nav-tag">Partner Dashboard</span></nav>
+<div class="main" id="app">
+  <div class="login-box" id="login-box">
+    <h2>Partner Dashboard</h2>
+    <p>Enter your referral code to view your attributed clients and commission.</p>
+    <div class="err" id="err"></div>
+    <input type="text" id="p_code" placeholder="Your referral code (e.g. james-toronto)">
+    <button onclick="loadDashboard()">View dashboard</button>
+  </div>
+</div>
+
+<script>
+const PLAN_PRICES = { trial: 0, starter: 199, growth: 499, scale: 999 };
+const COMMISSION_RATE = 0.15;
+const COMMISSION_RATE_HIGH = 0.20;
+const HIGH_THRESHOLD = 10;
+
+// Check URL for code param
+const urlCode = new URLSearchParams(window.location.search).get('code');
+if (urlCode) {
+  document.getElementById('p_code').value = urlCode;
+  loadDashboard();
+}
+
+async function loadDashboard() {
+  const code = document.getElementById('p_code').value.trim();
+  if (!code) { showErr('Please enter your referral code'); return; }
+
+  const app = document.getElementById('app');
+  app.innerHTML = '<div class="loading"><div class="spinner"></div>Loading your dashboard...</div>';
+
+  try {
+    const resp = await fetch(`/api/snaplead-public?action=partner&code=${encodeURIComponent(code)}`);
+    const data = await resp.json();
+
+    if (!data.success) {
+      app.innerHTML = `<div class="login-box"><h2>Partner Dashboard</h2><p>Enter your referral code to view your attributed clients and commission.</p><div class="err" style="display:block">${data.error || 'No clients found for this code'}</div><input type="text" id="p_code" placeholder="Your referral code" value="${code}"><button onclick="loadDashboard()">View dashboard</button></div>`;
+      return;
+    }
+
+    const clients = data.clients || [];
+    const totalSignups = clients.length;
+    const paidClients = clients.filter(c => ['active'].includes(c.status) && c.plan !== 'trial');
+    const trialClients = clients.filter(c => c.plan === 'trial' || c.status === 'trial');
+    const rate = paidClients.length >= HIGH_THRESHOLD ? COMMISSION_RATE_HIGH : COMMISSION_RATE;
+    const monthlyCommission = paidClients.reduce((sum, c) => sum + (PLAN_PRICES[c.plan] || 0) * rate, 0);
+
+    let rows = '';
+    if (clients.length > 0) {
+      rows = clients.map(c => {
+        const statusClass = c.status === 'active' ? 'badge-active' : c.status === 'trial' ? 'badge-trial' : 'badge-paused';
+        const planLabel = c.plan === 'trial' ? 'Trial' : c.plan.charAt(0).toUpperCase() + c.plan.slice(1);
+        const commission = c.status === 'active' && c.plan !== 'trial' ? '$' + ((PLAN_PRICES[c.plan] || 0) * rate).toFixed(0) + '/mo' : '—';
+        const date = new Date(c.created_at).toLocaleDateString();
+        return `<tr><td>${c.business_name}</td><td>${c.industry === 'other' ? 'Other' : c.industry.replace('_', ' ')}</td><td><span class="badge ${statusClass}">${c.status}</span></td><td>${planLabel}</td><td style="color:#10B981;font-weight:600;">${commission}</td><td style="color:#6b7280;">${date}</td></tr>`;
+      }).join('');
+    }
+
+    app.innerHTML = `
+      <div class="partner-header">
+        <h1>Your Dashboard</h1>
+        <div class="code">Referral code: ${code} &#183; Commission rate: ${(rate * 100).toFixed(0)}%${paidClients.length >= HIGH_THRESHOLD ? ' (upgraded)' : ''}</div>
+      </div>
+      <div class="stats">
+        <div class="stat-card"><div class="label">Total signups</div><div class="val">${totalSignups}</div><div class="sub">attributed to you</div></div>
+        <div class="stat-card"><div class="label">Paid clients</div><div class="val">${paidClients.length}</div><div class="sub">${trialClients.length} on trial</div></div>
+        <div class="stat-card"><div class="label">Monthly commission</div><div class="val">$${monthlyCommission.toFixed(0)}</div><div class="sub">recurring</div></div>
+        <div class="stat-card"><div class="label">Annual projection</div><div class="val">$${(monthlyCommission * 12).toFixed(0)}</div><div class="sub">at current rate</div></div>
+      </div>
+      ${clients.length > 0 ? `
+      <div class="clients-table">
+        <h3>Attributed clients</h3>
+        <table>
+          <thead><tr><th>Business</th><th>Industry</th><th>Status</th><th>Plan</th><th>Your commission</th><th>Signed up</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>` : `
+      <div class="empty">
+        <h3>No signups yet</h3>
+        <p>Share your referral link to start attributing clients:<br><strong style="color:#10B981;">snaplead.jovilex.com/signup?ref=${code}</strong></p>
+      </div>`}
+      <div class="commission-note">
+        <h3>Commission structure</h3>
+        <p>You earn ${(COMMISSION_RATE * 100).toFixed(0)}% recurring commission on every paid client. At ${HIGH_THRESHOLD}+ active clients, your rate upgrades to ${(COMMISSION_RATE_HIGH * 100).toFixed(0)}% on all clients (existing and new). Commission is calculated monthly and paid within 15 business days of month-end. Trial accounts do not generate commission — only paid subscriptions.</p>
+      </div>`;
+  } catch (err) {
+    app.innerHTML = '<div class="empty"><h3>Something went wrong</h3><p>Please try again or contact support.</p></div>';
+  }
+}
+
+function showErr(msg) {
+  const el = document.getElementById('err');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+</script>
+</body>
+</html>
