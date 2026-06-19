@@ -159,6 +159,7 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
 
 <script>
 let selectedIndustry = '';
+const refCode = new URLSearchParams(window.location.search).get('ref') || '';
 
 function selectIndustry(el) {
   document.querySelectorAll('.ind-card').forEach(c => c.classList.remove('selected'));
@@ -226,7 +227,8 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
         business_name: document.getElementById('s_biz').value.trim(),
         industry: selectedIndustry,
         phone: document.getElementById('s_phone').value.trim() || null,
-        website: document.getElementById('s_website').value.trim() || null
+        website: document.getElementById('s_website').value.trim() || null,
+        referred_by: refCode || null
       })
     });
 
