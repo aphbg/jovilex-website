@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Komir Holdings HQ — Abuja Campus Vision</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #0A0A0A;
+    color: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 56px 28px 80px;
+  }
+
+  @media (min-width: 640px) {
+    .page { padding: 72px 48px 96px; }
+    h1 { font-size: 48px; letter-spacing: -1.5px; }
+    .hero-desc { font-size: 17px; max-width: 720px; }
+    .location-tag { font-size: 16px; }
+    .section-title { font-size: 28px; }
+    .section-desc { font-size: 16px; max-width: 720px; }
+    .building { padding: 28px 28px; }
+    .building-name { font-size: 18px; }
+    .building-desc { font-size: 14.5px; line-height: 1.6; }
+    .building-venture { font-size: 12px; }
+    .zones { grid-template-columns: 1fr 1fr 1fr; }
+    .zone { padding: 22px 20px; }
+    .zone-name { font-size: 14px; }
+    .zone-detail { font-size: 12.5px; }
+    .principle-title { font-size: 15px; }
+    .principle-desc { font-size: 14px; }
+    .venture-name { font-size: 15px; }
+    .venture-type { font-size: 12px; }
+    .venture-location { font-size: 12px; }
+    .beyond-card { padding: 32px 28px; }
+    .beyond-name { font-size: 20px; }
+    .beyond-desc { font-size: 14.5px; }
+    .phase-title { font-size: 17px; }
+    .phase-desc { font-size: 14px; }
+    .highlight-text { font-size: 18px; }
+    .ref-strip { padding: 22px 28px; gap: 24px; }
+    .ref-name { font-size: 13px; }
+    .footer-logo { font-size: 22px; }
+  }
+
+  @media (min-width: 1024px) {
+    .page { padding: 80px 64px 120px; }
+    h1 { font-size: 56px; }
+    .zones { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    .zones .zone.full-width { grid-column: 1 / -1; }
+  }
+
+  /* ─── Header ─── */
+  .eyebrow {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #843287;
+    margin-bottom: 36px;
+  }
+
+  h1 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    line-height: 1.12;
+    letter-spacing: -1.2px;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: #843287; }
+
+  .location-tag {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #6B7280;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+
+  .hero-desc {
+    font-weight: 300;
+    font-size: 15px;
+    color: #9CA3AF;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  /* ─── Reference Strip ─── */
+  .ref-strip {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+    padding: 18px 20px;
+    background: #111111;
+    border-radius: 10px;
+  }
+
+  .ref-item {
+    flex: 1;
+    text-align: center;
+  }
+
+  .ref-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #9CA3AF;
+    margin-bottom: 2px;
+  }
+
+  .ref-sub {
+    font-weight: 300;
+    font-size: 10px;
+    color: #4B5563;
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: #843287;
+    margin-bottom: 40px;
+  }
+
+  .divider-full {
+    width: 100%;
+    height: 1px;
+    background: #1A1A1A;
+    margin: 48px 0;
+  }
+
+  /* ─── Section Labels ─── */
+  .section-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #843287;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+
+  .section-desc {
+    font-weight: 300;
+    font-size: 14px;
+    color: #9CA3AF;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* ─── Building Cards ─── */
+  .building {
+    background: #111111;
+    border-radius: 12px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+    border-left: 3px solid transparent;
+    transition: transform 0.2s;
+  }
+
+  .building:hover { transform: translateY(-1px); }
+
+  .building.primary { border-left-color: #843287; }
+  .building.green { border-left-color: #10B981; }
+  .building.amber { border-left-color: #FF7A2E; }
+  .building.white { border-left-color: #FFFFFF; }
+  .building.slate { border-left-color: #6B7280; }
+
+  .building-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .building-venture {
+    font-weight: 500;
+    font-size: 11px;
+    color: #843287;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .building-desc {
+    font-weight: 300;
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.5;
+  }
+
+  /* ─── Zone Grid ─── */
+  .zones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .zone {
+    background: #111111;
+    border-radius: 10px;
+    padding: 18px 16px;
+  }
+
+  .zone-icon {
+    font-size: 20px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .zone-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .zone-detail {
+    font-weight: 300;
+    font-size: 11px;
+    color: #6B7280;
+    line-height: 1.45;
+  }
+
+  .zone.full-width {
+    grid-column: 1 / -1;
+  }
+
+  /* ─── Principles ─── */
+  .principle {
+    padding: 14px 0;
+    border-bottom: 1px solid #1A1A1A;
+  }
+
+  .principle:last-child { border-bottom: none; }
+
+  .principle-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+
+  .principle-desc {
+    font-weight: 300;
+    font-size: 12.5px;
+    color: #6B7280;
+    line-height: 1.5;
+  }
+
+  /* ─── Timeline ─── */
+  .phase {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .phase-marker {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #1A1A1A;
+    border: 2px solid #843287;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #843287;
+    margin-top: 2px;
+  }
+
+  .phase-content {}
+
+  .phase-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+
+  .phase-date {
+    font-weight: 500;
+    font-size: 11px;
+    color: #843287;
+    margin-bottom: 4px;
+  }
+
+  .phase-desc {
+    font-weight: 300;
+    font-size: 12.5px;
+    color: #6B7280;
+    line-height: 1.5;
+  }
+
+  /* ─── Highlight Box ─── */
+  .highlight {
+    background: linear-gradient(135deg, #111111 0%, #1A1020 100%);
+    border-radius: 12px;
+    padding: 28px 24px;
+    margin-bottom: 14px;
+    border: 1px solid #1F1A24;
+  }
+
+  .highlight-text {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #E5E7EB;
+  }
+
+  .highlight-text em {
+    font-style: normal;
+    color: #843287;
+  }
+
+  /* ─── Ventures List ─── */
+  .venture-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #1A1A1A;
+  }
+
+  .venture-row:last-child { border-bottom: none; }
+
+  .venture-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .venture-type {
+    font-weight: 300;
+    font-size: 11px;
+    color: #6B7280;
+  }
+
+  .venture-location {
+    font-weight: 500;
+    font-size: 11px;
+    color: #843287;
+    text-align: right;
+  }
+
+  /* ─── Beyond Section ─── */
+  .beyond-card {
+    background: #111111;
+    border-radius: 12px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+    border: 1px solid #1A1A1A;
+  }
+
+  .beyond-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .beyond-scale {
+    font-weight: 500;
+    font-size: 11px;
+    color: #FF7A2E;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .beyond-desc {
+    font-weight: 300;
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.55;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    text-align: center;
+    padding-top: 24px;
+  }
+
+  .footer-logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .footer-logo span { color: #843287; }
+
+  .footer-sub {
+    font-weight: 300;
+    font-size: 10px;
+    color: #4B5563;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .footer-conf {
+    font-weight: 300;
+    font-size: 10px;
+    color: #374151;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="eyebrow">Komir Holdings · Internal Vision</div>
+
+  <h1>Global <span>Headquarters</span></h1>
+  <div class="location-tag">Abuja, Nigeria</div>
+
+  <p class="hero-desc">A campus of interconnected buildings designed for one purpose: an environment where exceptional people build, trade, learn, recover, and compound — all within walking distance, all under one standard, all owned by Komir Holdings.</p>
+
+  <div class="ref-strip">
+    <div class="ref-item">
+      <div class="ref-name">Apple Park</div>
+      <div class="ref-sub">Self-contained campus</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-name">Amazon HQ</div>
+      <div class="ref-sub">Work-life ecosystem</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-name">SpaceX</div>
+      <div class="ref-sub">Build where you live</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ THE CAMPUS ═══ -->
+  <div class="section-label">The Campus</div>
+  <div class="section-title">Ten buildings. One standard.</div>
+  <p class="section-desc">Each building serves a distinct function. All are interconnected by walkways, green corridors, and shared infrastructure. The campus operates 24 hours.</p>
+
+  <!-- Building 1 -->
+  <div class="building primary">
+    <div class="building-venture">Komir Holdings</div>
+    <div class="building-name">The Executive Building</div>
+    <div class="building-desc">Komir Holdings executive office. The nerve centre of a multi-venture holding company. Board room, founder's office, investor meeting spaces, and the legal and financial operations that govern every venture in the portfolio.</div>
+  </div>
+
+  <!-- Building 2 -->
+  <div class="building green">
+    <div class="building-venture">Jovilex · Kinetic · SnapLead</div>
+    <div class="building-name">The Operations Building</div>
+    <div class="building-desc">The core team workspace for Jovilex (AI-powered global services), Kinetic (digital education platform), and SnapLead (AI lead response SaaS). Where products are built, clients are served, and software ships daily. Open-plan and private offices, build rooms, and a dedicated demo space for client presentations.</div>
+  </div>
+
+  <!-- Building 3 -->
+  <div class="building amber">
+    <div class="building-venture">Forex · Wealth Engine</div>
+    <div class="building-name">The Trading Floor</div>
+    <div class="building-desc">Multi-screen trading desks. The capital engine of Komir Holdings. Forex operations running live markets. Designed for focus, speed, and precision — soundproofed, climate-controlled, and equipped for extended sessions.</div>
+  </div>
+
+  <!-- Building 4 -->
+  <div class="building white">
+    <div class="building-venture">Command Centre · Payvif</div>
+    <div class="building-name">The GovTech Wing</div>
+    <div class="building-desc">Secure operations centre for Command Centre (intelligence and operational efficiency platform) and Payvif (government revenue aggregation). One location only. Controlled access. Built to defence-grade security standards. This is where government contracts are serviced and classified operations are managed.</div>
+  </div>
+
+  <!-- Building 5 -->
+  <div class="building primary">
+    <div class="building-venture">Praxis · Education</div>
+    <div class="building-name">The School</div>
+    <div class="building-desc">A dedicated building with its own entrance, outdoor space, and child-specific security. Praxis — an AI-native school compressing world-class academics into two hours and building the life skills conventional schools ignore. Learning halls, workshop spaces, a kitchen for cooking programmes, and outdoor areas for physical activity. Parents drop their child here, walk to the operations building, and go to work.</div>
+  </div>
+
+  <!-- Building 6 -->
+  <div class="building slate">
+    <div class="building-venture">Public-Facing</div>
+    <div class="building-name">The Hub</div>
+    <div class="building-desc">Premium coworking space open to the public. Private booths for deep work and calls. Meeting rooms available for hire. A commercial front that generates revenue, builds community, and positions Komir as a physical presence in Abuja's business landscape. Open 24 hours.</div>
+  </div>
+
+  <!-- Building 7 -->
+  <div class="building primary">
+    <div class="building-venture">Performance Infrastructure</div>
+    <div class="building-name">The Wellness Centre</div>
+    <div class="building-desc">Fitness facility with strength and movement equipment. Recovery wing with sauna, rest pods, and decompression spaces. On-site nursery for children from 36 months with dedicated nannies. This building exists because performance requires recovery, and parents should never have to choose between their work and their child.</div>
+  </div>
+
+  <!-- Building 8 -->
+  <div class="building primary">
+    <div class="building-venture">Founder · Private</div>
+    <div class="building-name">The Founder's Office</div>
+    <div class="building-desc">A separate, private workspace — inaccessible to the public and disconnected from daily operations. This is where high-level strategy, creation, and deep work happen. The founder operates here three days a week. Every return to the campus brings new products, new milestones, and new records. The space where the next decade is designed.</div>
+  </div>
+
+  <!-- Building 9 -->
+  <div class="building green">
+    <div class="building-venture">Elruta · Nutrition Brand</div>
+    <div class="building-name">The Kitchen</div>
+    <div class="building-desc">Not a canteen — a nutrition system. Everyone on campus eats by design: macro-calculated, protein-tracked meals engineered for sustained output. The menu spans lean proteins, performance bowls, premium Greek yogurt, house-made protein shakes, clean weight gainers, and signature sauces — all developed to taste exceptional while hitting precise nutritional targets. Connected to the Wellness Centre: what you eat is designed alongside how you train and how you recover. Elruta operates as a commercial brand, serving the campus internally and distributing to corporate offices and the public.</div>
+  </div>
+
+  <!-- Building 10 -->
+  <div class="building amber">
+    <div class="building-venture">Komir Media</div>
+    <div class="building-name">The Studio</div>
+    <div class="building-desc">Full production studio for Komir's media arm. Home of the Hey Dad show, gospel broadcasting via Church Television, corporate media production, and a creative hub for young producers. Sound stage, editing suites, podcast booths, and a content production floor. Every piece of Komir content — from social media to broadcast television — originates here.</div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ CAMPUS GROUNDS ═══ -->
+  <div class="section-label">Campus Grounds</div>
+
+  <div class="zones">
+    <div class="zone">
+      <span class="zone-icon">◆</span>
+      <div class="zone-name">Football Pitch</div>
+      <div class="zone-detail">Full-size pitch. Sport is recovery infrastructure, not recreation.</div>
+    </div>
+    <div class="zone">
+      <span class="zone-icon">◇</span>
+      <div class="zone-name">Mini Stadium</div>
+      <div class="zone-detail">Events, competitions, community tournaments. Open to the public.</div>
+    </div>
+    <div class="zone">
+      <span class="zone-icon">▣</span>
+      <div class="zone-name">Green Corridors</div>
+      <div class="zone-detail">Plants, herbs, grass underfoot. Every pathway connects you to nature.</div>
+    </div>
+    <div class="zone">
+      <span class="zone-icon">▢</span>
+      <div class="zone-name">Quiet Zones</div>
+      <div class="zone-detail">Zero-disturbance outdoor spaces. Benches, shade, stillness.</div>
+    </div>
+    <div class="zone full-width">
+      <span class="zone-icon">○</span>
+      <div class="zone-name">The Nap Policy</div>
+      <div class="zone-detail">Any staff member working a 6+ hour shift must take a mandatory 30-minute rest. The campus is designed for it — rest pods in the Wellness Centre, quiet zones outdoors. This is not a perk. It is an operational standard.</div>
+    </div>
+    <div class="zone full-width">
+      <span class="zone-icon">✙</span>
+      <div class="zone-name">The Sanctuary</div>
+      <div class="zone-detail">A multi-faith worship space for prayer, reflection, and streaming services. Designed to serve both Christian and Muslim worship side by side — a chapel space and a prayer room sharing one quiet, sacred facility. Not a commercial church or mosque. A place where anyone on campus or in the community can connect spiritually, attend live worship, or stream their home church.</div>
+    </div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ OPERATING PRINCIPLES ═══ -->
+  <div class="section-label">Operating Principles</div>
+
+  <div class="principle">
+    <div class="principle-title">24-hour functionality</div>
+    <div class="principle-desc">The campus never closes. Different zones serve different hours. The trading floor follows global markets. The hub serves the public around the clock. The school operates daytime. The wellness centre is always available.</div>
+  </div>
+  <div class="principle">
+    <div class="principle-title">Recovery is infrastructure</div>
+    <div class="principle-desc">Sleep, movement, decompression, and access to nature are not benefits. They are operational requirements engineered into every building and every walkway on the campus.</div>
+  </div>
+  <div class="principle">
+    <div class="principle-title">Parents don't choose</div>
+    <div class="principle-desc">Childcare and education are on campus. No team member chooses between their work and their family. The child learns at Praxis. The parent builds at Jovilex. They are 200 metres apart.</div>
+  </div>
+  <div class="principle">
+    <div class="principle-title">Green is structural</div>
+    <div class="principle-desc">Plants, herbs, grass, and natural light are not decoration. They are design requirements in every building and every outdoor space. People put their feet on grass during their workday.</div>
+  </div>
+  <div class="principle">
+    <div class="principle-title">One standard, applied globally</div>
+    <div class="principle-desc">What is built in Abuja defines the DNA for every Komir workspace worldwide. This campus is the reference point. Every future location meets this standard or does not carry the name.</div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ PORTFOLIO ═══ -->
+  <div class="section-label">Ventures Housed on Campus</div>
+
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Komir Holdings</div>
+      <div class="venture-type">Parent company · Executive office</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Jovilex</div>
+      <div class="venture-type">AI-powered global services</div>
+    </div>
+    <div class="venture-location">HQ + Lagos</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Trading Floor</div>
+      <div class="venture-type">Forex · Wealth engine</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Command Centre</div>
+      <div class="venture-type">GovTech · Intelligence platform</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Payvif</div>
+      <div class="venture-type">Government revenue aggregator</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Kinetic</div>
+      <div class="venture-type">Digital education platform</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">SnapLead</div>
+      <div class="venture-type">AI lead response SaaS</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Praxis</div>
+      <div class="venture-type">AI-native school</div>
+    </div>
+    <div class="venture-location">HQ + Partners</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Errands</div>
+      <div class="venture-type">Errand marketplace · Escrow</div>
+    </div>
+    <div class="venture-location">HQ + Lagos</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Church Digital</div>
+      <div class="venture-type">Six-pillar church technology</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Elruta</div>
+      <div class="venture-type">Performance nutrition brand</div>
+    </div>
+    <div class="venture-location">HQ + Commercial</div>
+  </div>
+  <div class="venture-row">
+    <div>
+      <div class="venture-name">Komir Media</div>
+      <div class="venture-type">Production · Broadcasting · Content</div>
+    </div>
+    <div class="venture-location">HQ Only</div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ LAGOS ═══ -->
+  <div class="section-label">Phase 1 — Lagos</div>
+
+  <div class="building green">
+    <div class="building-venture">Jovilex · Trading · Coworking · Wellness</div>
+    <div class="building-name">Lagos Floor Office</div>
+    <div class="building-desc">The first Komir space built to the full standard. A single premium floor in Lagos housing Jovilex client-facing operations, trading desks, coworking open to the public, fitness, recovery, nursery, quiet zones, and private booths. Self-funded. This floor establishes the design DNA that every future Komir space inherits. Target: July 2027.</div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ THE LARGER VISION ═══ -->
+  <div class="section-label">Beyond the Campus</div>
+
+  <div class="beyond-card">
+    <div class="beyond-name">Jolag Farm City</div>
+    <div class="beyond-scale">70,000 Hectares · Full City Development</div>
+    <div class="beyond-desc">An agricultural and industrial city connecting 81 communities. Mechanised farming, international factory operations, cargo airport, train station, agricultural university, research centre, and residential estates. Full proposals, financial documents, and architectural plans already developed. The residential district is being upgraded to the same eco-friendly, community-oriented living standard being established at the Abuja HQ campus — green homes, communal spaces, nature integration, and Praxis-model schools. Approval timeline: three months from the right governor conversation, targeted post-election cycle.</div>
+  </div>
+
+  <div class="beyond-card">
+    <div class="beyond-name">Skill Acquisition Centres</div>
+    <div class="beyond-scale">Partnership · Ministry of Education</div>
+    <div class="beyond-desc">Human development centres teaching professional trade skills — plumbing, carpentry, electrical, and beyond. Certified, professional-grade training with microloans for graduates to start businesses. Operated in partnership with the Ministry of Education, likely within public school facilities or purpose-built structures. A separate brand under Komir Holdings.</div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ PHASING ═══ -->
+  <div class="section-label">Phased Development</div>
+
+  <div class="phase">
+    <div class="phase-marker">1</div>
+    <div class="phase-content">
+      <div class="phase-title">Lagos Floor Office</div>
+      <div class="phase-date">Target: July 2027</div>
+      <div class="phase-desc">A single premium floor in Lagos. Self-funded from trading and services revenue. Jovilex client-facing operations, trading desks, coworking, and the wellness standard — all on one floor. This is where the Komir design DNA is established. The first space that proves the standard. Interior design engagement begins here.</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker">2</div>
+    <div class="phase-content">
+      <div class="phase-title">The Founder's Office</div>
+      <div class="phase-date">2027–2028</div>
+      <div class="phase-desc">A private, separate workspace — inaccessible to the public. Where high-level strategy, creation, and deep work happen away from daily operations. The founder operates three days here, four days at the hub. Every return brings new products, new milestones, new records. This is the space where the next ten years are designed.</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker">3</div>
+    <div class="phase-content">
+      <div class="phase-title">Abuja Global HQ Campus</div>
+      <div class="phase-date">2028–2030</div>
+      <div class="phase-desc">The full ten-building campus. Externally financed. All ventures operational on site — Executive building, Operations, Trading Floor, GovTech Wing, Praxis school, the public Hub, the Wellness Centre, the Founder's private office, the Kitchen (Elruta), and the Media Studio. Campus grounds with football pitch, mini stadium, and green corridors. The design standard established in Lagos Phase 1 is applied at campus scale.</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker">4</div>
+    <div class="phase-content">
+      <div class="phase-title">Jolag Farm City Activation</div>
+      <div class="phase-date">Post-election cycle · External financing in place</div>
+      <div class="phase-desc">Full city development — 70,000 hectares. Residential estates built to the standard proven at HQ. African Finance Corporation already engaged at VP level. Former AfDB leadership involved. Homes, community spaces, Praxis-model schools, commercial districts, industrial zones, cargo airport, agricultural university, and artificial beaches. The largest design engagement in the portfolio.</div>
+    </div>
+  </div>
+
+  <div class="divider-full"></div>
+
+  <!-- ═══ CLOSING ═══ -->
+
+  <div class="highlight">
+    <div class="highlight-text">This starts with <em>one floor in Lagos</em>. It grows into a campus in Abuja. It becomes a city that doesn't exist yet in Africa. The design partner who enters at Phase 1 shapes the DNA of everything that follows.</div>
+  </div>
+
+  <div class="highlight" style="border-color: #111111; background: #111111;">
+    <div class="highlight-text" style="font-size: 14px; color: #9CA3AF; font-family: 'Outfit', sans-serif; font-weight: 300; line-height: 1.65;">Phase 1 is self-funded and ready to begin. The standard set in Lagos becomes the reference for a ten-building campus, a founder's private office, and ultimately, a 70,000-hectare city with international financing already engaged.</div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    <div class="footer-logo">Komir <span>Holdings</span></div>
+    <div class="footer-sub">Abuja · Lagos · Global</div>
+    <div class="footer-conf">Confidential · June 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
