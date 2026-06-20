@@ -29,8 +29,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(17,17,17,0.9
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{font-size:14px;color:var(--gr);font-weight:400;transition:color 0.2s}
 .nav-links a:hover{color:var(--wh)}
-.nav-cta{background:var(--am);color:var(--ch);font-weight:500;font-size:13px;padding:8px 18px;border-radius:6px;transition:opacity 0.2s}
-.nav-cta:hover{opacity:0.9}
+.nav-links .nav-cta{background:var(--am);color:var(--ch);font-weight:500;font-size:13px;padding:8px 18px;border-radius:6px;transition:opacity 0.2s;white-space:nowrap}
+.nav-links .nav-cta:hover{opacity:0.9;color:var(--ch)}
 
 /* ── Hero ── */
 .hero{padding:140px 0 80px;text-align:left}
@@ -47,6 +47,14 @@ h1 .em{color:var(--em)}
 .btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid var(--sl);color:var(--wh);font-family:'Outfit',sans-serif;font-weight:400;font-size:15px;padding:14px 28px;border-radius:8px;transition:border-color 0.2s}
 .btn-secondary:hover{border-color:var(--em)}
 .hero-note{margin-top:16px;font-size:12px;color:var(--gr);font-weight:300}
+
+/* ── SnapLead Banner ── */
+.sl-banner{background:rgba(16,185,129,0.06);border-top:1px solid rgba(16,185,129,0.12);border-bottom:1px solid rgba(16,185,129,0.12);padding:13px 0;text-align:center}
+.sl-banner-inner{display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;color:var(--gr);font-weight:300}
+.sl-dot{width:6px;height:6px;background:var(--em);border-radius:50%;flex-shrink:0}
+.sl-banner-inner strong{color:var(--wh);font-weight:500}
+.sl-banner-inner a{color:var(--em);font-weight:500;transition:opacity 0.2s}
+.sl-banner-inner a:hover{opacity:0.8}
 
 /* ── Stats strip ── */
 .stats{border-top:1px solid var(--sl);border-bottom:1px solid var(--sl);padding:32px 0}
@@ -89,6 +97,22 @@ section{padding:80px 0}
 .proof-desc{font-size:13px;color:var(--gr);line-height:1.5;margin-bottom:12px}
 .proof-metric{font-family:'Sora',sans-serif;font-weight:700;font-size:13px;color:var(--em)}
 
+/* ── Product Spotlight ── */
+.product-spot{background:var(--db);border:1px solid var(--sl);border-radius:16px;padding:40px 36px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.product-label{font-size:11px;color:var(--am);font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.product-name{font-family:'Sora',sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.5px;margin-bottom:6px}
+.product-name .em{color:var(--em)}
+.product-tagline{font-size:15px;color:var(--gr);line-height:1.6;margin-bottom:20px}
+.product-stats{display:flex;gap:24px;margin-bottom:20px}
+.product-stat{text-align:center}
+.product-stat-num{font-family:'Sora',sans-serif;font-weight:700;font-size:22px;color:var(--em)}
+.product-stat-label{font-size:11px;color:var(--gr);font-weight:300;margin-top:2px}
+.product-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--em);font-weight:500;transition:opacity 0.2s}
+.product-link:hover{opacity:0.8}
+.product-features{display:flex;flex-direction:column;gap:12px}
+.product-feature{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--gr);line-height:1.5}
+.product-feature-dot{width:6px;height:6px;background:var(--em);border-radius:50%;margin-top:7px;flex-shrink:0}
+
 /* ── About ── */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
 .about-text{font-size:16px;color:var(--gr);line-height:1.7}
@@ -119,6 +143,7 @@ footer{border-top:1px solid var(--sl);padding:32px 0}
   .steps,.services-grid{grid-template-columns:1fr}
   .proof-grid{grid-template-columns:1fr}
   .about-grid{grid-template-columns:1fr;gap:32px}
+  .product-spot{grid-template-columns:1fr;gap:32px;padding:28px 24px}
   .stats-inner{gap:32px}
   .nav-links a:not(.nav-cta){display:none}
   h1{font-size:32px}
@@ -160,13 +185,20 @@ footer{border-top:1px solid var(--sl);padding:32px 0}
   </div>
 </header>
 
+<!-- SnapLead Banner -->
+<div class="sl-banner">
+  <div class="sl-banner-inner wrap">
+    <div class="sl-dot"></div>
+    <span><strong>SnapLead</strong> — our AI lead response product — is live across 4 verticals. <a href="https://snaplead.jovilex.com">snaplead.jovilex.com →</a></span>
+  </div>
+</div>
+
 <!-- Stats -->
 <div class="stats">
   <div class="stats-inner wrap">
-    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Areas diagnosed</div></div>
-    <div class="stat"><div class="stat-num">60s</div><div class="stat-label">To your report</div></div>
-    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Diagnostic questions</div></div>
-    <div class="stat"><div class="stat-num">24hr</div><div class="stat-label">Response time</div></div>
+    <div class="stat"><div class="stat-num">1–3</div><div class="stat-label">Days average delivery</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Services</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Always available</div></div>
   </div>
 </div>
 
@@ -277,6 +309,34 @@ footer{border-top:1px solid var(--sl);padding:32px 0}
         <div class="proof-title">What would we build for you?</div>
         <div class="proof-desc">The free audit diagnoses where your business is leaking revenue. The report tells you exactly what to fix. If you want us to fix it — we build in days.</div>
         <a href="/audit" class="btn-primary" style="font-size:13px;padding:10px 20px;margin-top:8px;display:inline-flex">Take the audit →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section style="padding:60px 0 80px">
+  <div class="wrap">
+    <div class="section-label">Our Products</div>
+    <div class="section-title">We don't just build for clients. We ship our own.</div>
+    <div class="section-sub">SnapLead is a Jovilex product — built, launched, and live in market. The same speed and standard we deliver for clients, applied to our own venture.</div>
+    <div class="product-spot">
+      <div>
+        <div class="product-label">Live Product</div>
+        <div class="product-name">Snap<span class="em">Lead</span></div>
+        <div class="product-tagline">AI-powered lead response that replies to every enquiry in 60 seconds — before your competitors even check their inbox. Businesses sign up, pick their industry, and start converting leads immediately.</div>
+        <div class="product-stats">
+          <div class="product-stat"><div class="product-stat-num">60s</div><div class="product-stat-label">Response time</div></div>
+          <div class="product-stat"><div class="product-stat-num">4</div><div class="product-stat-label">Verticals live</div></div>
+          <div class="product-stat"><div class="product-stat-num">24/7</div><div class="product-stat-label">Always on</div></div>
+        </div>
+        <a href="https://snaplead.jovilex.com" class="product-link">Visit snaplead.jovilex.com →</a>
+      </div>
+      <div class="product-features">
+        <div class="product-feature"><div class="product-feature-dot"></div><span>AI responds to every lead with a personalised, industry-specific message — dentists, law firms, home services, med spas.</span></div>
+        <div class="product-feature"><div class="product-feature-dot"></div><span>Multi-tenant SaaS — each business gets their own dashboard, branded forms, and embeddable widget.</span></div>
+        <div class="product-feature"><div class="product-feature-dot"></div><span>14-day free trial. No card upfront. Live in minutes.</span></div>
+        <div class="product-feature"><div class="product-feature-dot"></div><span>Built by the same team, with the same speed, using the same stack we deploy for every client.</span></div>
       </div>
     </div>
   </div>
