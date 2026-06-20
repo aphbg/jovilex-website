@@ -28,6 +28,8 @@
         { "source": "/audit", "destination": "/audit.html" },
         { "source": "/contact", "destination": "/contact.html" },
         { "source": "/leads", "destination": "/leads.html" },
+        { "source": "/hq", "destination": "/hq.html" },
+        { "source": "/design", "destination": "/design.html" },
         { "source": "/snaplead", "destination": "/snaplead-marketing.html" },
         { "source": "/snaplead/signup", "destination": "/snaplead-signup.html" },
         { "source": "/snaplead/dashboard", "destination": "/snaplead-dashboard.html" },
