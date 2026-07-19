@@ -30,6 +30,7 @@
         { "source": "/leads", "destination": "/leads.html" },
         { "source": "/hq", "destination": "/hq.html" },
         { "source": "/design", "destination": "/design.html" },
+        { "source": "/ventures", "destination": "/ventures.html" },
         { "source": "/snaplead", "destination": "/snaplead-marketing.html" },
         { "source": "/snaplead/signup", "destination": "/snaplead-signup.html" },
         { "source": "/snaplead/dashboard", "destination": "/snaplead-dashboard.html" },
