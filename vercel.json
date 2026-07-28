@@ -218,6 +218,10 @@
             "destination": "/ventures.html"
         },
         {
+            "source": "/capital",
+            "destination": "/capital.html"
+        },
+        {
             "source": "/snaplead",
             "destination": "/snaplead-marketing.html"
         },
