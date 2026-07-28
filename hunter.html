@@ -69,7 +69,7 @@
   <div class="top">
     <div><div class="logo">Jovi<span>lex</span></div>
       <div style="color:var(--grey);font-size:13px">Hunter — Daily Opportunity Sheet</div></div>
-    <div class="date" id="dateline"></div>
+    <div style="display:flex;align-items:center;gap:14px"><div class="date" id="dateline"></div><button class="btn ghost mini" onclick="logout()" style="font-size:12px;padding:6px 12px">Logout</button></div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -113,12 +113,12 @@ function gateIn(){
   if(document.getElementById("pw").value!==PW){alert("Wrong password");return}
   KEY=document.getElementById("hk").value.trim();
   if(!KEY){alert("Hunter API key required");return}
-  sessionStorage.setItem("hk",KEY);
+  localStorage.setItem("hk",KEY);
   document.getElementById("gate").style.display="none";
   document.getElementById("app").style.display="block";
   loadSheet();
 }
-if(sessionStorage.getItem("hk")){KEY=sessionStorage.getItem("hk");
+if(localStorage.getItem("hk")){KEY=localStorage.getItem("hk");
   document.getElementById("gate").style.display="none";
   document.getElementById("app").style.display="block";
   loadSheet();}
@@ -270,6 +270,15 @@ function downloadSheet(){
   a.href=URL.createObjectURL(blob);
   a.download="Hunter-Sheet-"+SHEET.date+".txt";
   a.click();
+}
+
+function logout(){
+  localStorage.removeItem("hk");
+  KEY="";
+  document.getElementById("gate").style.display="flex";
+  document.getElementById("app").style.display="none";
+  document.getElementById("pw").value="";
+  document.getElementById("hk").value="";
 }
 </script>
 </body>
