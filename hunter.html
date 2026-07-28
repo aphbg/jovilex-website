@@ -55,6 +55,7 @@
   .empty{color:var(--grey);font-weight:300;padding:14px 4px}
   .keybox{margin-top:10px}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 <div id="gate"><div class="box">
@@ -240,36 +241,39 @@ async function runAll(btn){
 
 function downloadSheet(){
   if(!SHEET||!SHEET.opportunities.length){alert("No data to download yet.");return}
-  var lines=["JOVILEX HUNTER — DAILY OPPORTUNITY SHEET","Date: "+SHEET.date,"",""];
   var opps=FILTER?SHEET.opportunities.filter(o=>o.track===FILTER):SHEET.opportunities;
-  var t2=opps.filter(o=>o.tier2_flag);
-  var t1=opps.filter(o=>o.classification!=="snaplead");
-  var snap=opps.filter(o=>o.classification==="snaplead"||o.classification==="both");
-  lines.push("SUMMARY: "+opps.length+" surfaced | "+t2.length+" Tier 2 flags | "+snap.length+" SnapLead prospects","");
-  function addOpp(o){
-    lines.push("---");
-    lines.push(o.company+" | Score: "+o.score+"/100 | "+o.tag+(o.tier2_flag?" | TIER 2":""));
-    lines.push("Budget: "+(o.budget_text||"Not stated"));
-    lines.push("Track: "+o.track+" | Country: "+(o.country||"—")+" | Classification: "+o.classification);
-    if(o.tier2_reason)lines.push("Strategic read: "+o.tier2_reason);
-    lines.push("Summary: "+o.summary);
-    lines.push("Evidence: "+o.evidence);
-    lines.push("Source: "+(o.source_url||"—"));
-    lines.push("Send via: "+(o.recipient_channel||"—"));
-    lines.push("Proof package: "+(o.portfolio_package||"—"));
-    lines.push("");
-    lines.push("DRAFTED APPROACH:");
-    lines.push(o.drafted_approach);
-    lines.push("");
+  var rows=opps.map(function(o){return{
+    "Score":o.score,
+    "Company":o.company,
+    "Tag":o.tag,
+    "Tier 2":o.tier2_flag?"YES":"",
+    "Classification":o.classification==="both"?"JOVILEX + SNAPLEAD":o.classification.toUpperCase(),
+    "Track":o.track,
+    "Country":o.country||"",
+    "Budget":o.budget_text||"Not stated",
+    "Est Value USD":o.est_value_usd||"",
+    "Summary":o.summary,
+    "Strategic Read":o.tier2_reason||"",
+    "Evidence":o.evidence,
+    "Source URL":o.source_url||"",
+    "Send Via":o.recipient_channel||"",
+    "Proof Package":o.portfolio_package||"",
+    "Drafted Approach":o.drafted_approach,
+    "Status":o.status
+  }});
+  rows.sort(function(a,b){return b.Score-a.Score});
+  var wb=XLSX.utils.book_new();
+  var ws=XLSX.utils.json_to_sheet(rows);
+  var colWidths=[{wch:6},{wch:30},{wch:12},{wch:6},{wch:18},{wch:22},{wch:14},{wch:20},{wch:12},{wch:50},{wch:50},{wch:40},{wch:40},{wch:40},{wch:30},{wch:60},{wch:10}];
+  ws["!cols"]=colWidths;
+  XLSX.utils.book_append_sheet(wb,ws,"Opportunity Sheet");
+  if(SHEET.followups&&SHEET.followups.length){
+    var fuRows=SHEET.followups.map(function(f){return{"Company":f.company,"Summary":f.summary,"Channel":f.recipient_channel||"","Approached":f.approached_at||"","Note":f.status_note||""}});
+    var ws2=XLSX.utils.json_to_sheet(fuRows);
+    ws2["!cols"]=[{wch:30},{wch:50},{wch:30},{wch:20},{wch:30}];
+    XLSX.utils.book_append_sheet(wb,ws2,"Follow-ups");
   }
-  if(t2.length){lines.push("═══ TIER 2 — STRATEGIC FLAGS ═══","");t2.forEach(addOpp);}
-  if(t1.length){lines.push("═══ TIER 1 QUEUE ═══","");t1.forEach(addOpp);}
-  if(snap.length){lines.push("═══ SNAPLEAD PROSPECTS ═══","");snap.forEach(addOpp);}
-  var blob=new Blob([lines.join("\n")],{type:"text/plain"});
-  var a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="Hunter-Sheet-"+SHEET.date+".txt";
-  a.click();
+  XLSX.writeFile(wb,"Hunter-Sheet-"+SHEET.date+".xlsx");
 }
 
 function logout(){
