@@ -26,17 +26,17 @@
   html{scroll-behavior:smooth;}
   body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;}
   a{color:inherit;text-decoration:none;}
+  a.card-link{display:contents;}
+  a.card-link .card{cursor:pointer;}
 
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
 
-  /* Top bar */
   .topbar{position:sticky;top:0;z-index:50;background:rgba(12,12,14,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
   .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
   .mark{font-family:'Sora',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.3px;}
   .mark span{color:var(--purple-soft);}
   .private-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);font-weight:500;}
 
-  /* Hero */
   .hero{padding:88px 0 56px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
   .hero::before{content:"";position:absolute;top:-180px;right:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(132,50,135,0.14) 0%,transparent 68%);pointer-events:none;}
   .eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--purple-soft);font-weight:600;margin-bottom:18px;}
@@ -48,7 +48,6 @@
   .register .num{font-family:'Sora',sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.5px;}
   .register .lbl{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-top:2px;}
 
-  /* Filters */
   .filters{position:sticky;top:61px;z-index:40;background:rgba(12,12,14,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
   .filters-inner{display:flex;gap:8px;padding:14px 0;overflow-x:auto;scrollbar-width:none;}
   .filters-inner::-webkit-scrollbar{display:none;}
@@ -57,14 +56,12 @@
   .fbtn.active{background:var(--purple);border-color:var(--purple);color:#fff;}
   .fbtn:focus-visible{outline:2px solid var(--purple-soft);outline-offset:2px;}
 
-  /* Sections */
   .tier{padding:56px 0 8px;}
   .tier-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;}
   .tier-head h2{font-family:'Sora',sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.5px;}
   .tier-head .count{font-size:13px;color:var(--faint);font-weight:500;}
   .tier-sub{color:var(--muted);font-size:15px;max-width:640px;margin-bottom:28px;}
 
-  /* Cards */
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:28px;}
   @media(max-width:820px){.grid{grid-template-columns:1fr;}}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;display:flex;flex-direction:column;transition:border-color .2s ease, transform .2s ease;}
@@ -76,6 +73,7 @@
   .chip.live{background:var(--purple);color:#fff;}
   .chip.spec{background:transparent;color:var(--purple-soft);border:1px solid rgba(132,50,135,0.6);}
   .chip.concept{background:transparent;color:var(--muted);border:1px solid var(--line);}
+  .chip.infra{background:rgba(132,50,135,0.12);color:var(--purple-soft);border:1px solid rgba(132,50,135,0.3);}
   .chip.client{background:rgba(255,255,255,0.07);color:var(--text);}
   .what{color:var(--text);font-size:15px;margin-bottom:14px;}
   .state{list-style:none;margin-bottom:16px;}
@@ -83,10 +81,12 @@
   .state li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--purple);}
   .edge{margin-top:auto;border-top:1px solid var(--line);padding-top:14px;font-size:14px;color:var(--text);}
   .edge b{color:var(--purple-soft);font-weight:600;font-family:'Sora',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;}
+  .live-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--purple-soft);font-weight:500;margin-top:10px;opacity:0.8;transition:opacity .15s;}
+  .live-link:hover{opacity:1;}
+  .live-link svg{width:14px;height:14px;}
 
   .hidden{display:none;}
 
-  /* Footer */
   footer{border-top:1px solid var(--line);padding:44px 0 56px;margin-top:40px;}
   footer .foot-mark{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;margin-bottom:8px;}
   footer p{color:var(--faint);font-size:13px;max-width:560px;}
@@ -114,6 +114,7 @@
       <div><div class="num">5</div><div class="lbl">Live &amp; Operational</div></div>
       <div><div class="num">8</div><div class="lbl">Frozen Spec / Bible</div></div>
       <div><div class="num">7</div><div class="lbl">Concept Captured</div></div>
+      <div><div class="num">7</div><div class="lbl">Infrastructure</div></div>
       <div><div class="num">2</div><div class="lbl">Client Builds</div></div>
     </div>
   </div>
@@ -125,18 +126,19 @@
     <button class="fbtn" data-filter="live">Live &amp; Operational</button>
     <button class="fbtn" data-filter="spec">Frozen Spec</button>
     <button class="fbtn" data-filter="concept">Concept Captured</button>
+    <button class="fbtn" data-filter="infra">Infrastructure</button>
     <button class="fbtn" data-filter="client">Client Builds</button>
   </div>
 </div>
 
-<!-- TIER 1 -->
+<!-- ═══ TIER 1 — LIVE ═══ -->
 <section class="tier" data-tier="live">
   <div class="wrap">
     <div class="tier-head"><h2>Live &amp; Operational</h2><span class="count">5 ventures</span></div>
     <p class="tier-sub">Deployed systems with real users, real infrastructure, and active build momentum.</p>
     <div class="grid">
 
-      <div class="card">
+      <a href="https://jovilex.com" target="_blank" rel="noopener" class="card-link"><div class="card">
         <div class="card-top">
           <div><div class="cname">Jovilex</div><div class="cid">KH–01 · SERVICES</div></div>
           <span class="chip live">Live</span>
@@ -148,24 +150,26 @@
           <li>AI business-development engine scanning and scoring opportunities daily</li>
         </ul>
         <div class="edge"><b>The edge</b>What agencies quote in months ships in days — and every Komir venture doubles as its portfolio proof.</div>
-      </div>
+        <span class="live-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9"/></svg>jovilex.com</span>
+      </div></a>
 
-      <div class="card">
+      <a href="https://snaplead.jovilex.com" target="_blank" rel="noopener" class="card-link"><div class="card">
         <div class="card-top">
           <div><div class="cname">SnapLead</div><div class="cid">KH–02 · SAAS</div></div>
           <span class="chip live">Live</span>
         </div>
-        <p class="what">AI lead-response SaaS — every enquiry answered in sixty seconds, qualified, and booked.</p>
+        <p class="what">AI lead-response SaaS — every enquiry answered in sixty seconds, qualified, and booked. Now expanding from response into demand generation.</p>
         <ul class="state">
-          <li>Multi-tenant platform live at snaplead.jovilex.com across four verticals: home services, dental, legal, med spa</li>
+          <li>Multi-tenant platform live across four verticals: home services, dental, legal, med spa</li>
           <li>Partner network with referral codes, embeddable widget, self-serve onboarding</li>
           <li>Retention Engine in build: customer memory, win-back campaigns, WhatsApp/SMS/email channels, AI receptionist, redemption-code attribution</li>
-          <li>SnapLead Hunter queued: the demand-generation tier that finds prospects, not just answers them</li>
+          <li>Hunter tier live: a productised scanning engine that finds prospects per subscriber's industry and location — SnapLead now finds demand, not just answers it</li>
         </ul>
-        <div class="edge"><b>The edge</b>Moves a business from answering leads to recovering and generating them — with codes-only attribution that ends revenue disputes.</div>
-      </div>
+        <div class="edge"><b>The edge</b>The complete demand engine — find, respond, and recover — with source transparency on every prospect card so revenue disputes end before they start.</div>
+        <span class="live-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9"/></svg>snaplead.jovilex.com</span>
+      </div></a>
 
-      <div class="card">
+      <a href="https://logic-pulse-chi.vercel.app" target="_blank" rel="noopener" class="card-link"><div class="card">
         <div class="card-top">
           <div><div class="cname">Church Digital Ecosystem</div><div class="cid">KH–03 · PLATFORM</div></div>
           <span class="chip live">Live</span>
@@ -177,41 +181,44 @@
           <li>Licensing model designed for churches across Nigeria and Africa</li>
         </ul>
         <div class="edge"><b>The edge</b>Built from inside a church's real operations — not sold to churches from outside.</div>
-      </div>
+        <span class="live-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9"/></svg>Church Pulse — Live</span>
+      </div></a>
 
-      <div class="card">
+      <a href="https://errands-app-dun.vercel.app/" target="_blank" rel="noopener" class="card-link"><div class="card">
         <div class="card-top">
-          <div><div class="cname">Errands</div><div class="cid">KH–04 · MARKETPLACE</div></div>
+          <div><div class="cname">Errands</div><div class="cid">KH–04 · TRUST PLATFORM</div></div>
           <span class="chip live">Live</span>
         </div>
-        <p class="what">Trust-first errand marketplace and escrow platform for Lagos and Abuja.</p>
+        <p class="what">A trust layer for human connection — someone needs a hand, someone nearby can be that hand, and the money is protected before either side moves.</p>
         <ul class="state">
-          <li>Beta live: neighbourhood matching across 150+ areas, distance-based pricing, escrow, admin panel</li>
+          <li>Beta live: neighbourhood matching across 150+ areas in Lagos and Abuja, distance-based pricing, escrow, admin panel</li>
           <li>Multi-runner acceptance, payment locks, and runner rates in the next build phase</li>
           <li>Escrow rail doubles as custodian infrastructure for other Komir capital products</li>
         </ul>
-        <div class="edge"><b>The edge</b>Escrow-first design in a trust-starved market — the money is protected before the errand starts.</div>
-      </div>
+        <div class="edge"><b>The edge</b>Escrow-first design in a trust-starved market — the money is safe before anything moves, and the same rail serves the entire holding company.</div>
+        <span class="live-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9"/></svg>errands-app-dun.vercel.app</span>
+      </div></a>
 
       <div class="card">
         <div class="card-top">
           <div><div class="cname">Komir Capital Engine</div><div class="cid">KH–05 · CAPITAL</div></div>
           <span class="chip live">Live</span>
         </div>
-        <p class="what">Proprietary agentic trading system for gold — the wealth engine of the holding structure.</p>
+        <p class="what">Proprietary agentic trading system for gold — the wealth engine of the holding structure and the sovereign capital architecture that funds every venture.</p>
         <ul class="state">
           <li>Specification v1.0 frozen; first production detection layer built and in verification</li>
           <li>Build sequence locked: indicator → demo verification → live micro-account → full engine</li>
           <li>Commercial architecture designed: a digital trading floor of managed desks, a licensed indicator tier, and structured capital pools with escrow custody</li>
+          <li>Director of Capital and Treasury routes engine output to ventures — mature desks fund new ventures, reserves parked in treasury instruments</li>
         </ul>
-        <div class="edge"><b>The edge</b>The engine never leaves Komir infrastructure. It is rented, never sold — an asymmetry system, not a win-rate system.</div>
+        <div class="edge"><b>The edge</b>The engine never leaves Komir infrastructure. It is rented, never sold — and it removes external capital dependency from every venture in the portfolio.</div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- TIER 2 -->
+<!-- ═══ TIER 2 — FROZEN SPEC ═══ -->
 <section class="tier" data-tier="spec">
   <div class="wrap">
     <div class="tier-head"><h2>Frozen Spec &amp; Product Bibles</h2><span class="count">8 ventures</span></div>
@@ -268,7 +275,7 @@
         <p class="what">Human capital infrastructure for Africa — a platform that makes intelligence aspirational, learning convenient, and capability verifiable.</p>
         <ul class="state">
           <li>Five layers designed: live cohort ed-tech, an intelligence-rewarding social layer, credibility data infrastructure, a stealth accelerator, and a long-term vocational campus</li>
-          <li>External-capital path: direct Lagos VC relationships, with comparable platforms already validating investor appetite</li>
+          <li>Funded internally by the Capital Engine — no external dependency, external raises exist only as a strength-position option</li>
           <li>Serves as the digital engine underneath Praxis and future school brands</li>
         </ul>
         <div class="edge"><b>The edge</b>Verifiable behavioural data as a byproduct — solving the due-diligence problem for capital while solving the credibility problem for talent.</div>
@@ -334,7 +341,7 @@
   </div>
 </section>
 
-<!-- TIER 3 -->
+<!-- ═══ TIER 3 — CONCEPT ═══ -->
 <section class="tier" data-tier="concept">
   <div class="wrap">
     <div class="tier-head"><h2>Concept Captured</h2><span class="count">7 ventures</span></div>
@@ -439,14 +446,116 @@
   </div>
 </section>
 
-<!-- CLIENT BUILDS -->
+<!-- ═══ TIER 4 — INFRASTRUCTURE PORTFOLIO ═══ -->
+<section class="tier" data-tier="infra">
+  <div class="wrap">
+    <div class="tier-head"><h2>Infrastructure Portfolio</h2><span class="count">7 companies</span></div>
+    <p class="tier-sub">The operating spine of the conglomerate. Every company below follows one pattern: serve Komir first, then commercialise externally. Each one exists because a growing portfolio of ventures, properties, and people needs its own backbone — not outsourced providers with divided attention.</p>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir Cybersecurity</div><div class="cid">KH–I1 · SECURITY</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Digital security, data centre operations, and trading floor protection — the shield around every system Komir runs.</p>
+        <ul class="state">
+          <li>Protects the Capital Engine, all venture platforms, government systems, and client data</li>
+          <li>External commercialisation: managed security services for enterprises and government</li>
+        </ul>
+        <div class="edge"><b>The edge</b>Battle-tested on live trading infrastructure before it ever takes an external client.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir Logistics</div><div class="cid">KH–I2 · TRANSPORT</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Ground fleet and corporate transport contracts — moving people and assets across the portfolio.</p>
+        <ul class="state">
+          <li>Serves Komir Events, campus operations, executive movement, and Errands' logistics backbone</li>
+          <li>External commercialisation: corporate transport contracts and last-mile logistics</li>
+        </ul>
+        <div class="edge"><b>The edge</b>Built to serve a conglomerate's daily needs — external clients get the same operational discipline.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir Security</div><div class="cid">KH–I3 · PHYSICAL SECURITY</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Physical security for personnel, facilities, the campus, events, and travel — the human protection layer.</p>
+        <ul class="state">
+          <li>Covers the trading floor, Komir Events venues, campus perimeter, Praxis schools, and executive protection</li>
+          <li>External commercialisation: event security and corporate facility protection</li>
+        </ul>
+        <div class="edge"><b>The edge</b>Operates across every property type Komir builds — from schools to trading floors to event halls.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir Energy</div><div class="cid">KH–I4 · POWER</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Solar farm, battery storage, and energy management — the power independence layer that removes national grid dependency from every Komir building.</p>
+        <ul class="state">
+          <li>Already designed into the HQ campus: dedicated solar arrays, lithium battery banks at data-centre specification, zero diesel</li>
+          <li>External commercialisation: independent power for commercial and industrial clients</li>
+        </ul>
+        <div class="edge"><b>The edge</b>Designed to keep a trading floor alive for 72 hours without a single external input — everything else it powers is a bonus.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir Facilities</div><div class="cid">KH–I5 · PROPERTY OPS</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Property management, cleaning, maintenance, and landscaping across every Komir building — the standard that makes every space feel the same.</p>
+        <ul class="state">
+          <li>Covers the campus, Komir Events chain, Praxis schools, warehouse, and Lagos offices</li>
+          <li>External commercialisation: facilities management for premium commercial properties</li>
+        </ul>
+        <div class="edge"><b>The edge</b>One standard, enforced everywhere — the brand lives in the maintenance, not just the design.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir People</div><div class="cid">KH–I6 · HUMAN CAPITAL</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Talent management, hiring methodology, and culture standards — the system that ensures every person in the ecosystem meets the same bar.</p>
+        <ul class="state">
+          <li>Owns the First-Hire Doctrine: character over credentials, wholeness over intelligence, nobody brought in above someone who grew from the ground</li>
+          <li>External commercialisation: licenses the hiring methodology and culture framework to other organisations</li>
+        </ul>
+        <div class="edge"><b>The edge</b>The methodology is the product — proven inside a conglomerate before it's ever sold outside.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div><div class="cname">Komir Academy</div><div class="cid">KH–I7 · TRAINING</div></div>
+          <span class="chip infra">Infrastructure</span>
+        </div>
+        <p class="what">Internal training across the entire portfolio — onboarding, Praxis Guide certification, trading floor operator programmes, and leadership development.</p>
+        <ul class="state">
+          <li>Produces certified operators for every specialised role in the ecosystem: Guides, desk operators, security leads, facilities managers</li>
+          <li>External commercialisation: licensed as corporate training programmes for other organisations</li>
+        </ul>
+        <div class="edge"><b>The edge</b>Every training programme is built from a live operation — not a classroom theory, but a working system someone had to pass through to sit in the seat.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TIER 5 — CLIENT BUILDS ═══ -->
 <section class="tier" data-tier="client">
   <div class="wrap">
     <div class="tier-head"><h2>Client Builds</h2><span class="count">2 engagements</span></div>
     <p class="tier-sub">Delivered through Jovilex — proof of what the ecosystem builds for others.</p>
     <div class="grid">
 
-      <div class="card">
+      <a href="https://bbm-iota.vercel.app" target="_blank" rel="noopener" class="card-link"><div class="card">
         <div class="card-top">
           <div><div class="cname">Becoming Better Men</div><div class="cid">JX–C1 · MOVEMENT INFRASTRUCTURE</div></div>
           <span class="chip client">Client Build</span>
@@ -458,7 +567,8 @@
           <li>Built and delivered complete in a single day</li>
         </ul>
         <div class="edge"><b>The edge</b>The full Joseph approach — everything built before the first conversation, and the work made the pitch.</div>
-      </div>
+        <span class="live-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9"/></svg>bbm-iota.vercel.app</span>
+      </div></a>
 
       <div class="card">
         <div class="card-top">
@@ -480,7 +590,7 @@
 <footer>
   <div class="wrap">
     <div class="foot-mark">Komir<span style="color:var(--purple-soft);">.</span></div>
-    <p>Komir Holdings · Private venture portfolio. Shared by invitation. The physical infrastructure vision — the Abuja campus — lives separately at jovilex.com/hq.</p>
+    <p>Komir Holdings · Private venture portfolio. Shared by invitation. The physical infrastructure vision — the Abuja campus — lives separately at <a href="https://jovilex.com/hq" target="_blank" style="color:var(--purple-soft);">jovilex.com/hq</a>.</p>
   </div>
 </footer>
 
