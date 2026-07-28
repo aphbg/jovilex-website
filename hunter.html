@@ -133,6 +133,8 @@ async function api(params,method,body){
 }
 
 let SHEET=null;
+let FILTER=null;
+function setFilter(f){FILTER=f;render();}
 async function loadSheet(){
   try{
     SHEET=await api("action=sheet");
@@ -170,9 +172,10 @@ function card(o,t2){
 function render(){
   const s=SHEET;
   document.getElementById("dateline").textContent=s.date;
-  const t2=s.opportunities.filter(o=>o.tier2_flag);
-  const t1=s.opportunities.filter(o=>o.classification!=="snaplead");
-  const snap=s.opportunities.filter(o=>o.classification==="snaplead"||o.classification==="both");
+  const all=FILTER?s.opportunities.filter(o=>o.track===FILTER):s.opportunities;
+  const t2=all.filter(o=>o.tier2_flag);
+  const t1=all.filter(o=>o.classification!=="snaplead");
+  const snap=all.filter(o=>o.classification==="snaplead"||o.classification==="both");
   document.getElementById("stats").innerHTML=
     '<div class="stat"><b>'+s.opportunities.length+'</b><span>surfaced today</span></div>'
     +'<div class="stat"><b>'+t2.length+'</b><span>Tier 2 flags</span></div>'
@@ -180,7 +183,15 @@ function render(){
     +'<div class="stat"><b>'+s.followups.length+'</b><span>awaiting response</span></div>';
   document.getElementById("runbar").innerHTML=
     '<button class="btn amber" onclick="runAll(this)">Run All Tracks</button>'
-    +s.tracks.map(t=>'<button class="btn ghost mini" onclick="runOne(\''+t.key+'\',this)">'+esc(t.label)+'</button>').join("");
+    +'<button class="btn ghost mini" onclick="downloadSheet()">Download Sheet</button>';
+  var oldFilters=document.getElementById("filterTabs");if(oldFilters)oldFilters.remove();
+  var filterHtml='<div id="filterTabs"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">'
+    +'<button class="btn mini '+(FILTER===null?'amber':'ghost')+'" onclick="setFilter(null)">All</button>'
+    +s.tracks.map(function(t){return '<button class="btn mini '+(FILTER===t.key?'amber':'ghost')+'" onclick="setFilter(\''+t.key+'\')">'+esc(t.label)+'</button>'}).join("")
+    +'</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'
+    +s.tracks.map(function(t){return '<button class="btn ghost mini" style="font-size:11px;padding:5px 10px;border-color:var(--grey);color:var(--grey)" onclick="runOne(\''+t.key+'\',this)">Run '+esc(t.label)+'</button>'}).join("")
+    +'</div></div>';
+  document.getElementById("runbar").insertAdjacentHTML("afterend",filterHtml);
   document.getElementById("runlog").innerHTML=(s.runs||[]).map(r=>
     '· '+esc(r.summary||r.track+" "+r.status)).join("<br>")||"No runs yet today.";
   document.getElementById("t2sec").style.display=t2.length?"block":"none";
@@ -225,6 +236,40 @@ async function runAll(btn){
   }
   btn.textContent="Run All Tracks";btn.disabled=false;
   loadSheet();
+}
+
+function downloadSheet(){
+  if(!SHEET||!SHEET.opportunities.length){alert("No data to download yet.");return}
+  var lines=["JOVILEX HUNTER — DAILY OPPORTUNITY SHEET","Date: "+SHEET.date,"",""];
+  var opps=FILTER?SHEET.opportunities.filter(o=>o.track===FILTER):SHEET.opportunities;
+  var t2=opps.filter(o=>o.tier2_flag);
+  var t1=opps.filter(o=>o.classification!=="snaplead");
+  var snap=opps.filter(o=>o.classification==="snaplead"||o.classification==="both");
+  lines.push("SUMMARY: "+opps.length+" surfaced | "+t2.length+" Tier 2 flags | "+snap.length+" SnapLead prospects","");
+  function addOpp(o){
+    lines.push("---");
+    lines.push(o.company+" | Score: "+o.score+"/100 | "+o.tag+(o.tier2_flag?" | TIER 2":""));
+    lines.push("Budget: "+(o.budget_text||"Not stated"));
+    lines.push("Track: "+o.track+" | Country: "+(o.country||"—")+" | Classification: "+o.classification);
+    if(o.tier2_reason)lines.push("Strategic read: "+o.tier2_reason);
+    lines.push("Summary: "+o.summary);
+    lines.push("Evidence: "+o.evidence);
+    lines.push("Source: "+(o.source_url||"—"));
+    lines.push("Send via: "+(o.recipient_channel||"—"));
+    lines.push("Proof package: "+(o.portfolio_package||"—"));
+    lines.push("");
+    lines.push("DRAFTED APPROACH:");
+    lines.push(o.drafted_approach);
+    lines.push("");
+  }
+  if(t2.length){lines.push("═══ TIER 2 — STRATEGIC FLAGS ═══","");t2.forEach(addOpp);}
+  if(t1.length){lines.push("═══ TIER 1 QUEUE ═══","");t1.forEach(addOpp);}
+  if(snap.length){lines.push("═══ SNAPLEAD PROSPECTS ═══","");snap.forEach(addOpp);}
+  var blob=new Blob([lines.join("\n")],{type:"text/plain"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="Hunter-Sheet-"+SHEET.date+".txt";
+  a.click();
 }
 </script>
 </body>
