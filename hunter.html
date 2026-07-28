@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hunter — Daily Opportunity Sheet · Jovilex</title>
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23111111"/><circle cx="72" cy="30" r="8" fill="%2310B981"/><text x="38" y="68" font-family="Arial,sans-serif" font-size="52" font-weight="800" fill="white" text-anchor="middle">J</text></svg>'>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--charcoal:#111111;--deep:#1A1A1A;--slate:#1F2937;--emerald:#10B981;--amber:#FF7A2E;--ice:#F7F8F9;--grey:#6B7280;--line:#2a2f36}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--charcoal);color:#fff;font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6}
+  h1,h2,h3{font-family:'Sora',sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
+  .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:22px}
+  .logo span{color:var(--emerald)}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+  .date{color:var(--grey);font-weight:300}
+  .stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+  .stat{background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:14px 20px;min-width:130px}
+  .stat b{display:block;font-family:'Sora';font-size:24px;color:var(--emerald)}
+  .stat span{color:var(--grey);font-size:12px}
+  .btn{background:var(--emerald);color:#06251b;border:none;border-radius:10px;padding:11px 18px;font-family:'Outfit';font-weight:500;font-size:14px;cursor:pointer}
+  .btn.amber{background:var(--amber);color:#2b1200}
+  .btn.ghost{background:transparent;color:var(--emerald);border:1px solid var(--emerald)}
+  .btn:disabled{opacity:.45;cursor:wait}
+  .section{margin:34px 0 10px}
+  .section h2{font-size:19px;margin-bottom:4px}
+  .section p.sub{color:var(--grey);font-size:13px;margin-bottom:14px;font-weight:300}
+  .card{background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .card.t2{border-color:var(--amber)}
+  .row1{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .co{font-family:'Sora';font-weight:700;font-size:16px}
+  .score{font-family:'Sora';font-weight:800;color:var(--emerald)}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .tag{font-size:11px;letter-spacing:.5px;padding:3px 9px;border-radius:20px;border:1px solid var(--line);color:var(--grey)}
+  .tag.mult{border-color:var(--emerald);color:var(--emerald)}
+  .tag.both{border-color:var(--amber);color:var(--amber)}
+  .tag.t2{background:var(--amber);color:#2b1200;border:none;font-weight:500}
+  .tag.snap{border-color:#7dd3fc;color:#7dd3fc}
+  .sum{color:#d1d5db;margin:6px 0}
+  .ev{color:var(--grey);font-size:13px;font-weight:300;margin:6px 0}
+  .ev b{color:#9ca3af;font-weight:500}
+  details{margin-top:10px}
+  summary{cursor:pointer;color:var(--emerald);font-weight:500;font-size:14px}
+  .appr{white-space:pre-wrap;background:var(--charcoal);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;font-size:14px;color:#e5e7eb}
+  .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .mini{font-size:13px;padding:8px 14px}
+  a{color:var(--emerald);word-break:break-all}
+  .runbar{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+  .runlog{color:var(--grey);font-size:12.5px;font-weight:300;margin-top:8px}
+  #gate{position:fixed;inset:0;background:var(--charcoal);display:flex;align-items:center;justify-content:center;z-index:50}
+  #gate .box{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:34px;width:min(360px,90vw);text-align:center}
+  #gate input{width:100%;margin:16px 0;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--charcoal);color:#fff;font-family:'Outfit'}
+  .empty{color:var(--grey);font-weight:300;padding:14px 4px}
+  .keybox{margin-top:10px}
+</style>
+</head>
+<body>
+<div id="gate"><div class="box">
+  <div class="logo">Jovi<span>lex</span></div>
+  <p style="color:var(--grey);margin-top:6px;font-size:13px">Hunter · Director of Business Development</p>
+  <input id="pw" type="password" placeholder="Access password" onkeydown="if(event.key==='Enter')gateIn()">
+  <input id="hk" type="password" placeholder="Hunter API key" onkeydown="if(event.key==='Enter')gateIn()" class="keybox">
+  <button class="btn" style="width:100%" onclick="gateIn()">Enter</button>
+</div></div>
+
+<div class="wrap" id="app" style="display:none">
+  <div class="top">
+    <div><div class="logo">Jovi<span>lex</span></div>
+      <div style="color:var(--grey);font-size:13px">Hunter — Daily Opportunity Sheet</div></div>
+    <div class="date" id="dateline"></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="section">
+    <h2>Run Scans</h2>
+    <p class="sub">Manual trigger phase — each track runs separately. Run All executes them in sequence.</p>
+    <div class="runbar" id="runbar"></div>
+    <div class="runlog" id="runlog"></div>
+  </div>
+
+  <div class="section" id="t2sec" style="display:none">
+    <h2 style="color:var(--amber)">⬥ Tier 2 — Strategic Flags</h2>
+    <p class="sub">Systems-depth finds. Joseph-move candidates — these change the day's priority.</p>
+    <div id="t2list"></div>
+  </div>
+
+  <div class="section">
+    <h2>Tier 1 Queue</h2>
+    <p class="sub">Everything above the $1,000 floor, ranked by score. Tags: MULTIPLIER / CASH / BOTH.</p>
+    <div id="t1list"></div>
+  </div>
+
+  <div class="section">
+    <h2 style="color:#7dd3fc">SnapLead Prospects</h2>
+    <p class="sub">Lead-response failures found in the wild — feed the SnapLead pipeline.</p>
+    <div id="snaplist"></div>
+  </div>
+
+  <div class="section">
+    <h2>Follow-ups</h2>
+    <p class="sub">Approached and awaiting response.</p>
+    <div id="fulist"></div>
+  </div>
+</div>
+
+<script>
+const PW="jovilex2026";
+let KEY="";
+function gateIn(){
+  if(document.getElementById("pw").value!==PW){alert("Wrong password");return}
+  KEY=document.getElementById("hk").value.trim();
+  if(!KEY){alert("Hunter API key required");return}
+  sessionStorage.setItem("hk",KEY);
+  document.getElementById("gate").style.display="none";
+  document.getElementById("app").style.display="block";
+  loadSheet();
+}
+if(sessionStorage.getItem("hk")){KEY=sessionStorage.getItem("hk");
+  document.getElementById("gate").style.display="none";
+  document.getElementById("app").style.display="block";
+  loadSheet();}
+
+async function api(params,method,body){
+  const r=await fetch("/api/hunter?"+params,{method:method||"GET",
+    headers:{"x-hunter-key":KEY,"Content-Type":"application/json"},
+    body:body?JSON.stringify(body):undefined});
+  const d=await r.json();
+  if(!r.ok)throw new Error(d.error||r.status);
+  return d;
+}
+
+let SHEET=null;
+async function loadSheet(){
+  try{
+    SHEET=await api("action=sheet");
+    render();
+  }catch(e){document.getElementById("stats").innerHTML='<div class="empty">Error: '+e.message+'</div>'}
+}
+
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function card(o,t2){
+  const tags=[
+    o.tier2_flag?'<span class="tag t2">TIER 2 · '+esc(o.tier2_reason||"strategic")+'</span>':"",
+    '<span class="tag '+(o.tag==="MULTIPLIER"?"mult":o.tag==="BOTH"?"both":"")+'">'+esc(o.tag)+'</span>',
+    o.classification!=="jovilex"?'<span class="tag snap">'+(o.classification==="both"?"JOVILEX + SNAPLEAD":"SNAPLEAD")+'</span>':"",
+    o.country?'<span class="tag">'+esc(o.country)+'</span>':"",
+    '<span class="tag">'+esc(o.track)+'</span>'
+  ].join("");
+  return '<div class="card'+(t2?" t2":"")+'">'
+    +'<div class="row1"><span class="co">'+esc(o.company)+'</span>'
+    +'<span class="score">'+o.score+'<span style="color:var(--grey);font-size:12px;font-weight:300"> /100'
+    +(o.budget_text?' · '+esc(o.budget_text):"")+'</span></span></div>'
+    +'<div class="tags">'+tags+'</div>'
+    +'<div class="sum">'+esc(o.summary)+'</div>'
+    +'<div class="ev"><b>Source:</b> '+esc(o.evidence)+(o.source_url?' — <a href="'+esc(o.source_url)+'" target="_blank">link</a>':"")+'</div>'
+    +'<div class="ev"><b>Send via:</b> '+esc(o.recipient_channel||"—")+' · <b>Proof:</b> '+esc(o.portfolio_package||"—")+'</div>'
+    +'<details><summary>Drafted approach</summary><div class="appr">'+esc(o.drafted_approach)+'</div>'
+    +'<div class="actions">'
+    +'<button class="btn mini" onclick="copyAppr(this)">Copy approach</button>'
+    +'<button class="btn ghost mini" onclick="mark(\''+o.id+'\',\'approached\')">Mark approached</button>'
+    +'<button class="btn ghost mini" onclick="mark(\''+o.id+'\',\'passed\')">Pass</button>'
+    +'<button class="btn ghost mini" style="border-color:#ef4444;color:#ef4444" onclick="mark(\''+o.id+'\',\'blacklisted\')">Blacklist</button>'
+    +'</div></details></div>';
+}
+
+function render(){
+  const s=SHEET;
+  document.getElementById("dateline").textContent=s.date;
+  const t2=s.opportunities.filter(o=>o.tier2_flag);
+  const t1=s.opportunities.filter(o=>o.classification!=="snaplead");
+  const snap=s.opportunities.filter(o=>o.classification==="snaplead"||o.classification==="both");
+  document.getElementById("stats").innerHTML=
+    '<div class="stat"><b>'+s.opportunities.length+'</b><span>surfaced today</span></div>'
+    +'<div class="stat"><b>'+t2.length+'</b><span>Tier 2 flags</span></div>'
+    +'<div class="stat"><b>'+snap.length+'</b><span>SnapLead prospects</span></div>'
+    +'<div class="stat"><b>'+s.followups.length+'</b><span>awaiting response</span></div>';
+  document.getElementById("runbar").innerHTML=
+    '<button class="btn amber" onclick="runAll(this)">Run All Tracks</button>'
+    +s.tracks.map(t=>'<button class="btn ghost mini" onclick="runOne(\''+t.key+'\',this)">'+esc(t.label)+'</button>').join("");
+  document.getElementById("runlog").innerHTML=(s.runs||[]).map(r=>
+    '· '+esc(r.summary||r.track+" "+r.status)).join("<br>")||"No runs yet today.";
+  document.getElementById("t2sec").style.display=t2.length?"block":"none";
+  document.getElementById("t2list").innerHTML=t2.map(o=>card(o,true)).join("");
+  document.getElementById("t1list").innerHTML=t1.length?t1.map(o=>card(o,false)).join(""):'<div class="empty">Nothing surfaced yet — run the scans.</div>';
+  document.getElementById("snaplist").innerHTML=snap.length?snap.map(o=>card(o,false)).join(""):'<div class="empty">No SnapLead prospects today yet.</div>';
+  document.getElementById("fulist").innerHTML=s.followups.length?s.followups.map(f=>
+    '<div class="card"><div class="row1"><span class="co">'+esc(f.company)+'</span>'
+    +'<span style="color:var(--grey);font-size:12px">'+new Date(f.approached_at).toLocaleDateString()+'</span></div>'
+    +'<div class="sum">'+esc(f.summary)+'</div>'
+    +'<div class="actions">'
+    +'<button class="btn ghost mini" onclick="mark(\''+f.id+'\',\'replied\')">Replied</button>'
+    +'<button class="btn ghost mini" onclick="mark(\''+f.id+'\',\'won\')">Won</button>'
+    +'<button class="btn ghost mini" onclick="mark(\''+f.id+'\',\'lost\')">Lost</button>'
+    +'</div></div>').join(""):'<div class="empty">No open approaches.</div>';
+}
+
+function copyAppr(btn){
+  const txt=btn.closest("details").querySelector(".appr").innerText;
+  navigator.clipboard.writeText(txt);
+  btn.textContent="Copied ✓";setTimeout(()=>btn.textContent="Copy approach",1500);
+}
+
+async function mark(id,status){
+  try{await api("action=mark","POST",{id,status});loadSheet();}
+  catch(e){alert("Error: "+e.message)}
+}
+
+async function runOne(track,btn){
+  btn.disabled=true;const old=btn.textContent;btn.textContent="Running…";
+  try{const r=await api("action=run&track="+track);
+    btn.textContent=old;btn.disabled=false;
+    await loadSheet();}
+  catch(e){btn.textContent=old;btn.disabled=false;alert("Track error: "+e.message);}
+}
+
+async function runAll(btn){
+  btn.disabled=true;btn.textContent="Running all…";
+  for(const t of SHEET.tracks){
+    try{await api("action=run&track="+t.key);}catch(e){console.warn(t.key,e)}
+    btn.textContent="Running… ("+t.label+" done)";
+  }
+  btn.textContent="Run All Tracks";btn.disabled=false;
+  loadSheet();
+}
+</script>
+</body>
+</html>
