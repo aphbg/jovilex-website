@@ -206,22 +206,6 @@
             "destination": "/leads.html"
         },
         {
-            "source": "/hq",
-            "destination": "/hq.html"
-        },
-        {
-            "source": "/design",
-            "destination": "/design.html"
-        },
-        {
-            "source": "/ventures",
-            "destination": "/ventures.html"
-        },
-        {
-            "source": "/capital",
-            "destination": "/capital.html"
-        },
-        {
             "source": "/snaplead",
             "destination": "/snaplead-marketing.html"
         },
